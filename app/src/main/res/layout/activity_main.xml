@@ -5,58 +5,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/white"
     tools:context="com.rgu.honours.dementiacareapp.MainActivity">
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add"
-        tools:layout_editor_absoluteY="47dp" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="100px"
-        android:layout_gravity="center_horizontal"
-        android:text="Mobile Care"
-        android:textColor="#673AB7"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1">
+
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/heart" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mobile Care"
+            android:textColor="#673AB7"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="1">
 
         <Button
             android:id="@+id/logIn"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10px"
-            android:layout_weight="1"
+            android:layout_margin="10sp"
             android:background="#4CAF50"
-            android:text="Log In" />
+            android:text="@string/logIn"
+            android:textSize="30sp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/signUp"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10px"
-            android:layout_weight="1"
+            android:layout_margin="10sp"
             android:background="#673AB7"
-            android:text="Sign Up" />
+            android:text="@string/signUp"
+            android:textSize="30sp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"/>
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/welcomeDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="The Mobile Application designed for carers on the move"
+        android:text="@string/welcomeDescription"
+        android:gravity="bottom"
         android:textAlignment="center"
+        android:textSize="20sp"
         android:textColor="#673AB7"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_weight="1"/>
 
 </LinearLayout>
