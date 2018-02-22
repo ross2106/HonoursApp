@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">DementiaCareApp</string>
+    <string name="welcomeTitle">Mobile Care</string>
     <string name="welcomeDescription">The Mobile Application designed for carers on the move</string>
     <string name="logIn">Log In</string>
     <string name="signUp">Sign Up</string>
+    <string name="logoDesc">Welcome page logo</string>
 </resources>

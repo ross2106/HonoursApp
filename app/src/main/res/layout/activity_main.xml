@@ -21,13 +21,14 @@
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/heart" />
+            android:src="@drawable/heart"
+            android:contentDescription="@string/logoDesc"/>
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mobile Care"
+            android:text="@string/welcomeTitle"
             android:textColor="#673AB7"
             android:textSize="50sp"
             android:textStyle="bold"
@@ -51,7 +52,8 @@
             android:text="@string/logIn"
             android:textSize="30sp"
             android:textAllCaps="false"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/signUp"
@@ -62,7 +64,8 @@
             android:text="@string/signUp"
             android:textSize="30sp"
             android:textAllCaps="false"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 
