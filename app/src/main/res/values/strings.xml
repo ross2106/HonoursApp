@@ -1,8 +1,23 @@
 <resources>
     <string name="app_name">DementiaCareApp</string>
+
+    <!-- ************* Welcome Page ************* -->
     <string name="welcomeTitle">Mobile Care</string>
     <string name="welcomeDescription">The Mobile Application designed for carers on the move</string>
+    <string name="logoDesc">Welcome page logo</string>
     <string name="logIn">Log In</string>
     <string name="signUp">Sign Up</string>
-    <string name="logoDesc">Welcome page logo</string>
+
+
+    <!-- ************* Log In Page************* -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="logInTitle">Log in to Mobile Care!</string>
+    <string name="forgottenSignUp">Forgotten to register? Click on this text!</string>
+
+    <!-- ************* Sign Up Page ************* -->
+    <string name="signUpTitle">Sign up for Mobile Care!</string>
+    <string name="email">Email</string>
+    <string name="confirmEmail">Confirm Email</string>
+    <string name="confirmPassword">Confirm Password</string>
 </resources>
