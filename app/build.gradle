@@ -26,4 +26,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:cardview-v7:26.1.0'
+
+    // Mobile Client for initializing the SDK
+    compile ('com.amazonaws:aws-android-sdk-mobile-client:2.6.7@aar') { transitive = true; }
+
+    //dynamodb
+    compile 'com.amazonaws:aws-android-sdk-ddb-mapper:2.6.+'
+
 }
+
