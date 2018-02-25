@@ -5,12 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button welcomeLogIn, welcomeSignUp;
+    DynamoDBMapper dynamoDBMapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         AWSMobileClient.getInstance().initialize(this).execute();
 
-        AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+        // Instantiate a AmazonDynamoDBMapperClient
+      AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
         this.dynamoDBMapper = DynamoDBMapper.builder()
                 .dynamoDBClient(dynamoDBClient)
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
