@@ -38,7 +38,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CareHomeActivity"></activity>
+        <activity android:name=".CareHomeActivity" />
+        <activity android:name=".PasswordResetActivity"></activity>
     </application>
 
 </manifest>

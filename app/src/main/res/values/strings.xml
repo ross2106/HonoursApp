@@ -10,7 +10,7 @@
 
 
     <!-- ************* Log In Page************* -->
-    <string name="username">Username</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="logInTitle">Log in to Mobile Care!</string>
     <string name="forgottenSignUp">Forgotten to register? Click here!</string>
@@ -19,9 +19,13 @@
     <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
     <string name="login_success">You have logged in!</string>
 
+    <!-- ************* Password Reset ************* -->
+    <string name="resetPasswordTitle">Forgotten your password?</string>
+    <string name="resetPasswordCaption">We need your registered email address to send you password reset instructions.</string>
+    <string name="back">Back</string>
+
     <!-- ************* Sign Up Page ************* -->
     <string name="signUpTitle">Sign up for Mobile Care!</string>
-    <string name="email">Email</string>
     <string name="confirmEmail">Confirm Email</string>
     <string name="confirmPassword">Confirm Password</string>
 </resources>
