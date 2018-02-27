@@ -5,28 +5,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
-import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button welcomeLogIn, welcomeSignUp;
-    DynamoDBMapper dynamoDBMapper;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AWSMobileClient.getInstance().initialize(this).execute();
-
-        // Instantiate a AmazonDynamoDBMapperClient
-      AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
-        this.dynamoDBMapper = DynamoDBMapper.builder()
-                .dynamoDBClient(dynamoDBClient)
-                .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                .build();
 
         //defining buttons
         welcomeLogIn = (Button) findViewById(R.id.logIn);
@@ -35,6 +27,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Add click listener to button
         welcomeLogIn.setOnClickListener(this);
         welcomeSignUp.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        //Check if user is signed in (non-null) and update UI accordingly
+        FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
     @Override
@@ -46,8 +47,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.signUp : i = new Intent(this, SignUpActivity.class); startActivity(i); break;
             default: break;
         }
-
-
-
     }
 }

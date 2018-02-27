@@ -2,76 +2,87 @@ package com.rgu.honours.dementiacareapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
-import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    DynamoDBMapper dynamoDBMapper;
-    private Button signUp;
+    //UI Elements
+    private Button signUpButton;
     private EditText email, confirmEmail, password, confirmPassword;
     private String emailString, confirmEmailString, passwordString, confirmPasswordString;
+
+    private FirebaseAuth auth;
+
+    private static final String TAG = "EmailPassword";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        AWSMobileClient.getInstance().initialize(this).execute();
+        //Start Auth
+        auth = FirebaseAuth.getInstance();
+        //End Auth
 
-        signUp = (Button) findViewById(R.id.confirmSignUp);
-        email = (EditText) findViewById(R.id.signUpUsername);
+        //Button
+        signUpButton = findViewById(R.id.confirmSignUp);
+
+        //Form fields
+        //email = findViewById(R.id.signUpUsername);
         confirmEmail = (EditText) findViewById(R.id.signUpConfirmUsername);
-        password = (EditText) findViewById(R.id.signUpPassword);
+        //password = findViewById(R.id.signUpPassword);
         confirmPassword = (EditText) findViewById(R.id.signUpConfirmPassword);
 
-        emailString = email.getText().toString();
-        confirmEmailString = confirmEmail.getText().toString();
-        passwordString = password.getText().toString();
-        confirmPasswordString = confirmPassword.getText().toString();
+        //Form text
+        //emailString = email.getText().toString();
+        //confirmEmailString = confirmEmail.getText().toString();
+        //passwordString = password.getText().toString();
+        //confirmPasswordString = confirmPassword.getText().toString();
 
-        AWSMobileClient.getInstance().initialize(this).execute();
-        AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
-        this.dynamoDBMapper = DynamoDBMapper.builder()
-                .dynamoDBClient(dynamoDBClient)
-                .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                .build();
 
-        signUp.setOnClickListener(new View.OnClickListener() {
+        //Sign up on click listener
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                final UsersDO userItem = new UsersDO();
-
-                userItem.setUserId("ross");
-                userItem.setEmail(confirmEmailString);
-                userItem.setPassword(confirmPasswordString);
-
-                new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        dynamoDBMapper.save(userItem);
-                        //item saved
-
-                    }
-                }).start();
-
-                Intent i;
-                switch(view.getId()){
-                    case R.id.signUp : i = new Intent(getApplicationContext(), LogInActivity.class); startActivity(i); break;
-                    default: break;
-                }
+            public void onClick(View v) {
+                auth.createUserWithEmailAndPassword(confirmEmail.getText().toString(), confirmPassword.getText().toString())
+                        .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    //Sign in success
+                                    Log.d(TAG, "createUserWithEmail: success");
+                                    Intent intent = new Intent(getApplicationContext(), CareHomeActivity.class);
+                                    startActivity(intent);
+                                } else if (!task.isSuccessful()) {
+                                    Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
+                                } else
+                                    //if sign in fails, display a message to user
+                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
 }
