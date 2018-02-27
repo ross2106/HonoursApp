@@ -39,7 +39,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CareHomeActivity" />
-        <activity android:name=".PasswordResetActivity"></activity>
+        <activity android:name=".PasswordResetActivity" />
+        <activity android:name=".AddPatientActivity"></activity>
     </application>
 
 </manifest>
