@@ -62,12 +62,12 @@
         android:background="@drawable/roundgreen"
         android:text="@string/logIn"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/signUpText"
+        app:layout_constraintBottom_toTopOf="@+id/forgottenSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
-<!--    <TextView
+   <!--<TextView
         android:id="@+id/signUpText"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -90,14 +90,12 @@
         android:layout_height="0dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
-        android:textSize="24sp"
-        android:background="@drawable/roundgreen"
-        android:text="@string/logIn"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/signUpText"
+        android:textSize="16sp"
+        android:text="@string/forgottenSignUp"
+        app:layout_constraintBottom_toTopOf="@+id/resetPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmLogin" />
 
     <Button
         android:id="@+id/resetPassword"
@@ -106,13 +104,11 @@
         android:layout_height="0dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
-        android:textSize="24sp"
-        android:background="@drawable/roundgreen"
-        android:text="@string/logIn"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/signUpText"
+        android:text="@string/resetPassword"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/forgottenSignUp" />
 
 </android.support.constraint.ConstraintLayout>

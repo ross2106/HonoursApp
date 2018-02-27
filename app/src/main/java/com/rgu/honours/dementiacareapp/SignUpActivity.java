@@ -22,8 +22,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     //UI Elements
     private Button signUpButton;
-    private EditText email, confirmEmail, password, confirmPassword;
-    private String emailString, confirmEmailString, passwordString, confirmPasswordString;
+    private EditText emailText, passwordText;
 
     private FirebaseAuth auth;
 
@@ -42,24 +41,15 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.confirmSignUp);
 
         //Form fields
-        //email = findViewById(R.id.signUpUsername);
-        confirmEmail = (EditText) findViewById(R.id.signUpConfirmUsername);
-        //password = findViewById(R.id.signUpPassword);
-        confirmPassword = (EditText) findViewById(R.id.signUpConfirmPassword);
-
-        //Form text
-        //emailString = email.getText().toString();
-        //confirmEmailString = confirmEmail.getText().toString();
-        //passwordString = password.getText().toString();
-        //confirmPasswordString = confirmPassword.getText().toString();
-
+        emailText = findViewById(R.id.signUpUsername);
+        passwordText = findViewById(R.id.signUpPassword);
 
         //Sign up on click listener
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = confirmEmail.getText().toString();
-                String password = confirmPassword.getText().toString();
+                String email = emailText.getText().toString();
+                String password = passwordText.getText().toString();
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
                     return;
@@ -83,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     Log.d(TAG, "createUserWithEmail: success");
                                     Toast.makeText(SignUpActivity.this, "Sign up successful!",
                                             Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), CareHomeActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                                     startActivity(intent);
                                 } else {
                                     //if sign in fails, display a message to user
