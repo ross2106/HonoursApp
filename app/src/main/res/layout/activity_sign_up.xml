@@ -33,24 +33,11 @@
         android:drawableStart="@drawable/person"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/signUpConfirmUsername"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/signUpConfirmUsername"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
-
-    <EditText
-        android:id="@+id/signUpConfirmUsername"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autoSizeTextType="uniform"
-        android:drawableLeft="@drawable/person"
-        android:drawableStart="@drawable/person"
-        android:hint="@string/confirmEmail"
-        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/signUpPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/signUpPassword"
-        app:layout_constraintTop_toBottomOf="@+id/signUpUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
 
     <EditText
         android:id="@+id/signUpPassword"
@@ -61,24 +48,11 @@
         android:drawableStart="@drawable/padlock"
         android:hint="@string/password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/signUpConfirmPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/signUpConfirmPassword"
-        app:layout_constraintTop_toBottomOf="@+id/signUpConfirmUsername" />
-
-    <EditText
-        android:id="@+id/signUpConfirmPassword"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:drawableLeft="@drawable/padlock"
-        android:drawableStart="@drawable/padlock"
-        android:autoSizeTextType="uniform"
-        android:hint="@string/confirmPassword"
-        android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/confirmSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/confirmSignUp"
-        app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpUsername" />
+
 
     <Button
         android:id="@+id/confirmSignUp"
@@ -93,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@+id/signUpConfirmPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
 
 
 </android.support.constraint.ConstraintLayout>

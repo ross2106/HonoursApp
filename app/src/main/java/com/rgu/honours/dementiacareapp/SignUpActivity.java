@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -57,22 +58,39 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                auth.createUserWithEmailAndPassword(confirmEmail.getText().toString(), confirmPassword.getText().toString())
+                String email = confirmEmail.getText().toString();
+                String password = confirmPassword.getText().toString();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (password.length() < 6) {
+                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     //Sign in success
                                     Log.d(TAG, "createUserWithEmail: success");
+                                    Toast.makeText(SignUpActivity.this, "Sign up successful!",
+                                            Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), CareHomeActivity.class);
                                     startActivity(intent);
-                                } else if (!task.isSuccessful()) {
-                                    Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
-                                } else
+                                } else {
                                     //if sign in fails, display a message to user
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(SignUpActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }
