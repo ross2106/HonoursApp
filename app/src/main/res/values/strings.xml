@@ -8,7 +8,6 @@
     <string name="logIn">Log In</string>
     <string name="signUp">Sign Up</string>
 
-
     <!-- ************* Log In Page************* -->
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -30,15 +29,15 @@
     <string name="confirmPassword">Confirm Password</string>
 
     <!-- ************* Carer Home Page ************* -->
-    <string name="carerHomeTitle">Welcome to the carer home page!</string>
+    <string name="carerHomeTitle">Welcome to your care home page!</string>
     <string name="addPatient">Add Patient</string>
     <string name="signOut">Sign Out</string>
 
     <!-- ************* Add Patient Page ************* -->
     <string name="addPatientTitle">Add an individual to your care profile</string>
     <string name="add">Add</string>
-    <string name="name">Name</string>
+    <string name="personName">Name</string>
     <string name="age">Age</string>
-    <string name="location">Location</string>
+    <string name="gender">Gender</string>
 
 </resources>

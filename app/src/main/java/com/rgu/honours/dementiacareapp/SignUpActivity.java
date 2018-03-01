@@ -17,12 +17,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
     //UI Elements
     private Button signUpButton;
-    private EditText emailText, passwordText;
+    private EditText emailText, passwordText, name, age;
 
     private FirebaseAuth auth;
 
@@ -43,13 +48,17 @@ public class SignUpActivity extends AppCompatActivity {
         //Form fields
         emailText = findViewById(R.id.signUpUsername);
         passwordText = findViewById(R.id.signUpPassword);
+        name = findViewById(R.id.name);
+        age = findViewById(R.id.age);
 
         //Sign up on click listener
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailText.getText().toString();
+                final String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
+                final String nameText = name.getText().toString();
+                final String ageText = age.getText().toString();
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
                     return;
@@ -73,6 +82,16 @@ public class SignUpActivity extends AppCompatActivity {
                                     Log.d(TAG, "createUserWithEmail: success");
                                     Toast.makeText(SignUpActivity.this, "Sign up successful!",
                                             Toast.LENGTH_SHORT).show();
+
+                                    String user_id = auth.getCurrentUser().getUid();
+                                    DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
+                                    Map newUser = new HashMap();
+                                    newUser.put("email", email);
+                                    newUser.put("name", nameText);
+                                    newUser.put("age", ageText);
+
+                                    current_user_db.setValue(newUser);
+
                                     Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                                     startActivity(intent);
                                 } else {
