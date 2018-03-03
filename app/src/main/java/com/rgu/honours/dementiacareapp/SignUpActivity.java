@@ -29,7 +29,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Button signUpButton;
     private EditText emailText, passwordText, name, age;
 
-    private FirebaseAuth auth;
+    private FirebaseAuth mAuth;
 
     private static final String TAG = "EmailPassword";
 
@@ -39,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         //Start Auth
-        auth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         //End Auth
 
         //Button
@@ -73,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                auth.createUserWithEmailAndPassword(email, password)
+                mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -83,15 +83,17 @@ public class SignUpActivity extends AppCompatActivity {
                                     Toast.makeText(SignUpActivity.this, "Sign up successful!",
                                             Toast.LENGTH_SHORT).show();
 
-                                    String user_id = auth.getCurrentUser().getUid();
+                                    String user_id = mAuth.getCurrentUser().getUid();
                                     DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
                                     Map newUser = new HashMap();
                                     newUser.put("email", email);
                                     newUser.put("name", nameText);
                                     newUser.put("age", ageText);
-
                                     current_user_db.setValue(newUser);
 
+                                    Log.d(TAG, "createUserWithEmail: success");
+                                    Toast.makeText(SignUpActivity.this, "Sign up successful!",
+                                            Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                                     startActivity(intent);
                                 } else {
@@ -110,6 +112,15 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(mAuth.getCurrentUser() != null){
+            finish();
+            startActivity(new Intent(this, CareHomeActivity.class));
+        }
     }
 
 }

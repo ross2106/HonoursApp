@@ -40,7 +40,8 @@
         </activity>
         <activity android:name=".CareHomeActivity" />
         <activity android:name=".PasswordResetActivity" />
-        <activity android:name=".AddPatientActivity"></activity>
+        <activity android:name=".AddPatientActivity" />
+        <activity android:name=".PatientProfile"></activity>
     </application>
 
 </manifest>

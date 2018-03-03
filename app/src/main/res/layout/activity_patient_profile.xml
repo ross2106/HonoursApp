@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rgu.honours.dementiacareapp.PatientProfile">
+
+    <LinearLayout
+        android:id="@+id/imageTitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/topRow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1">
+
+        <ImageView
+            android:id="@+id/patientImage"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/patientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/patientImage" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/topRow"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/bottomRow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageTitleLayout"
+        app:layout_constraintVertical_weight="1">
+
+        <Button
+            android:id="@+id/thisIsMeButton"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/thisIsMe"
+            app:layout_constraintEnd_toStartOf="@+id/medicationButton"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/medicationButton"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/medication"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/thisIsMeButton" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomRow"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topRow"
+        app:layout_constraintVertical_weight="1">
+
+        <Button
+            android:id="@+id/familyButton"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/myFamily"
+            app:layout_constraintEnd_toStartOf="@+id/calendarButton"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/calendarButton"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/calendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/familyButton" />
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

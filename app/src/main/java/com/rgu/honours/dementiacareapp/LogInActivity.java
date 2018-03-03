@@ -26,15 +26,15 @@ public class LogInActivity extends AppCompatActivity {
 
     private Button logIn, forgottenRegister, passwordReset;
     private EditText username, password;
-    private FirebaseAuth auth;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Get Firebase Auth
-        auth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
-        if(auth.getCurrentUser() != null){
+        if(mAuth.getCurrentUser() != null){
             startActivity(new Intent(LogInActivity.this, CareHomeActivity.class));
             finish();
         }
@@ -47,7 +47,7 @@ public class LogInActivity extends AppCompatActivity {
         forgottenRegister = (Button) findViewById(R.id.forgottenSignUp);
         passwordReset = (Button) findViewById(R.id.resetPassword);
 
-        auth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         forgottenRegister.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -77,7 +77,7 @@ public class LogInActivity extends AppCompatActivity {
                     return;
                 }
                 //authenticate user
-                auth.signInWithEmailAndPassword(email, pass)
+                mAuth.signInWithEmailAndPassword(email, pass)
                         .addOnCompleteListener(LogInActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -98,5 +98,14 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(mAuth.getCurrentUser() != null){
+            finish();
+            startActivity(new Intent(this, CareHomeActivity.class));
+        }
     }
 }

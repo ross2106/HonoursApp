@@ -40,4 +40,11 @@
     <string name="age">Age</string>
     <string name="gender">Gender</string>
 
+    <!-- ************* Patient Profile ************* -->
+    <string name="thisIsMe">This is me</string>
+    <string name="medication">Medication</string>
+    <string name="myFamily">My Family</string>
+    <string name="calendar">Calendar</string>
+
+
 </resources>

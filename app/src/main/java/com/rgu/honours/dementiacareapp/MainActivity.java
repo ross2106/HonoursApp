@@ -32,20 +32,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onStart(){
-        super.onStart();
-        //Check if user is signed in (non-null) and update UI accordingly
-        mAuth.signOut();
-    }
-
-    @Override
     public void onClick(View view) {
         Intent i;
-
         switch(view.getId()){
             case R.id.logIn : i = new Intent(this, LogInActivity.class); startActivity(i); break;
             case R.id.signUp : i = new Intent(this, SignUpActivity.class); startActivity(i); break;
             default: break;
         }
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        mAuth.signOut();
+        //if(mAuth.getCurrentUser() != null){
+        //   finish();
+        //    startActivity(new Intent(this, CareHomeActivity.class));
+        //}
     }
 }

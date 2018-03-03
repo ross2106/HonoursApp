@@ -14,6 +14,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -48,13 +50,12 @@ public class AddPatientActivity extends AppCompatActivity {
                 String name = patientName.getText().toString();
                 String age = patientAge.getText().toString();
                 String gender = patientGender.getText().toString();
-
-                DatabaseReference patient_db = FirebaseDatabase.getInstance().getReference().child("Users").child(carerId).child("Patients").child(name);
+                final DatabaseReference patient_db = FirebaseDatabase.getInstance().getReference().child("Users").child(carerId);
                 Map newPatient = new HashMap();
                 newPatient.put("age", age);
                 newPatient.put("gender", gender);
-                patient_db.setValue(newPatient);
-
+                newPatient.put("name", name);
+                patient_db.child("Patients").push().setValue(newPatient);
                 Intent intent = new Intent(getApplicationContext(), CareHomeActivity.class);
                 startActivity(intent);
             }

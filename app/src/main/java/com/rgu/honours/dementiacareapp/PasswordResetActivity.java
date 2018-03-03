@@ -1,5 +1,6 @@
 package com.rgu.honours.dementiacareapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ public class PasswordResetActivity extends AppCompatActivity {
 
     private EditText emailInput;
     private Button btnReset, btnBack;
-    private FirebaseAuth auth;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class PasswordResetActivity extends AppCompatActivity {
         btnBack = (Button) findViewById(R.id.backButton);
         btnReset = (Button) findViewById(R.id.resetPasswordButton);
 
-        auth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +47,7 @@ public class PasswordResetActivity extends AppCompatActivity {
                     return;
                 }
 
-                auth.sendPasswordResetEmail(email)
+                mAuth.sendPasswordResetEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -59,5 +60,14 @@ public class PasswordResetActivity extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(mAuth.getCurrentUser() != null){
+            finish();
+            startActivity(new Intent(this, CareHomeActivity.class));
+        }
     }
 }

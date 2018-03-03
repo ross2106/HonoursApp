@@ -6,18 +6,9 @@ package com.rgu.honours.dementiacareapp;
 
 public class PatientInfo {
     private String name, gender, age;
-    private int id;
 
     public PatientInfo(){
 
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

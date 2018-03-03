@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -27,12 +28,15 @@ public class CareHomeActivity extends AppCompatActivity {
 
     private Button signOut, addPatient;
     private TextView hiMessage;
-    private ListView patientList;
+    private ListView patientListView;
 
-    private FirebaseAuth auth;
+    private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
-    private DatabaseReference ref;
+    private DatabaseReference dbRef, patientDbRef, carerDbRef;
     private String userId;
+
+    ArrayList<String> patientArrayList = new ArrayList<>();
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,45 +46,53 @@ public class CareHomeActivity extends AppCompatActivity {
         signOut = (Button) findViewById(R.id.signOut);
         addPatient = (Button) findViewById(R.id.addPatient);
         hiMessage = (TextView) findViewById(R.id.hiMessage);
-        patientList = (ListView) findViewById(R.id.patientList);
+        patientListView = (ListView) findViewById(R.id.patientList);
 
-        auth = FirebaseAuth.getInstance();
-        ref = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = auth.getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+        dbRef = FirebaseDatabase.getInstance().getReference();
+
+        final FirebaseUser user = mAuth.getCurrentUser();
         userId = user.getUid();
 
-        ref.addValueEventListener(new ValueEventListener() {
+        carerDbRef = dbRef.child("Users");
+        carerDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
-                    CarerInfo carerInfo = new CarerInfo();
-                    carerInfo.setName(ds.child(userId).getValue(CarerInfo.class).getName()); //set carer name
-                    //Set text field for carers name
-                    hiMessage.append("Hi " + carerInfo.getName() + "!");
+                CarerInfo carer = new CarerInfo(); //Create carer object
+                carer.setName(dataSnapshot.child(userId).getValue(CarerInfo.class).getName()); //Set the carer object name
+                String carerName = carer.getName(); //Get the name of the carer
+                //Set text field for carers name
+                hiMessage.setText("Hi " + carerName + "!"); //Produce the greeting
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-/*                    if(ds.child(userId).child("Patients").exists()){
-                        ArrayList<String> childArray = new ArrayList<>();
-                        PatientInfo patientInfo = new PatientInfo();
-                        patientInfo.setName(ds.child(userId).child("Patients").getChildren()
-                        patientInfo.setName("test");
-                        patientInfo.setAge("TEST");
-                        patientInfo.setGender("MALE");
-                        //patientInfo.setName(ds.child(userId).child("Patients").getValue(PatientInfo.class).getAge());
-                        //patientInfo.setName(ds.child(userId).child("Patients").getValue(PatientInfo.class).getGender());
+            }
+        });
 
-                        ArrayList<String> array = new ArrayList<>();
-                        array.add(patientInfo.getName());
-                        array.add(patientInfo.getGender());
-                        array.add(patientInfo.getAge());
-                        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, array);
-                        patientList.setAdapter(adapter);
-                    }*/
+        patientDbRef = dbRef.child("Users").child(userId).child("Patients");
+        patientDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    PatientInfo patient = new PatientInfo();
+                    patient.setName(ds.getValue(PatientInfo.class).getName());
+                    patientArrayList.add(patient.getName());
+                    arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, patientArrayList);
+                    patientListView.setAdapter(arrayAdapter);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                startActivity(new Intent(getApplicationContext(), PatientProfile.class));
             }
         });
 
@@ -95,13 +107,12 @@ public class CareHomeActivity extends AppCompatActivity {
             }
         };
 
-
-
-        addPatient.setOnClickListener(new View.OnClickListener(){
+        addPatient.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), AddPatientActivity.class); startActivity(i);
+                Intent i = new Intent(getApplicationContext(), AddPatientActivity.class);
+                startActivity(i);
             }
         });
 
@@ -115,7 +126,7 @@ public class CareHomeActivity extends AppCompatActivity {
     }
 
     public void signOut() {
-        auth.signOut();
+        mAuth.signOut();
     }
 
     @Override
@@ -124,16 +135,16 @@ public class CareHomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
-        auth.addAuthStateListener(authListener);
+        mAuth.addAuthStateListener(authListener);
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
-        if(authListener != null){
-            auth.removeAuthStateListener(authListener);
+        if (authListener != null) {
+            mAuth.removeAuthStateListener(authListener);
         }
     }
 }
