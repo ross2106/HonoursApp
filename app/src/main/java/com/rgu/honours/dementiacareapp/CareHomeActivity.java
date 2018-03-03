@@ -74,11 +74,20 @@ public class CareHomeActivity extends AppCompatActivity {
         patientDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                for (final DataSnapshot ds : dataSnapshot.getChildren()) {
                     PatientInfo patient = new PatientInfo();
                     patient.setName(ds.getValue(PatientInfo.class).getName());
                     patientArrayList.add(patient.getName());
                     arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, patientArrayList);
+                    patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            String patientId = ds.getKey();
+                            Intent intent = new Intent(CareHomeActivity.this, PatientProfile.class);
+                            intent.putExtra("PATIENT_ID", patientId);
+                            startActivity(intent);
+                        }
+                    });
                     patientListView.setAdapter(arrayAdapter);
                 }
             }
@@ -86,13 +95,6 @@ public class CareHomeActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
-        patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startActivity(new Intent(getApplicationContext(), PatientProfile.class));
             }
         });
 
