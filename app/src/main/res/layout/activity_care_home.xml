@@ -14,20 +14,20 @@
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@id/careHomeTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/careHomeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/carerHomeTitle"
         android:textAlignment="center"
         android:textSize="32sp"
         app:layout_constraintBottom_toTopOf="@id/addPatient"
-        app:layout_constraintTop_toBottomOf="@id/hiMessage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hiMessage" />
 
     <Button
         android:id="@+id/addPatient"
