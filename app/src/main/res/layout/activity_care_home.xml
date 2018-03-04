@@ -49,18 +49,26 @@
         app:layout_constraintStart_toEndOf="@+id/addPatient"
         app:layout_constraintTop_toBottomOf="@+id/careHomeTitle" />
 
-    <ListView
-        android:id="@+id/patientList"
-        android:layout_width="match_parent"
-        android:layout_height="451dp"
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addPatient" />
+        app:layout_constraintTop_toBottomOf="@+id/addPatient">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/patientView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.NestedScrollView>
+
+
 
 
 </android.support.constraint.ConstraintLayout>

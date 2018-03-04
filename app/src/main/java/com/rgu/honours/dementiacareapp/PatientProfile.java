@@ -28,7 +28,7 @@ public class PatientProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile);
 
-        patientName = findViewById(R.id.patientName);
+        patientName = findViewById(R.id.patientProfileName);
 
         mAuth = FirebaseAuth.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference();
@@ -36,17 +36,7 @@ public class PatientProfile extends AppCompatActivity {
         final FirebaseUser user = mAuth.getCurrentUser();
         userId = user.getUid();
 
-        String patientId;
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                patientId= null;
-            } else {
-                patientId= extras.getString("PATIENT_ID");
-            }
-        } else {
-            patientId= (String) savedInstanceState.getSerializable("PATIENT_ID");
-        }
+        String patientId = getIntent().getStringExtra("patientID");
 
         patientDbRef = dbRef.child("Users").child(userId).child("Patients").child(patientId);
         patientDbRef.addValueEventListener(new ValueEventListener() {

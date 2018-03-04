@@ -1,13 +1,20 @@
 package com.rgu.honours.dementiacareapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,15 +35,16 @@ public class CareHomeActivity extends AppCompatActivity {
 
     private Button signOut, addPatient;
     private TextView hiMessage;
-    private ListView patientListView;
+
+    private RecyclerView patientListView;
+    ArrayList<PatientInfo> patientArrayList = new ArrayList<>();
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
     private DatabaseReference dbRef, patientDbRef, carerDbRef;
     private String userId;
-
-    ArrayList<String> patientArrayList = new ArrayList<>();
-    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +54,9 @@ public class CareHomeActivity extends AppCompatActivity {
         signOut = (Button) findViewById(R.id.signOut);
         addPatient = (Button) findViewById(R.id.addPatient);
         hiMessage = (TextView) findViewById(R.id.hiMessage);
-        patientListView = (ListView) findViewById(R.id.patientList);
+        patientListView = (RecyclerView) findViewById(R.id.patientView);
+
+
 
         mAuth = FirebaseAuth.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference();
@@ -76,10 +86,11 @@ public class CareHomeActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (final DataSnapshot ds : dataSnapshot.getChildren()) {
                     PatientInfo patient = new PatientInfo();
+                    patient.setId(ds.getValue(PatientInfo.class).getId());
                     patient.setName(ds.getValue(PatientInfo.class).getName());
-                    patientArrayList.add(patient.getName());
-                    arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, patientArrayList);
-                    patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    patient.setAge(ds.getValue(PatientInfo.class).getAge());
+                    patientArrayList.add(patient);
+                    /*patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             String patientId = ds.getKey();
@@ -87,8 +98,12 @@ public class CareHomeActivity extends AppCompatActivity {
                             intent.putExtra("PATIENT_ID", patientId);
                             startActivity(intent);
                         }
-                    });
-                    patientListView.setAdapter(arrayAdapter);
+                    });*/
+                    //patientListView.setOn
+                    mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    patientListView.setLayoutManager(mLayoutManager);
+                    MyAdapter adapter = new MyAdapter(getApplicationContext(), patientArrayList);
+                    patientListView.setAdapter(adapter);
                 }
             }
 
@@ -149,4 +164,72 @@ public class CareHomeActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(authListener);
         }
     }
+
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
+
+        private Context mContext;
+        private ArrayList<PatientInfo> patients;
+
+
+        MyAdapter(Context context, ArrayList<PatientInfo> list){
+            mContext = context;
+            patients = list;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+            View view = layoutInflater.inflate(R.layout.patient_card, parent, false);
+            ViewHolder viewHolder = new ViewHolder(view, mContext, patients);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+
+            PatientInfo patient = patients.get(position);
+
+            //ImageView image = holder.patientImage;
+            TextView patientName = holder.patientName;
+            TextView patientAge = holder.patientAge;
+
+            patientName.setText(patient.getName());
+            patientAge.setText(patient.getAge());
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return patients.size();
+        }
+
+
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+            ImageView patientImage;
+            TextView patientName, patientAge;
+            ArrayList<PatientInfo> patientList = new ArrayList<PatientInfo>();
+            Context context;
+            public ViewHolder(View itemView, Context context, ArrayList<PatientInfo> patientList){
+                super(itemView);
+                this.patientList = patientList;
+                this.context = context;
+                itemView.setOnClickListener(this);
+                patientImage = itemView.findViewById(R.id.patientImage);
+                patientName = itemView.findViewById(R.id.patientName);
+                patientAge = itemView.findViewById(R.id.patientAge);
+            }
+
+            @Override
+            public void onClick(View view) {
+                int position = getAdapterPosition();
+                PatientInfo patient = this.patientList.get(position);
+                Intent intent = new Intent(context, PatientProfile.class);
+                intent.putExtra("patientID", patient.getId());
+                this.context.startActivity(intent);
+            }
+        }
+
+    }
 }
+
+

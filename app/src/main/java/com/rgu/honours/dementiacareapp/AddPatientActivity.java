@@ -51,11 +51,13 @@ public class AddPatientActivity extends AppCompatActivity {
                 String age = patientAge.getText().toString();
                 String gender = patientGender.getText().toString();
                 final DatabaseReference patient_db = FirebaseDatabase.getInstance().getReference().child("Users").child(carerId);
+                String patientId = patient_db.push().getKey();
                 Map newPatient = new HashMap();
+                newPatient.put("id", patientId);
                 newPatient.put("age", age);
                 newPatient.put("gender", gender);
                 newPatient.put("name", name);
-                patient_db.child("Patients").push().setValue(newPatient);
+                patient_db.child("Patients").child(patientId).setValue(newPatient);
                 Intent intent = new Intent(getApplicationContext(), CareHomeActivity.class);
                 startActivity(intent);
             }
