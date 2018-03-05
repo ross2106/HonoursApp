@@ -1,12 +1,14 @@
 package com.rgu.honours.dementiacareapp;
 
+import android.net.Uri;
+
 /**
  * Created by ross1 on 01/03/2018.
  */
 
 public class PatientInfo {
 
-    //private int image;
+    private String image;
     private String name;
     private String gender;
     private String age;
@@ -56,11 +58,11 @@ public class PatientInfo {
         this.id = id;
     }
 
-/*    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
-    }*/
+    }
 }

@@ -2,6 +2,7 @@ package com.rgu.honours.dementiacareapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +28,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -44,6 +50,7 @@ public class CareHomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
     private DatabaseReference dbRef, patientDbRef, carerDbRef;
+    private StorageReference patientImageRef;
     private String userId;
 
     @Override
@@ -55,8 +62,6 @@ public class CareHomeActivity extends AppCompatActivity {
         addPatient = (Button) findViewById(R.id.addPatient);
         hiMessage = (TextView) findViewById(R.id.hiMessage);
         patientListView = (RecyclerView) findViewById(R.id.patientView);
-
-
 
         mAuth = FirebaseAuth.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference();
@@ -85,21 +90,19 @@ public class CareHomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (final DataSnapshot ds : dataSnapshot.getChildren()) {
-                    PatientInfo patient = new PatientInfo();
+                    final PatientInfo patient = new PatientInfo();
                     patient.setId(ds.getValue(PatientInfo.class).getId());
                     patient.setName(ds.getValue(PatientInfo.class).getName());
                     patient.setAge(ds.getValue(PatientInfo.class).getAge());
-                    patientArrayList.add(patient);
-                    /*patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    patientImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patient.getId()).child("Profile Picture");
+                    patient.setImage(patientImageRef.toString());
+/*                    patientImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            String patientId = ds.getKey();
-                            Intent intent = new Intent(CareHomeActivity.this, PatientProfile.class);
-                            intent.putExtra("PATIENT_ID", patientId);
-                            startActivity(intent);
+                        public void onSuccess(Uri uri) {
+                            patient.setImage(uri.toString());
                         }
                     });*/
-                    //patientListView.setOn
+                    patientArrayList.add(patient);
                     mLayoutManager = new LinearLayoutManager(getApplicationContext());
                     patientListView.setLayoutManager(mLayoutManager);
                     MyAdapter adapter = new MyAdapter(getApplicationContext(), patientArrayList);
@@ -189,13 +192,14 @@ public class CareHomeActivity extends AppCompatActivity {
 
             PatientInfo patient = patients.get(position);
 
-            //ImageView image = holder.patientImage;
             TextView patientName = holder.patientName;
             TextView patientAge = holder.patientAge;
+            ImageView patientImage = holder.patientImage;
 
             patientName.setText(patient.getName());
             patientAge.setText(patient.getAge());
-
+            patientImage.setImageURI(Uri.parse(patient.getImage()));
+            //Picasso.with(CareHomeActivity.this).load(patient.getImage()).into(patientImage);
         }
 
         @Override

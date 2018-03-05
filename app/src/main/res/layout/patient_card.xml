@@ -11,8 +11,7 @@
             android:id="@+id/patientImage"
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/person"/>
+            android:scaleType="centerCrop" />
         
         <LinearLayout
             android:layout_width="wrap_content"
