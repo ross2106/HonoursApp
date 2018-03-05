@@ -8,7 +8,7 @@ import android.net.Uri;
 
 public class PatientInfo {
 
-    private String image;
+    private Uri image;
     private String name;
     private String gender;
     private String age;
@@ -58,11 +58,11 @@ public class PatientInfo {
         this.id = id;
     }
 
-    public String getImage() {
+    public Uri getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(Uri image) {
         this.image = image;
     }
 }
