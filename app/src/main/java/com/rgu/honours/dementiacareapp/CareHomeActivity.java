@@ -53,7 +53,7 @@ public class CareHomeActivity extends AppCompatActivity {
 
         signOut = (Button) findViewById(R.id.signOut);
         addPatient = (Button) findViewById(R.id.addPatient);
-        hiMessage = (TextView) findViewById(R.id.hiMessage);
+        //hiMessage = (TextView) findViewById(R.id.hiMessage);
         patientListView = (RecyclerView) findViewById(R.id.patientView);
 
         mAuth = FirebaseAuth.getInstance();
