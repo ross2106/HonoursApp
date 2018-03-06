@@ -3,11 +3,14 @@ package com.rgu.honours.dementiacareapp;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,54 +35,38 @@ import java.util.ArrayList;
 
 public class CareHomeActivity extends AppCompatActivity {
 
-    private Button signOut, addPatient;
-    private TextView hiMessage;
-
     private RecyclerView patientListView;
     ArrayList<PatientInfo> patientArrayList = new ArrayList<>();
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
-    private DatabaseReference dbRef, patientDbRef, carerDbRef;
-    private StorageReference patientImageRef;
     private String userId;
+
+    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_care_home);
 
-        signOut = (Button) findViewById(R.id.signOut);
-        addPatient = (Button) findViewById(R.id.addPatient);
-        //hiMessage = (TextView) findViewById(R.id.hiMessage);
+        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        toolbar.setTitle("Carer Home Page");
+        setSupportActionBar(toolbar);
+
+        Button signOut = (Button) findViewById(R.id.signOut);
+        Button addPatient = (Button) findViewById(R.id.addPatient);
         patientListView = (RecyclerView) findViewById(R.id.patientView);
 
         mAuth = FirebaseAuth.getInstance();
-        dbRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.keepSynced(true);
 
         final FirebaseUser user = mAuth.getCurrentUser();
         userId = user.getUid();
 
-        carerDbRef = dbRef.child("Users");
-        carerDbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                CarerInfo carer = new CarerInfo(); //Create carer object
-                carer.setName(dataSnapshot.child(userId).getValue(CarerInfo.class).getName()); //Set the carer object name
-                String carerName = carer.getName(); //Get the name of the carer
-                //Set text field for carers name
-                hiMessage.setText("Hi " + carerName + "!"); //Produce the greeting
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        patientDbRef = dbRef.child("Users").child(userId).child("Patients");
+        DatabaseReference patientDbRef = dbRef.child("Users").child(userId).child("Patients");
         patientDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -89,13 +76,12 @@ public class CareHomeActivity extends AppCompatActivity {
                     patient.setName(ds.getValue(PatientInfo.class).getName());
                     patient.setAge(ds.getValue(PatientInfo.class).getAge());
                     patientArrayList.add(patient);
-                    mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
                     patientListView.setLayoutManager(mLayoutManager);
                     MyAdapter adapter = new MyAdapter(getApplicationContext(), patientArrayList);
                     patientListView.setAdapter(adapter);
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -138,6 +124,14 @@ public class CareHomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
     @Override
@@ -184,7 +178,7 @@ public class CareHomeActivity extends AppCompatActivity {
 
             patientName.setText(patient.getName());
             patientAge.setText(patient.getAge());
-            patientImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patient.getId()).child("Profile Picture");
+            StorageReference patientImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patient.getId()).child("Profile Picture");
             patientImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {

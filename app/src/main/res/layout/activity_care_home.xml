@@ -4,42 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
     tools:context="com.rgu.honours.dementiacareapp.CareHomeActivity">
 
-    <android.support.v7.widget.Toolbar
+    <include
         android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/AppTheme"
-        app:layout_constraintBottom_toTopOf="@id/titleRow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/AppTheme" />
-
-    <LinearLayout
-        android:id="@+id/titleRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:orientation="vertical"
+        layout="@layout/toolbar"
         app:layout_constraintBottom_toTopOf="@id/patientScrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/my_toolbar">
-
-        <TextView
-            android:id="@+id/careHomeTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/carerHomeTitle"
-            android:textAlignment="center"
-            android:textSize="32sp" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/patientScrollView"
@@ -52,12 +26,12 @@
         app:layout_constraintBottom_toTopOf="@id/rowOne"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleRow">
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/patientView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
@@ -94,7 +68,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_weight="1"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/rowThree"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,14 +76,14 @@
 
         <Button
             android:id="@+id/button5"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Button" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Button" />
@@ -122,7 +95,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,14 +102,14 @@
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Button" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Button" />
