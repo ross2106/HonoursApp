@@ -11,87 +11,105 @@
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autoSizeTextType="uniform"
+        android:layout_height="111dp"
         android:gravity="center"
         android:text="@string/signUpTitle"
         android:textAlignment="center"
         android:textColor="#673AB7"
+        android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/signUpUsername"
+        app:layout_constraintBottom_toTopOf="@+id/username_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <EditText
-        android:id="@+id/signUpUsername"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autoSizeTextType="uniform"
-        android:drawableStart="@drawable/ic_email_black_24dp"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/signUpPassword"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/username_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/signUp_password_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/signUpPassword"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title">
+        <EditText
+            android:id="@+id/signUpUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:drawableStart="@drawable/email"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
+    </android.support.design.widget.TextInputLayout>
 
 
-    <EditText
-        android:id="@+id/signUpPassword"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autoSizeTextType="uniform"
-        android:drawableStart="@drawable/padlock"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/name"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/signUp_password_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/name_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/confirmSignUp"
-        app:layout_constraintTop_toBottomOf="@+id/signUpUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/username_layout" >
+        <EditText
+            android:id="@+id/signUpPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:drawableStart="@drawable/padlock"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
 
-
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:hint="@string/personName"
-        android:drawableStart="@drawable/person"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@id/age"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/name_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/age_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/signUp_password_layout">
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/personName"
+            android:drawableStart="@drawable/person"
+            android:inputType="textPersonName" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/age"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:hint="@string/age"
-        android:drawableStart="@drawable/ic_cake_black_24dp"
-        android:inputType="number"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/age_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        app:layout_constraintBottom_toTopOf="@id/confirmSignUp"/>
+        app:layout_constraintTop_toBottomOf="@+id/name_input_layout"
+        app:layout_constraintBottom_toTopOf="@id/confirmSignUp">
+        <EditText
+            android:id="@+id/age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/age"
+            android:drawableStart="@drawable/cake"
+            android:inputType="number" />
+    </android.support.design.widget.TextInputLayout>
+
 
     <Button
         android:id="@+id/confirmSignUp"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autoSizeMaxTextSize="30sp"
-        android:autoSizeTextType="uniform"
-        android:background="@drawable/roundgreen"
+        android:layout_height="96dp"
+        android:background="@color/greenButton"
         android:text="@string/signUp"
-        android:textColor="@color/white"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/age" />
+        app:layout_constraintTop_toBottomOf="@+id/age_input_layout" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -30,7 +30,7 @@
 
     <!-- ************* Carer Home Page ************* -->
     <string name="carerHomeTitle">Welcome to your care home page!</string>
-    <string name="addPatient">Add Patient</string>
+    <string name="addPatient">Add someone to your care</string>
     <string name="signOut">Sign Out</string>
 
     <!-- ************* Add Patient Page ************* -->
@@ -46,5 +46,8 @@
     <string name="myFamily">My Family</string>
     <string name="calendar">Calendar</string>
 
+    <!-- ************* Drawer Layout ************* -->
+    <string name = "open">Open</string>
+    <string name = "close">Close</string>
 
 </resources>

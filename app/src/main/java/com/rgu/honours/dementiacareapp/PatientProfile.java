@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,6 +52,10 @@ public class PatientProfile extends AppCompatActivity {
     private String userId;
     private String patientId;
 
+    //Navigation Drawer
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +71,28 @@ public class PatientProfile extends AppCompatActivity {
         final FirebaseUser user = mAuth.getCurrentUser();
         userId = user.getUid();
 
+        // *************************************************
+        // Navigation Drawer
+        // *************************************************
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.patientProfileDrawerLayout); //Drawer from layout file
+        mToggle = new ActionBarDrawerToggle(PatientProfile.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
+        mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
+        mToggle.syncState(); //Synchronize with drawer layout state
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
+        getSupportActionBar().setTitle("Profile Page"); //Set the title of the page
+        NavigationView navigationView = findViewById(R.id.patient_profile_navigation_view); //Navigation view from layout file
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                return true;
+            }
+        });
+
+        // *************************************************
+        // *************************************************
+
         patientId = getIntent().getStringExtra("patientID");
         profilePhotoRef = FirebaseStorage.getInstance().getReference().child(userId).child(patientId).child("Profile Picture");
         profilePhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -73,7 +103,7 @@ public class PatientProfile extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                patientImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_a_photo_black_24dp));
+                patientImage.setImageDrawable(getResources().getDrawable(R.drawable.photo));
             }
         });
         patientImage.setOnClickListener(new View.OnClickListener(){
@@ -110,6 +140,14 @@ public class PatientProfile extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

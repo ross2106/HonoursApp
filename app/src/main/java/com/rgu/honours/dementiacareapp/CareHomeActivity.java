@@ -3,15 +3,16 @@ package com.rgu.honours.dementiacareapp;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,7 +44,8 @@ public class CareHomeActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private String userId;
 
-    private Toolbar toolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
 
 
     @Override
@@ -51,11 +53,34 @@ public class CareHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_care_home);
 
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        toolbar.setTitle("Carer Home Page");
-        setSupportActionBar(toolbar);
 
-        Button signOut = (Button) findViewById(R.id.signOut);
+        // *************************************************
+        // Navigation Drawer
+        // *************************************************
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.careHomeDrawerLayout); //Drawer from layout file
+        mToggle = new ActionBarDrawerToggle(CareHomeActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
+        mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
+        mToggle.syncState(); //Synchronize with drawer layout state
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
+        getSupportActionBar().setTitle("Carer Home Page"); //Set the title of the page
+        NavigationView navigationView = findViewById(R.id.care_home_navigation_view); //Navigation view from layout file
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.log_out:
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        signOut();
+                }
+                return true;
+            }
+        });
+
+        // *************************************************
+        // *************************************************
+
         Button addPatient = (Button) findViewById(R.id.addPatient);
         patientListView = (RecyclerView) findViewById(R.id.patientView);
 
@@ -82,6 +107,7 @@ public class CareHomeActivity extends AppCompatActivity {
                     patientListView.setAdapter(adapter);
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -108,13 +134,14 @@ public class CareHomeActivity extends AppCompatActivity {
             }
         });
 
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-            }
-        });
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void signOut() {
