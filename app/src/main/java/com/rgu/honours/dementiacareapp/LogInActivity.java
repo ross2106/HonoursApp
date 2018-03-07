@@ -3,6 +3,7 @@ package com.rgu.honours.dementiacareapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.w3c.dom.Text;
+
 
 /**
  * Created by ross1 on 22/02/2018.
@@ -26,6 +29,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private Button logIn, forgottenRegister, passwordReset;
     private EditText username, password;
+    private TextInputLayout username_layout, password_layout;
     private FirebaseAuth mAuth;
 
     @Override
@@ -43,6 +47,9 @@ public class LogInActivity extends AppCompatActivity {
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
+        username_layout = (TextInputLayout) findViewById(R.id.input_layout_username);
+        password_layout = (TextInputLayout) findViewById(R.id.password_input_layout);
+
         logIn = (Button) findViewById(R.id.confirmLogin);
         forgottenRegister = (Button) findViewById(R.id.forgottenSignUp);
         passwordReset = (Button) findViewById(R.id.resetPassword);

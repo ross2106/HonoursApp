@@ -35,7 +35,7 @@
             android:id="@+id/signUpUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autoSizeTextType="uniform"
+            android:textColor="@color/primaryTextColor"
             android:drawableStart="@drawable/email"
             android:hint="@string/email"
             android:inputType="textEmailAddress" />
@@ -54,7 +54,7 @@
             android:id="@+id/signUpPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autoSizeTextType="uniform"
+            android:textColor="@color/primaryTextColor"
             android:drawableStart="@drawable/padlock"
             android:hint="@string/password"
             android:inputType="textPassword" />
@@ -72,7 +72,7 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textColor="@color/primaryTextColor"
             android:hint="@string/personName"
             android:drawableStart="@drawable/person"
             android:inputType="textPersonName" />
@@ -90,7 +90,7 @@
             android:id="@+id/age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textColor="@color/primaryTextColor"
             android:hint="@string/age"
             android:drawableStart="@drawable/cake"
             android:inputType="number" />
@@ -101,7 +101,7 @@
         android:id="@+id/confirmSignUp"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
-        android:layout_height="96dp"
+        android:layout_height="80dp"
         android:background="@color/greenButton"
         android:text="@string/signUp"
         android:textColor="@color/primaryTextColor"
