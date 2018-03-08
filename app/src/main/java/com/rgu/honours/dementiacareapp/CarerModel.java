@@ -4,13 +4,13 @@ package com.rgu.honours.dementiacareapp;
  * Created by ross1 on 01/03/2018.
  */
 
-public class CarerInfo {
+public class CarerModel {
 
     private String name;
     private String age;
     private String email;
 
-    public CarerInfo(){
+    public CarerModel(){
 
     }
 

@@ -2,7 +2,7 @@
     <string name="app_name">DementiaCareApp</string>
 
     <!-- ************* Welcome Page ************* -->
-    <string name="welcomeTitle">Mobile Care</string>
+    <string name="welcomeTitle">Welcome!</string>
     <string name="welcomeDescription">The Mobile Application designed for carers on the move</string>
     <string name="logoDesc">Welcome page logo</string>
     <string name="logIn">Log In</string>
@@ -47,7 +47,17 @@
     <string name="calendar">Calendar</string>
 
     <!-- ************* Drawer Layout ************* -->
-    <string name = "open">Open</string>
-    <string name = "close">Close</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+    <!-- ************* This is Me ************* -->
+    <string name="fullName">My Full Name</string>
+    <string name="myPreferredName">My Preferred Name</string>
+    <string name="knowsMeBest">Who knows me best?</string>
+    <string name="myBackground">My Background</string>
+    <string name="myRoutine">My routine</string>
+    <string name="mayUpsetMe">Things that may upset me</string>
+    <string name="makesMeFeelBetter">Things that make me feel better</string>
+
 
 </resources>

@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setTitle("Mobile Care");
+
         //defining buttons
         Button welcomeLogIn = (Button) findViewById(R.id.logIn);
         Button welcomeSignUp = (Button) findViewById(R.id.signUp);

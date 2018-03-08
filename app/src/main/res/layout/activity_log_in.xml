@@ -35,14 +35,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:visibility="visible">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:drawableStart="@drawable/person"
+                android:ems="10"
+                android:textColor="@color/colorPrimary"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
@@ -55,14 +57,16 @@
             android:layout_below="@id/input_layout_username"
             android:layout_centerHorizontal="true">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:drawableStart="@drawable/padlock"
+                android:textColor="@color/colorPrimary"
+                android:ems="10"
                 android:hint="@string/password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:visibility="visible" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -95,7 +99,7 @@
         android:layout_marginStart="50dp"
         android:text="@string/forgottenSignUp"
         android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/resetPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +113,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:text="@string/resetPassword"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

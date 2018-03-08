@@ -6,7 +6,7 @@ import android.net.Uri;
  * Created by ross1 on 01/03/2018.
  */
 
-public class PatientInfo {
+public class PatientModel {
 
     private Uri image;
     private String name;
@@ -14,11 +14,11 @@ public class PatientInfo {
     private String age;
     private String id;
 
-    public PatientInfo() {
+    public PatientModel() {
 
     }
 
-    public PatientInfo(String id, String name, String gender, String age/*, int image*/) {
+    public PatientModel(String id, String name, String gender, String age/*, int image*/) {
         this.name = name;
         this.gender = gender;
         this.age = age;

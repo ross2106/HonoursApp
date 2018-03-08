@@ -6,19 +6,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
 
 
 /**
@@ -43,7 +40,10 @@ public class LogInActivity extends AppCompatActivity {
             finish();
         }
         //Set view now
-        setContentView(R.layout.log_in_layout);
+        setContentView(R.layout.activity_log_in);
+
+        getSupportActionBar().setTitle("Log In");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
@@ -105,6 +105,17 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

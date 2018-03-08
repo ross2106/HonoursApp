@@ -31,11 +31,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title">
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/signUpUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/primaryTextColor"
+            android:textColor="@color/colorPrimary"
             android:drawableStart="@drawable/email"
             android:hint="@string/email"
             android:inputType="textEmailAddress" />
@@ -50,11 +50,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/confirmSignUp"
         app:layout_constraintTop_toBottomOf="@+id/username_layout" >
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/signUpPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/primaryTextColor"
+            android:textColor="@color/colorPrimary"
             android:drawableStart="@drawable/padlock"
             android:hint="@string/password"
             android:inputType="textPassword" />
@@ -68,11 +68,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUp_password_layout">
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/primaryTextColor"
+            android:textColor="@color/colorPrimary"
             android:hint="@string/personName"
             android:drawableStart="@drawable/person"
             android:inputType="textPersonName" />
@@ -86,11 +86,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_input_layout"
         app:layout_constraintBottom_toTopOf="@id/confirmSignUp">
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/primaryTextColor"
+            android:textColor="@color/colorPrimary"
             android:hint="@string/age"
             android:drawableStart="@drawable/cake"
             android:inputType="number" />

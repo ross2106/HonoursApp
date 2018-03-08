@@ -36,28 +36,34 @@ import java.util.ArrayList;
 
 public class CareHomeActivity extends AppCompatActivity {
 
+    //Initialising list of patients
     private RecyclerView patientListView;
-    ArrayList<PatientInfo> patientArrayList = new ArrayList<>();
+    ArrayList<PatientModel> patientArrayList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
 
+    //Initialising Firebase Authorisation
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
+
+    //String for the currently logged in user
     private String userId;
 
+    //Navigation Drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-
+    //On Activity Creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_care_home);
 
+        //Get Firebase Auth Instance
+        mAuth = FirebaseAuth.getInstance();
 
-        // *************************************************
-        // Navigation Drawer
-        // *************************************************
-
+        /**
+         * CREATING NAVIGATION DRAWER
+         */
         mDrawerLayout = (DrawerLayout) findViewById(R.id.careHomeDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(CareHomeActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
@@ -73,33 +79,52 @@ public class CareHomeActivity extends AppCompatActivity {
                         item.setChecked(true);
                         mDrawerLayout.closeDrawers();
                         signOut();
+                        break;
                 }
                 return true;
             }
         });
 
-        // *************************************************
-        // *************************************************
-
+        //Button to add Patient
         Button addPatient = (Button) findViewById(R.id.addPatient);
+        //List of patients
         patientListView = (RecyclerView) findViewById(R.id.patientView);
 
-        mAuth = FirebaseAuth.getInstance();
+        //Reference to Realtime Database
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.keepSynced(true);
 
+        //Get the currently logged in user
         final FirebaseUser user = mAuth.getCurrentUser();
         userId = user.getUid();
 
+        /**
+         * Check to see if a user is logged In.
+         * If no user is logged in, return to main page.
+         */
+        authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user == null) {
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                }
+            }
+        };
+
+        /**
+         * Code to get a list of patients from the Realtime Database
+         */
         DatabaseReference patientDbRef = dbRef.child("Users").child(userId).child("Patients");
         patientDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (final DataSnapshot ds : dataSnapshot.getChildren()) {
-                    final PatientInfo patient = new PatientInfo();
-                    patient.setId(ds.getValue(PatientInfo.class).getId());
-                    patient.setName(ds.getValue(PatientInfo.class).getName());
-                    patient.setAge(ds.getValue(PatientInfo.class).getAge());
+                    final PatientModel patient = new PatientModel();
+                    patient.setId(ds.getValue(PatientModel.class).getId());
+                    patient.setName(ds.getValue(PatientModel.class).getName());
+                    patient.setAge(ds.getValue(PatientModel.class).getAge());
                     patientArrayList.add(patient);
                     mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
                     patientListView.setLayoutManager(mLayoutManager);
@@ -114,19 +139,10 @@ public class CareHomeActivity extends AppCompatActivity {
             }
         });
 
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    finish();
-                }
-            }
-        };
-
+        /**
+         * On Click Listener for the "Add Patient" Button.
+         */
         addPatient.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), AddPatientActivity.class);
@@ -136,6 +152,12 @@ public class CareHomeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Code for the Navigation drawer "hamburger". Opens the drawer.
+     *
+     * @param item The Item in the menu
+     * @return Returns the selected Items
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
@@ -144,16 +166,26 @@ public class CareHomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Code to sign a user out
+     */
     public void signOut() {
         mAuth.signOut();
     }
 
+    /**
+     * When a user navigates back to this page, this code is called.
+     */
     @Override
     protected void onResume() {
         super.onResume();
-
+        finish();
+        startActivity(getIntent());
     }
 
+    /**
+     * When the activity is restarted, this code is called.
+     */
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -161,12 +193,18 @@ public class CareHomeActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    /**
+     * On Start is called when the activity restarts.
+     */
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(authListener);
     }
 
+    /**
+     * When a user navigates away from this activity, this code is called.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -175,13 +213,16 @@ public class CareHomeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Code for the Patient List Adapter.
+     * This code populates the list of patients.
+     */
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         private Context mContext;
-        private ArrayList<PatientInfo> patients;
+        private ArrayList<PatientModel> patients;
 
-
-        MyAdapter(Context context, ArrayList<PatientInfo> list) {
+        MyAdapter(Context context, ArrayList<PatientModel> list) {
             mContext = context;
             patients = list;
         }
@@ -196,13 +237,10 @@ public class CareHomeActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-
-            PatientInfo patient = patients.get(position);
-
+            PatientModel patient = patients.get(position);
             TextView patientName = holder.patientName;
             TextView patientAge = holder.patientAge;
             final ImageView patientProfileImage = holder.patientImage;
-
             patientName.setText(patient.getName());
             patientAge.setText(patient.getAge());
             StorageReference patientImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patient.getId()).child("Profile Picture");
@@ -228,10 +266,10 @@ public class CareHomeActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             ImageView patientImage;
             TextView patientName, patientAge;
-            ArrayList<PatientInfo> patientList = new ArrayList<PatientInfo>();
+            ArrayList<PatientModel> patientList = new ArrayList<PatientModel>();
             Context context;
 
-            public ViewHolder(View itemView, Context context, ArrayList<PatientInfo> patientList) {
+            public ViewHolder(View itemView, Context context, ArrayList<PatientModel> patientList) {
                 super(itemView);
                 this.patientList = patientList;
                 this.context = context;
@@ -244,7 +282,7 @@ public class CareHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int position = getAdapterPosition();
-                PatientInfo patient = this.patientList.get(position);
+                PatientModel patient = this.patientList.get(position);
                 Intent intent = new Intent(context, PatientProfile.class);
                 intent.putExtra("patientID", patient.getId());
                 this.context.startActivity(intent);

@@ -45,7 +45,9 @@
         <activity android:name=".MedicationActivity" />
         <activity android:name=".ThisIsMeActivity" />
         <activity android:name=".FamilyActivity" />
-        <activity android:name=".CalendarActivity"></activity>
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".EditThisIsMeActivity" />
+        <activity android:name=".EditMedicationActivity"></activity>
     </application>
 
 </manifest>

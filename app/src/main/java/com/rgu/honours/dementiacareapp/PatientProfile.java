@@ -85,7 +85,17 @@ public class PatientProfile extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+                switch (item.getItemId()) {
+                    case R.id.care_home:
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        startActivity(new Intent(getApplicationContext(), CareHomeActivity.class));
+                        break;
+                    case R.id.log_out:
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        signOut();
+                }
                 return true;
             }
         });
@@ -120,8 +130,8 @@ public class PatientProfile extends AppCompatActivity {
         patientDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                PatientInfo patient = new PatientInfo();
-                patient.setName(dataSnapshot.getValue(PatientInfo.class).getName());
+                PatientModel patient = new PatientModel();
+                patient.setName(dataSnapshot.getValue(PatientModel.class).getName());
                 patientName.setText(patient.getName());
             }
 
@@ -140,6 +150,10 @@ public class PatientProfile extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    public void signOut() {
+        mAuth.signOut();
     }
 
     @Override
