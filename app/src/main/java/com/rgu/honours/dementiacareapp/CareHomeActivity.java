@@ -179,8 +179,6 @@ public class CareHomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        finish();
-        startActivity(getIntent());
     }
 
     /**

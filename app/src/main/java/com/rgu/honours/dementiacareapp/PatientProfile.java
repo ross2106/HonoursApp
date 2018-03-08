@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class PatientProfile extends AppCompatActivity {
     //Layout views
     TextView patientName;
     ImageView patientImage;
+    Button thisIsMe;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -61,20 +63,27 @@ public class PatientProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile);
 
+        //Patient Name
         patientName = findViewById(R.id.patientProfileName);
+        //Patient Profile Picture
         patientImage = findViewById(R.id.patientMainProfileImage);
+        //thisIsMeButton
+        thisIsMe = findViewById(R.id.thisIsMeButton);
 
+        //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
+        //Create a database reference
         dbRef = FirebaseDatabase.getInstance().getReference();
 
+        //Get the current user
         final FirebaseUser user = mAuth.getCurrentUser();
+        //Assign that users ID
         userId = user.getUid();
 
-        // *************************************************
-        // Navigation Drawer
-        // *************************************************
-
+        /**
+         * CODE FOR NAVIGATION DRAWER
+         */
         mDrawerLayout = (DrawerLayout) findViewById(R.id.patientProfileDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(PatientProfile.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
@@ -100,11 +109,11 @@ public class PatientProfile extends AppCompatActivity {
             }
         });
 
-        // *************************************************
-        // *************************************************
-
+        //Get the ID of the patient from the Intent extra String
         patientId = getIntent().getStringExtra("patientID");
+        //Retrieve the profile picture based on the patient ID
         profilePhotoRef = FirebaseStorage.getInstance().getReference().child(userId).child(patientId).child("Profile Picture");
+        //Code to populate the profile picture
         profilePhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -116,6 +125,7 @@ public class PatientProfile extends AppCompatActivity {
                 patientImage.setImageDrawable(getResources().getDrawable(R.drawable.photo));
             }
         });
+        //Set an on click listener if the user wishes to change their profile picture
         patientImage.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -125,7 +135,17 @@ public class PatientProfile extends AppCompatActivity {
                 startActivityForResult(intent, GALLERY_INTENT);
             }
         });
+        //Set an on click listener for the "This is me" Button
+        thisIsMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ThisIsMeActivity.class);
+                intent.putExtra("patientID", patientId);
+                startActivity(intent);
+            }
+        });
 
+        //Populate the Patient information from the Realtime Database reference
         patientDbRef = dbRef.child("Users").child(userId).child("Patients").child(patientId);
         patientDbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -134,12 +154,15 @@ public class PatientProfile extends AppCompatActivity {
                 patient.setName(dataSnapshot.getValue(PatientModel.class).getName());
                 patientName.setText(patient.getName());
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
+
+        /**
+         * Code to check a user is logged in.
+         * If they are not logged in, return them to the login page.
+         */
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -152,10 +175,19 @@ public class PatientProfile extends AppCompatActivity {
         };
     }
 
+    /**
+     * Code to sign out a user.
+     */
     public void signOut() {
         mAuth.signOut();
     }
 
+    /**
+     * Code for the Navigation drawer "hamburger". Opens the drawer.
+     *
+     * @param item The Item in the menu
+     * @return Returns the selected Items
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
@@ -164,6 +196,12 @@ public class PatientProfile extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -173,6 +211,9 @@ public class PatientProfile extends AppCompatActivity {
         }
     }
 
+    /**
+     * Code to upload the profile picture to the realtime database
+     */
     private void uploadProfilePicture(){
         if(imageUri != null){
             profilePhotoRef.delete();
@@ -194,17 +235,26 @@ public class PatientProfile extends AppCompatActivity {
         }
     }
 
+    /**
+     * When a user navigates back to this page, this code is called.
+     */
     @Override
     protected void onResume() {
         super.onResume();
     }
 
+    /**
+     * On Start is called when the activity restarts.
+     */
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(authListener);
     }
 
+    /**
+     * When a user navigates away from this activity, this code is called.
+     */
     @Override
     public void onStop() {
         super.onStop();

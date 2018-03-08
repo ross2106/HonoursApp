@@ -1,120 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/thisIsMeDrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
     tools:context="com.rgu.honours.dementiacareapp.ThisIsMeActivity">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:layout_centerHorizontal="true">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/edit_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/redButton"
+            android:text="Edit Content" />
 
-            <TextView
-                android:id="@+id/fullName"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/edit_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/myPreferredName" />
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/fullNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:text="@string/fullName" />
+                <TextView
+                    android:id="@+id/fullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:text="@string/fullName" />
 
-            <TextView
-                android:id="@+id/preferredName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/myPreferredName" />
+                <TextView
+                    android:id="@+id/fullNameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary" />
 
-            <EditText
-                android:id="@+id/preferredNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:text="Name" />
+                <TextView
+                    android:id="@+id/preferredName"
+                    android:textStyle="bold"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/myPreferredName" />
 
-            <TextView
-                android:id="@+id/knowsMeBest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/knowsMeBest" />
+                <TextView
+                    android:id="@+id/preferredNameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary" />
 
-            <EditText
-                android:id="@+id/knowsMeBestText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                <TextView
+                    android:id="@+id/knowsMeBest"
+                    android:textStyle="bold"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/knowsMeBest" />
 
-            <TextView
-                android:id="@+id/myBackground"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/myBackground" />
+                <TextView
+                    android:id="@+id/knowsMeBestText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary" />
 
-            <EditText
-                android:id="@+id/myBackGroundText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:text="Name" />
+                <TextView
+                    android:id="@+id/myBackground"
+                    android:textStyle="bold"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/myBackground" />
 
-            <TextView
-                android:id="@+id/myRoutine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/myRoutine" />
+                <TextView
+                    android:id="@+id/myBackGroundText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary" />
 
-            <EditText
-                android:id="@+id/myRoutineText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:text="Name" />
+                <TextView
+                    android:id="@+id/myRoutine"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/myRoutine" />
 
-            <TextView
-                android:id="@+id/mayUpsetMe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/mayUpsetMe" />
+                <TextView
+                    android:id="@+id/myRoutineText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary" />
 
-            <EditText
-                android:id="@+id/mayUpsetMeText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:text="Name" />
+                <TextView
+                    android:id="@+id/mayUpsetMe"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mayUpsetMe" />
 
-            <TextView
-                android:id="@+id/makesMeFeelBetter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/makesMeFeelBetter" />
+                <TextView
+                    android:id="@+id/mayUpsetMeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary" />
 
-            <EditText
-                android:id="@+id/makesMeFeelBetterText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:text="Name" />
-        </LinearLayout>
-    </ScrollView>
+                <TextView
+                    android:id="@+id/makesMeFeelBetter"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/makesMeFeelBetter" />
 
-</RelativeLayout>
+                <TextView
+                    android:id="@+id/makesMeFeelBetterText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPrimary" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/thisIsMe_navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:itemTextColor="@color/colorPrimary"
+        app:menu="@menu/patient_profile_navigation"></android.support.design.widget.NavigationView>
+</android.support.v4.widget.DrawerLayout>

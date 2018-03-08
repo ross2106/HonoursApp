@@ -5,6 +5,10 @@
         android:title="Carer Home Page"
         android:icon="@drawable/heart"/>
 
+    <item android:id="@+id/patient_profile"
+        android:title="Patient Profile Page"
+        android:icon="@drawable/person"/>
+
     <item android:id="@+id/settings"
         android:title="Application Settings"
         android:icon="@drawable/settings"/>

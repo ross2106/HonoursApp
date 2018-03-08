@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/optionsTheme"
+    app:popupTheme="@style/optionsTheme"
+    >
+    <item
+        android:icon="@drawable/settings_white"
+        app:showAsAction="ifRoom"
+        android:title="More">
+        <menu>
+            <item
+                android:id="@+id/editContentItem"
+                android:title="Edit Content"
+                android:textColor="@color/colorPrimary"/>
+        </menu>
+    </item>
+</menu>
