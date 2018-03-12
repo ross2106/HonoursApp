@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DementiaCareApp</string>
+    <string name="app_name">Mobile Care</string>
 
     <!-- ************* Welcome Page ************* -->
     <string name="welcomeTitle">Welcome!</string>
@@ -58,6 +58,12 @@
     <string name="myRoutine">My routine</string>
     <string name="mayUpsetMe">Things that may upset me</string>
     <string name="makesMeFeelBetter">Things that make me feel better</string>
+    <string name="title_activity_medication">MedicationActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 
 </resources>

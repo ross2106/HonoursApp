@@ -24,30 +24,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LogInActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".SignUpActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".LogInActivity"/>
+        <activity android:name=".SignUpActivity"/>
         <activity android:name=".CareHomeActivity" />
         <activity android:name=".PasswordResetActivity" />
         <activity android:name=".AddPatientActivity" />
         <activity android:name=".PatientProfile" />
-        <activity android:name=".MedicationActivity" />
         <activity android:name=".ThisIsMeActivity" />
         <activity android:name=".FamilyActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".EditThisIsMeActivity" />
-        <activity android:name=".EditMedicationActivity"></activity>
+        <activity android:name=".MedicationActivity"/>
     </application>
 
 </manifest>

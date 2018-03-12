@@ -12,12 +12,12 @@
         <item name="actionOverflowMenuStyle">@style/optionsTheme</item>
     </style>
 
-    <style name = "toolbarTheme" parent = "Theme.AppCompat.Light.NoActionBar">
-        <item name = "android:textColorPrimary">@android:color/white</item>
-        <item name = "android:colorBackground">@color/colorPrimary</item>
+    <style name="toolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
     </style>
 
-    <style name = "optionsTheme" parent = "Widget.AppCompat.PopupMenu.Overflow">
+    <style name="optionsTheme" parent="Widget.AppCompat.PopupMenu.Overflow">
         <item name="android:itemTextAppearance">@style/TextAppearance</item>
         <item name="overlapAnchor">false</item>
         <item name="android:textAppearanceSmallPopupMenu">@color/colorPrimary</item>
@@ -28,4 +28,13 @@
     <style name="TextAppearance">
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

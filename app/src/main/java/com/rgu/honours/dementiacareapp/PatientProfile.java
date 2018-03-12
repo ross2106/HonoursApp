@@ -34,7 +34,7 @@ public class PatientProfile extends AppCompatActivity {
     //Layout views
     TextView patientName;
     ImageView patientImage;
-    Button thisIsMe;
+    Button thisIsMe, medicationButton;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -69,6 +69,8 @@ public class PatientProfile extends AppCompatActivity {
         patientImage = findViewById(R.id.patientMainProfileImage);
         //thisIsMeButton
         thisIsMe = findViewById(R.id.thisIsMeButton);
+        //medicationButton
+        medicationButton = findViewById(R.id.medicationButton);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -140,6 +142,16 @@ public class PatientProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ThisIsMeActivity.class);
+                intent.putExtra("patientID", patientId);
+                startActivity(intent);
+            }
+        });
+        //Set on click listener for medication Button
+        medicationButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);
                 intent.putExtra("patientID", patientId);
                 startActivity(intent);
             }
