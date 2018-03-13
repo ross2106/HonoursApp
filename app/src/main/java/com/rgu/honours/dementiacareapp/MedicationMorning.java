@@ -1,28 +1,25 @@
 package com.rgu.honours.dementiacareapp;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -32,8 +29,10 @@ import java.util.ArrayList;
 
 public class MedicationMorning extends android.support.v4.app.Fragment {
 
+
     //Initialising list of patients
-    private RecyclerView medicationList;
+    ArrayList<MedicationModel> medicationArrayList = new ArrayList<>();
+    //private RecyclerView medicationList;
     private RecyclerView.LayoutManager mLayoutManager;
 
     //Initialising Firebase Authorisation
@@ -42,17 +41,21 @@ public class MedicationMorning extends android.support.v4.app.Fragment {
 
     //String for the currently logged in user
     private String userId;
+    private String patientId;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.medication_morning_fragment, container, false);
+        final RecyclerView medicationList = (RecyclerView) view.findViewById(R.id.medicationMorningView);
 
         //Get Firebase Auth Instance
         mAuth = FirebaseAuth.getInstance();
-
-        //List of patients
-        medicationList = (RecyclerView) getView().findViewById(R.id.medicationMorningView);
 
         //Reference to Realtime Database
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -61,6 +64,31 @@ public class MedicationMorning extends android.support.v4.app.Fragment {
         //Get the currently logged in user
         final FirebaseUser user = mAuth.getCurrentUser();
         userId = user.getUid();
+        //Get the ID of the patient from the Intent extra String
+        patientId = getActivity().getIntent().getStringExtra("patientID");
+
+        DatabaseReference medicationRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
+        medicationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                medicationArrayList.clear();
+                for (final DataSnapshot ds : dataSnapshot.getChildren()) {
+                    MedicationModel medication = new MedicationModel();
+                    medication.setName(ds.getValue(MedicationModel.class).getName());
+                    medication.setDosageValue(ds.getValue(MedicationModel.class).getDosageValue());
+                    medication.setDosageType(ds.getValue(MedicationModel.class).getDosageType());
+                    medication.setTime(ds.getValue(MedicationModel.class).getTime());
+                    medicationArrayList.add(medication);
+                    MedicationAdapter adapter = new MedicationAdapter(medicationArrayList);
+                    medicationList.setAdapter(adapter);
+                    mLayoutManager = new LinearLayoutManager(getActivity());
+                    medicationList.setLayoutManager(mLayoutManager);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
         /**
          * Check to see if a user is logged In.
@@ -99,5 +127,4 @@ public class MedicationMorning extends android.support.v4.app.Fragment {
             mAuth.removeAuthStateListener(authListener);
         }
     }
-
 }

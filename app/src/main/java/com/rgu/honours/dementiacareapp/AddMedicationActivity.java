@@ -144,10 +144,11 @@ public class AddMedicationActivity extends AppCompatActivity {
                 String medicationTimeString = dosageTime.getText().toString();
                 String medicationId = patientDb.push().getKey();
                 Map newMedication = new HashMap();
-                newMedication.put("medicationName", medicationNameString);
-                newMedication.put("medicationDosage", dosageValueString);
-                newMedication.put("medicationDosageType", dosageValueTypeString);
-                newMedication.put("medicationTime", medicationTimeString);
+                newMedication.put("id", medicationId);
+                newMedication.put("name", medicationNameString);
+                newMedication.put("dosageValue", dosageValueString);
+                newMedication.put("dosageType", dosageValueTypeString);
+                newMedication.put("time", medicationTimeString);
                 patientDb.child(medicationId).setValue(newMedication);
                 Toast.makeText(AddMedicationActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);
