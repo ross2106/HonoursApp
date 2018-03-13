@@ -2,36 +2,45 @@ package com.rgu.honours.dementiacareapp;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MedicationActivity extends AppCompatActivity {
+public class AddMedicationActivity extends AppCompatActivity {
 
-    private SectionsPageAdapter mSectionsPageAdapter;
+    //Text Fields
+    EditText medicationName, dosageValue, dosageTime;
 
-    private ViewPager mViewPager;
+    //Spinner
+    Spinner dosageType;
+    ArrayAdapter<CharSequence> spinnerValues;
+    String dosageTypeValue;
+
+    //Button
+    Button addMedication;
+
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -47,19 +56,32 @@ public class MedicationActivity extends AppCompatActivity {
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_medication);
-        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+        setContentView(R.layout.activity_add_medication);
 
-        //Set up the viewPager
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        setupViewPager(mViewPager);
+        medicationName = (EditText) findViewById(R.id.medicationName);
+        dosageValue = (EditText) findViewById(R.id.medicationDosageValue);
+        dosageTime = (EditText) findViewById(R.id.medicationTime);
+        addMedication = (Button) findViewById(R.id.medicationSubmit);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        //Dropdown
+        dosageType = (Spinner) findViewById(R.id.dosageType);
+        spinnerValues = ArrayAdapter.createFromResource(this, R.array.dosageType, android.R.layout.simple_spinner_item);
+        spinnerValues.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dosageType.setAdapter(spinnerValues);
+        dosageType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) view).setTextColor(getResources().getColor(R.color.colorPrimary));
+                dosageTypeValue = parent.getItemAtPosition(position).toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -77,15 +99,14 @@ public class MedicationActivity extends AppCompatActivity {
         /**
          * CODE FOR NAVIGATION DRAWER
          */
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.medicationDrawerLayout); //Drawer from layout file
-        mToggle = new ActionBarDrawerToggle(MedicationActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.addMedicationDrawerLayout); //Drawer from layout file
+        mToggle = new ActionBarDrawerToggle(AddMedicationActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
-            getSupportActionBar().setTitle("Medication"); //Set the title of the page
-        }
-        NavigationView navigationView = findViewById(R.id.medication_navigation_view); //Navigation view from layout file
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
+        getSupportActionBar().setTitle("Add Medication"); //Set the title of the page
+
+        NavigationView navigationView = findViewById(R.id.addMedication_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -113,6 +134,29 @@ public class MedicationActivity extends AppCompatActivity {
             }
         });
 
+        addMedication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference patientDb = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
+                String medicationNameString = medicationName.getText().toString();
+                String dosageValueString = dosageValue.getText().toString();
+                String dosageValueTypeString = dosageTypeValue;
+                String medicationTimeString = dosageTime.getText().toString();
+                String medicationId = patientDb.push().getKey();
+                Map newMedication = new HashMap();
+                newMedication.put("medicationName", medicationNameString);
+                newMedication.put("medicationDosage", dosageValueString);
+                newMedication.put("medicationDosageType", dosageValueTypeString);
+                newMedication.put("medicationTime", medicationTimeString);
+                patientDb.child(medicationId).setValue(newMedication);
+                Toast.makeText(AddMedicationActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);
+                intent.putExtra("patientID", patientId);
+                startActivity(intent);
+            }
+        });
+
+
         /**
          * Code to check a user is logged in.
          * If they are not logged in, return them to the login page.
@@ -127,7 +171,6 @@ public class MedicationActivity extends AppCompatActivity {
                 }
             }
         };
-
     }
 
     /**
@@ -135,23 +178,6 @@ public class MedicationActivity extends AppCompatActivity {
      */
     public void signOut() {
         mAuth.signOut();
-    }
-
-    public void setupViewPager(ViewPager viewPager){
-        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MedicationMorning(), "Morning");
-        adapter.addFragment(new MedicationLunch(), "Afternoon");
-        adapter.addFragment(new MedicationEvening(), "Evening");
-        adapter.addFragment(new MedicationBed(), "Before Bed");
-        viewPager.setAdapter(adapter);
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater mMenuInflater = getMenuInflater();
-        mMenuInflater.inflate(R.menu.medication_dropdown, menu);
-        return true;
     }
 
     /**
@@ -165,13 +191,9 @@ public class MedicationActivity extends AppCompatActivity {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if (item.getItemId() == R.id.addMedication) {
-            Intent intent = new Intent(getApplicationContext(), AddMedicationActivity.class);
-            intent.putExtra("patientID", patientId);
-            startActivity(intent);
-        }
         return super.onOptionsItemSelected(item);
     }
+
 
     /**
      * When a user navigates back to this page, this code is called.
@@ -200,36 +222,4 @@ public class MedicationActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(authListener);
         }
     }
-
-    public class SectionsPageAdapter extends FragmentPagerAdapter{
-
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public void addFragment(Fragment frag, String title){
-            mFragmentList.add(frag);
-            mFragmentTitleList.add(title);
-        }
-
-        public SectionsPageAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-    }
-
 }

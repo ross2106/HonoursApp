@@ -24,8 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LogInActivity"/>
-        <activity android:name=".SignUpActivity"/>
+        <activity android:name=".LogInActivity" />
+        <activity android:name=".SignUpActivity" />
         <activity android:name=".CareHomeActivity" />
         <activity android:name=".PasswordResetActivity" />
         <activity android:name=".AddPatientActivity" />
@@ -34,7 +34,9 @@
         <activity android:name=".FamilyActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".EditThisIsMeActivity" />
-        <activity android:name=".MedicationActivity"/>
+        <activity android:name=".MedicationActivity" />
+        <activity android:name=".EditMedication" />
+        <activity android:name=".AddMedicationActivity"></activity>
     </application>
 
 </manifest>
