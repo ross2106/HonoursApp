@@ -1,5 +1,6 @@
 package com.rgu.honours.dementiacareapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,7 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -65,6 +69,7 @@ public class PatientProfile extends AppCompatActivity {
 
         //Patient Name
         patientName = findViewById(R.id.patientProfileName);
+        patientName.setText(getIntent().getStringExtra("patientName"));
         //Patient Profile Picture
         patientImage = findViewById(R.id.patientMainProfileImage);
         //thisIsMeButton
@@ -157,20 +162,6 @@ public class PatientProfile extends AppCompatActivity {
             }
         });
 
-        //Populate the Patient information from the Realtime Database reference
-        patientDbRef = dbRef.child("Users").child(userId).child("Patients").child(patientId);
-        patientDbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PatientModel patient = new PatientModel();
-                patient.setName(dataSnapshot.getValue(PatientModel.class).getName());
-                patientName.setText(patient.getName());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
         /**
          * Code to check a user is logged in.
          * If they are not logged in, return them to the login page.
@@ -205,8 +196,36 @@ public class PatientProfile extends AppCompatActivity {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        if(item.getItemId() == R.id.deletePatient){
+            AlertDialog.Builder builder = new AlertDialog.Builder(PatientProfile.this, R.style.AlertDialog);
+            builder.setMessage("Are you sure you want to delete this person from your care profile?")
+                    .setTitle("Delete Individual");
+            // Add the buttons
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    startActivity(new Intent(getApplicationContext(), CareHomeActivity.class));
+                    dbRef.child("Users").child(userId).child("Patients").child(patientId).removeValue();
+                    finish();
+                }
+            });
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = builder.show();
+        }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mMenuInflater = getMenuInflater();
+        mMenuInflater.inflate(R.menu.patient_profile_dropdown, menu);
+        return true;
+    }
+
 
     /**
      *

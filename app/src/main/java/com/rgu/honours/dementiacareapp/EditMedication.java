@@ -60,12 +60,12 @@ public class EditMedication extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_medication);
+        setContentView(R.layout.activity_edit_medication);
 
         editMedicationName = (EditText) findViewById(R.id.editMedicationName);
         editDosageValue = (EditText) findViewById(R.id.editMedicationDosageValue);
         editDosageTime = (EditText) findViewById(R.id.editMedicationTime);
-        editMedication = (Button) findViewById(R.id.medicationSubmit);
+        editMedication = (Button) findViewById(R.id.editMedicationSubmit);
 
         //Dropdown
         editDosageType = (Spinner) findViewById(R.id.editDosageType);
@@ -101,14 +101,13 @@ public class EditMedication extends AppCompatActivity {
         /**
          * CODE FOR NAVIGATION DRAWER
          */
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.addMedicationDrawerLayout); //Drawer from layout file
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.editMedicationDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(EditMedication.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
         getSupportActionBar().setTitle("Edit Medication"); //Set the title of the page
-
-        NavigationView navigationView = findViewById(R.id.addMedication_navigation_view); //Navigation view from layout file
+        NavigationView navigationView = findViewById(R.id.editMedication_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -145,10 +144,8 @@ public class EditMedication extends AppCompatActivity {
                 editDosageTime.setText(dataSnapshot.child("time").getValue().toString());
                 editDosageValue.setText(dataSnapshot.child("dosageType").getValue().toString());
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
         editMedication.setOnClickListener(new View.OnClickListener() {

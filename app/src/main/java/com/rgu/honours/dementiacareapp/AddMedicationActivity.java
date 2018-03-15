@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,8 +41,6 @@ public class AddMedicationActivity extends AppCompatActivity {
 
     //Button
     Button addMedication;
-
-
     //Firebase User Authentication
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -149,6 +148,7 @@ public class AddMedicationActivity extends AppCompatActivity {
                 newMedication.put("dosageValue", dosageValueString);
                 newMedication.put("dosageType", dosageValueTypeString);
                 newMedication.put("time", medicationTimeString);
+                newMedication.put("taken", 0);
                 patientDb.child(medicationId).setValue(newMedication);
                 Toast.makeText(AddMedicationActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);

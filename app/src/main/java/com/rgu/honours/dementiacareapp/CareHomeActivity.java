@@ -187,8 +187,8 @@ public class CareHomeActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        finish();
-        startActivity(getIntent());
+        //finish();
+        //startActivity(getIntent());
     }
 
     /**
@@ -283,6 +283,7 @@ public class CareHomeActivity extends AppCompatActivity {
                 PatientModel patient = this.patientList.get(position);
                 Intent intent = new Intent(context, PatientProfile.class);
                 intent.putExtra("patientID", patient.getId());
+                intent.putExtra("patientName", patient.getName());
                 this.context.startActivity(intent);
             }
         }

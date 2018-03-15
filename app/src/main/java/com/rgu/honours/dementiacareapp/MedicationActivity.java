@@ -3,6 +3,8 @@ package com.rgu.honours.dementiacareapp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -17,6 +19,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,21 +27,35 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MedicationActivity extends AppCompatActivity {
 
-    private SectionsPageAdapter mSectionsPageAdapter;
-
-    private ViewPager mViewPager;
+    //Initialising list of patients
+    ArrayList<MedicationModel> medicationArrayList = new ArrayList<>();
+    //private RecyclerView medicationList;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -59,14 +76,8 @@ public class MedicationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
-        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
-        //Set up the viewPager
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        setupViewPager(mViewPager);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        final RecyclerView medicationList = (RecyclerView) findViewById(R.id.medicationMorningView);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -120,6 +131,29 @@ public class MedicationActivity extends AppCompatActivity {
             }
         });
 
+        DatabaseReference medicationRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
+        medicationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                medicationArrayList.clear();
+                for (final DataSnapshot ds : dataSnapshot.getChildren()) {
+                    MedicationModel medication = new MedicationModel();
+                    medication.setName(ds.getValue(MedicationModel.class).getName());
+                    medication.setDosageValue(ds.getValue(MedicationModel.class).getDosageValue());
+                    medication.setDosageType(ds.getValue(MedicationModel.class).getDosageType());
+                    medication.setTime(ds.getValue(MedicationModel.class).getTime());
+                    medicationArrayList.add(medication);
+                    MyAdapter adapter = new MyAdapter(getApplicationContext(), medicationArrayList);
+                    medicationList.setAdapter(adapter);
+                    mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    medicationList.setLayoutManager(mLayoutManager);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
         /**
          * Code to check a user is logged in.
          * If they are not logged in, return them to the login page.
@@ -142,16 +176,6 @@ public class MedicationActivity extends AppCompatActivity {
      */
     public void signOut() {
         mAuth.signOut();
-    }
-
-    public void setupViewPager(ViewPager viewPager){
-        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MedicationMorning(), "Morning");
-        adapter.addFragment(new MedicationLunch(), "Afternoon");
-        adapter.addFragment(new MedicationEvening(), "Evening");
-        adapter.addFragment(new MedicationBed(), "Before Bed");
-        viewPager.setAdapter(adapter);
-
     }
 
     @Override
@@ -208,34 +232,78 @@ public class MedicationActivity extends AppCompatActivity {
         }
     }
 
-    public class SectionsPageAdapter extends FragmentPagerAdapter{
+    /**
+     * Code for the Patient List Adapter.
+     * This code populates the list of patients.
+     */
+    public class MyAdapter extends RecyclerView.Adapter<MedicationActivity.MyAdapter.ViewHolder> {
 
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+        private Context mContext;
+        private ArrayList<MedicationModel> medicationList;
 
-        public void addFragment(Fragment frag, String title){
-            mFragmentList.add(frag);
-            mFragmentTitleList.add(title);
-        }
-
-        public SectionsPageAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
+        MyAdapter(Context context, ArrayList<MedicationModel> list) {
+            mContext = context;
+            medicationList = list;
         }
 
         @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+        public MedicationActivity.MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+            View view = layoutInflater.inflate(R.layout.medication_card, parent, false);
+            MedicationActivity.MyAdapter.ViewHolder viewHolder = new MedicationActivity.MyAdapter.ViewHolder(view, mContext, medicationList);
+            return viewHolder;
         }
 
         @Override
-        public int getCount() {
-            return mFragmentList.size();
+        public void onBindViewHolder(MedicationActivity.MyAdapter.ViewHolder holder, int position) {
+            MedicationModel medication = medicationList.get(position);
+            TextView medicationName = holder.medicationName;
+            TextView medicationDosage = holder.medicationDosage;
+            TextView medicationTime = holder.medicationTime;
+            medicationName.setText(medication.getName());
+            medicationDosage.setText(medication.getDosageValue() + " " + medication.getDosageType());
+            medicationTime.setText(medication.getTime());
         }
+
+        @Override
+        public int getItemCount() {
+            return medicationList.size();
+        }
+
+
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView medicationName, medicationDosage, medicationTime;
+            CheckBox checkbox;
+            ArrayList<MedicationModel> medicationList = new ArrayList<MedicationModel>();
+            Context context;
+
+            public ViewHolder(final View itemView, Context context, ArrayList<MedicationModel> medicationList) {
+                super(itemView);
+                this.medicationList = medicationList;
+                this.context = context;
+                itemView.setOnClickListener(this);
+                medicationName = itemView.findViewById(R.id.medicationName);
+                medicationDosage = itemView.findViewById(R.id.medicationDosage);
+                medicationTime = itemView.findViewById(R.id.medicationTime);
+                checkbox = (CheckBox) itemView.findViewById(R.id.medicationTaken);
+                checkbox.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        itemView.setBackgroundColor(Color.parseColor("#43A047"));
+                    }
+                });
+            }
+
+            @Override
+            public void onClick(View view) {
+                int position = getAdapterPosition();
+                MedicationModel medication = medicationList.get(position);
+                Intent intent = new Intent(MedicationActivity.this, EditMedication.class);
+                intent.putExtra("patientID", patientId);
+                intent.putExtra("medicationID", medication.getId());
+                startActivity(intent);
+            }
+        }
+
     }
 }

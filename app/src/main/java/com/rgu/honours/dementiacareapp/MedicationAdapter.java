@@ -32,10 +32,10 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Vi
         public void onClick(View v) {
             int position = getAdapterPosition();
             MedicationModel medication = medicationList.get(position);
-            Intent intent = new Intent(itemView.getContext(), EditMedication.class);
+            Intent intent = new Intent(v.getContext(), EditMedication.class);
             intent.putExtra("patientID", intent.getExtras());
             intent.putExtra("medicationID", medication.getId());
-            itemView.getContext().startActivity(intent);
+            v.getContext().startActivity(intent);
         }
     }
 
