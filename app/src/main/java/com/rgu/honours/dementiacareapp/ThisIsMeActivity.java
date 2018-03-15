@@ -30,9 +30,6 @@ public class ThisIsMeActivity extends AppCompatActivity {
     //Text Fields
     TextView fullName, preferredName, knowsBest, myBackground, myRoutine, mayUpsetMe, makesMeFeelBetter;
 
-    //Edit Button
-    Button editContent;
-
     //Firebase User Authentication
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -43,6 +40,7 @@ public class ThisIsMeActivity extends AppCompatActivity {
     //ID of logged in carer, and patient for profile
     private String userId;
     private String patientId;
+    private String patientName;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -62,9 +60,6 @@ public class ThisIsMeActivity extends AppCompatActivity {
         mayUpsetMe = (TextView) findViewById(R.id.mayUpsetMeText);
         makesMeFeelBetter = (TextView) findViewById(R.id.makesMeFeelBetterText);
 
-        //Initialising Button
-        editContent = (Button) findViewById(R.id.edit_content);
-
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
@@ -77,6 +72,8 @@ public class ThisIsMeActivity extends AppCompatActivity {
         userId = user.getUid();
         //Get the ID of the patient from the Intent extra String
         patientId = getIntent().getStringExtra("patientID");
+        patientName = getIntent().getStringExtra("patientName");
+
 
         /**
          * CODE FOR NAVIGATION DRAWER
@@ -103,6 +100,7 @@ public class ThisIsMeActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), PatientProfile.class);
                         intent.putExtra("patientID", patientId);
+                        intent.putExtra("patientName", patientName);
                         startActivity(intent);
 
                         break;
@@ -116,28 +114,20 @@ public class ThisIsMeActivity extends AppCompatActivity {
             }
         });
 
-        //Button Listener for edit content
-        editContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EditThisIsMeActivity.class);
-                intent.putExtra("patientID", patientId);
-                startActivity(intent);
-            }
-        });
-
         //Populate text fields
         patientDbRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("ThisIsMe");
         patientDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                fullName.setText(dataSnapshot.child("fullName").getValue().toString());
-                preferredName.setText(dataSnapshot.child("preferredName").getValue().toString());
-                knowsBest.setText(dataSnapshot.child("knowsBest").getValue().toString());
-                myBackground.setText(dataSnapshot.child("myBackground").getValue().toString());
-                myRoutine.setText(dataSnapshot.child("myRoutine").getValue().toString());
-                mayUpsetMe.setText(dataSnapshot.child("upsetMe").getValue().toString());
-                makesMeFeelBetter.setText(dataSnapshot.child("makeBetter").getValue().toString());
+                if(dataSnapshot.hasChildren()) {
+                    fullName.setText(dataSnapshot.child("fullName").getValue().toString());
+                    preferredName.setText(dataSnapshot.child("preferredName").getValue().toString());
+                    knowsBest.setText(dataSnapshot.child("knowsBest").getValue().toString());
+                    myBackground.setText(dataSnapshot.child("myBackground").getValue().toString());
+                    myRoutine.setText(dataSnapshot.child("myRoutine").getValue().toString());
+                    mayUpsetMe.setText(dataSnapshot.child("upsetMe").getValue().toString());
+                    makesMeFeelBetter.setText(dataSnapshot.child("makeBetter").getValue().toString());
+                }
             }
 
             @Override
@@ -191,6 +181,7 @@ public class ThisIsMeActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.editContentItem) {
             Intent intent = new Intent(getApplicationContext(), EditThisIsMeActivity.class);
             intent.putExtra("patientID", patientId);
+            intent.putExtra("patientName", patientName);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

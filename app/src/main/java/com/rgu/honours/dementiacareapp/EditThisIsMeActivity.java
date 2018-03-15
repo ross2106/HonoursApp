@@ -42,6 +42,7 @@ public class EditThisIsMeActivity extends AppCompatActivity {
     //ID of logged in carer, and patient for profile
     private String userId;
     private String patientId;
+    private String patientName;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -76,7 +77,7 @@ public class EditThisIsMeActivity extends AppCompatActivity {
         userId = user.getUid();
         //Get the ID of the patient from the Intent extra String
         patientId = getIntent().getStringExtra("patientID");
-
+        patientName = getIntent().getStringExtra("patientName");
         /**
          * CODE FOR NAVIGATION DRAWER
          */
@@ -102,6 +103,7 @@ public class EditThisIsMeActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), PatientProfile.class);
                         intent.putExtra("patientID", patientId);
+                        intent.putExtra("patientName", patientName);
                         startActivity(intent);
 
                         break;
@@ -120,13 +122,15 @@ public class EditThisIsMeActivity extends AppCompatActivity {
         patientDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                fullName.setText(dataSnapshot.child("fullName").getValue().toString());
-                preferredName.setText(dataSnapshot.child("preferredName").getValue().toString());
-                knowsBest.setText(dataSnapshot.child("knowsBest").getValue().toString());
-                myBackground.setText(dataSnapshot.child("myBackground").getValue().toString());
-                myRoutine.setText(dataSnapshot.child("myRoutine").getValue().toString());
-                mayUpsetMe.setText(dataSnapshot.child("upsetMe").getValue().toString());
-                makesMeFeelBetter.setText(dataSnapshot.child("makeBetter").getValue().toString());
+                if(dataSnapshot.hasChildren()){
+                    fullName.setText(dataSnapshot.child("fullName").getValue().toString());
+                    preferredName.setText(dataSnapshot.child("preferredName").getValue().toString());
+                    knowsBest.setText(dataSnapshot.child("knowsBest").getValue().toString());
+                    myBackground.setText(dataSnapshot.child("myBackground").getValue().toString());
+                    myRoutine.setText(dataSnapshot.child("myRoutine").getValue().toString());
+                    mayUpsetMe.setText(dataSnapshot.child("upsetMe").getValue().toString());
+                    makesMeFeelBetter.setText(dataSnapshot.child("makeBetter").getValue().toString());
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

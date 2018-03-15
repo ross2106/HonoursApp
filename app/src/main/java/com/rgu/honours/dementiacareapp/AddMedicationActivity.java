@@ -51,6 +51,7 @@ public class AddMedicationActivity extends AppCompatActivity {
     //ID of logged in carer, and patient for profile
     private String userId;
     private String patientId;
+    private String patientName;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -94,6 +95,7 @@ public class AddMedicationActivity extends AppCompatActivity {
         userId = user.getUid();
         //Get the ID of the patient from the Intent extra String
         patientId = getIntent().getStringExtra("patientID");
+        patientName = getIntent().getStringExtra("patientName");
 
         /**
          * CODE FOR NAVIGATION DRAWER
@@ -120,6 +122,7 @@ public class AddMedicationActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), PatientProfile.class);
                         intent.putExtra("patientID", patientId);
+                        intent.putExtra("patientName", patientName);
                         startActivity(intent);
 
                         break;

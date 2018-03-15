@@ -53,6 +53,7 @@ public class EditMedication extends AppCompatActivity {
     private String userId;
     private String patientId;
     private String medicationId;
+    private String patientName;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -97,6 +98,7 @@ public class EditMedication extends AppCompatActivity {
         //Get the ID of the patient from the Intent extra String
         patientId = getIntent().getStringExtra("patientID");
         medicationId = getIntent().getStringExtra("medicationID");
+        patientName = getIntent().getStringExtra("patientName");
 
         /**
          * CODE FOR NAVIGATION DRAWER
@@ -122,6 +124,7 @@ public class EditMedication extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), PatientProfile.class);
                         intent.putExtra("patientID", patientId);
+                        intent.putExtra("patientName", patientName);
                         startActivity(intent);
 
                         break;
@@ -139,10 +142,12 @@ public class EditMedication extends AppCompatActivity {
         medicationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                editMedicationName.setText(dataSnapshot.child("name").getValue().toString());
-                editDosageValue.setText(dataSnapshot.child("dosageValue").getValue().toString());
-                editDosageTime.setText(dataSnapshot.child("time").getValue().toString());
-                editDosageValue.setText(dataSnapshot.child("dosageType").getValue().toString());
+                if(dataSnapshot.hasChildren()) {
+                    editMedicationName.setText(dataSnapshot.child("name").getValue().toString());
+                    editDosageValue.setText(dataSnapshot.child("dosageValue").getValue().toString());
+                    editDosageTime.setText(dataSnapshot.child("time").getValue().toString());
+                    editDosageValue.setText(dataSnapshot.child("dosageType").getValue().toString());
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

@@ -67,6 +67,7 @@ public class MedicationActivity extends AppCompatActivity {
     //ID of logged in carer, and patient for profile
     private String userId;
     private String patientId;
+    private String patientName;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -91,6 +92,7 @@ public class MedicationActivity extends AppCompatActivity {
         userId = user.getUid();
         //Get the ID of the patient from the Intent extra String
         patientId = getIntent().getStringExtra("patientID");
+        patientName = getIntent().getStringExtra("patientName");
 
         /**
          * CODE FOR NAVIGATION DRAWER
@@ -118,6 +120,7 @@ public class MedicationActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), PatientProfile.class);
                         intent.putExtra("patientID", patientId);
+                        intent.putExtra("patientName", patientName);
                         startActivity(intent);
 
                         break;
@@ -199,6 +202,7 @@ public class MedicationActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.addMedication) {
             Intent intent = new Intent(getApplicationContext(), AddMedicationActivity.class);
             intent.putExtra("patientID", patientId);
+            intent.putExtra("patientName", patientName);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -300,7 +304,8 @@ public class MedicationActivity extends AppCompatActivity {
                 MedicationModel medication = medicationList.get(position);
                 Intent intent = new Intent(MedicationActivity.this, EditMedication.class);
                 intent.putExtra("patientID", patientId);
-                intent.putExtra("medicationID", medication.getId());
+                intent.putExtra("medicationID", medication.getId().toString());
+                intent.putExtra("patientName", patientName);
                 startActivity(intent);
             }
         }

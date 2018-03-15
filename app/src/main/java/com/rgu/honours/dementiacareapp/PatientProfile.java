@@ -148,6 +148,7 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ThisIsMeActivity.class);
                 intent.putExtra("patientID", patientId);
+                intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
@@ -158,6 +159,7 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);
                 intent.putExtra("patientID", patientId);
+                intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
