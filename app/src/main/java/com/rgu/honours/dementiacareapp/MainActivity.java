@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.UserAccess.LogInActivity;
+import com.rgu.honours.dementiacareapp.UserAccess.SignUpActivity;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -23,8 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle("Mobile Care");
 
         //defining buttons
-        Button welcomeLogIn = (Button) findViewById(R.id.logIn);
-        Button welcomeSignUp = (Button) findViewById(R.id.signUp);
+        Button welcomeLogIn = findViewById(R.id.logIn);
+        Button welcomeSignUp = findViewById(R.id.signUp);
 
         //Add click listener to button
         welcomeLogIn.setOnClickListener(this);
@@ -37,20 +39,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         Intent i;
-        switch(view.getId()){
-            case R.id.logIn : i = new Intent(this, LogInActivity.class); startActivity(i); break;
-            case R.id.signUp : i = new Intent(this, SignUpActivity.class); startActivity(i); break;
-            default: break;
+        switch (view.getId()) {
+            case R.id.logIn:
+                i = new Intent(this, LogInActivity.class);
+                startActivity(i);
+                break;
+            case R.id.signUp:
+                i = new Intent(this, SignUpActivity.class);
+                startActivity(i);
+                break;
+            default:
+                break;
         }
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         //mAuth.signOut();
-        if(mAuth.getCurrentUser() != null){
-           finish();
-           startActivity(new Intent(this, CareHomeActivity.class));
+        if (mAuth.getCurrentUser() != null) {
+            finish();
+            startActivity(new Intent(this, CareHomeActivity.class));
         }
     }
 }

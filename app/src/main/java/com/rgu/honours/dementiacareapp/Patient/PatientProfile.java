@@ -1,4 +1,4 @@
-package com.rgu.honours.dementiacareapp;
+package com.rgu.honours.dementiacareapp.Patient;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,29 +23,32 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.MainActivity;
+import com.rgu.honours.dementiacareapp.Medication.MedicationActivity;
+import com.rgu.honours.dementiacareapp.R;
+import com.rgu.honours.dementiacareapp.ThisIsMe.ThisIsMeActivity;
 import com.squareup.picasso.Picasso;
 
 public class PatientProfile extends AppCompatActivity {
 
     //Layout views
-    TextView patientName;
-    ImageView patientImage;
-    Button thisIsMe, medicationButton;
+    private TextView patientName;
+    private ImageView patientImage;
+    private Button thisIsMe;
+    private Button medicationButton;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
 
     //Firebase Database
-    private DatabaseReference dbRef, patientDbRef;
+    private DatabaseReference dbRef;
 
     //Firebase Storage
     private StorageReference profilePhotoRef;
@@ -88,10 +91,10 @@ public class PatientProfile extends AppCompatActivity {
         //Assign that users ID
         userId = user.getUid();
 
-        /**
-         * CODE FOR NAVIGATION DRAWER
+        /*
+          CODE FOR NAVIGATION DRAWER
          */
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.patientProfileDrawerLayout); //Drawer from layout file
+        mDrawerLayout = findViewById(R.id.patientProfileDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(PatientProfile.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
@@ -133,7 +136,7 @@ public class PatientProfile extends AppCompatActivity {
             }
         });
         //Set an on click listener if the user wishes to change their profile picture
-        patientImage.setOnClickListener(new View.OnClickListener(){
+        patientImage.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -153,7 +156,7 @@ public class PatientProfile extends AppCompatActivity {
             }
         });
         //Set on click listener for medication Button
-        medicationButton.setOnClickListener(new View.OnClickListener(){
+        medicationButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -164,9 +167,9 @@ public class PatientProfile extends AppCompatActivity {
             }
         });
 
-        /**
-         * Code to check a user is logged in.
-         * If they are not logged in, return them to the login page.
+        /*
+          Code to check a user is logged in.
+          If they are not logged in, return them to the login page.
          */
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -183,7 +186,7 @@ public class PatientProfile extends AppCompatActivity {
     /**
      * Code to sign out a user.
      */
-    public void signOut() {
+    private void signOut() {
         mAuth.signOut();
     }
 
@@ -198,7 +201,7 @@ public class PatientProfile extends AppCompatActivity {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if(item.getItemId() == R.id.deletePatient){
+        if (item.getItemId() == R.id.deletePatient) {
             AlertDialog.Builder builder = new AlertDialog.Builder(PatientProfile.this, R.style.AlertDialog);
             builder.setMessage("Are you sure you want to delete this person from your care profile?")
                     .setTitle("Delete Individual");
@@ -230,7 +233,6 @@ public class PatientProfile extends AppCompatActivity {
 
 
     /**
-     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -238,7 +240,7 @@ public class PatientProfile extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
             imageUri = data.getData();
             uploadProfilePicture();
         }
@@ -247,8 +249,8 @@ public class PatientProfile extends AppCompatActivity {
     /**
      * Code to upload the profile picture to the realtime database
      */
-    private void uploadProfilePicture(){
-        if(imageUri != null){
+    private void uploadProfilePicture() {
+        if (imageUri != null) {
             profilePhotoRef.delete();
             profilePhotoRef.putFile(imageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -263,17 +265,9 @@ public class PatientProfile extends AppCompatActivity {
                     Toast.makeText(PatientProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-        } else{
+        } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    /**
-     * When a user navigates back to this page, this code is called.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     /**

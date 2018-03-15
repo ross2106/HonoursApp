@@ -1,21 +1,16 @@
-package com.rgu.honours.dementiacareapp;
+package com.rgu.honours.dementiacareapp.ThisIsMe;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,28 +20,31 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.MainActivity;
+import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
+import com.rgu.honours.dementiacareapp.R;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddMedicationActivity extends AppCompatActivity {
+public class EditThisIsMeActivity extends AppCompatActivity {
 
     //Text Fields
-    EditText medicationName, dosageValue, dosageTime;
+    private EditText fullName;
+    private EditText preferredName;
+    private EditText knowsBest;
+    private EditText myBackground;
+    private EditText myRoutine;
+    private EditText mayUpsetMe;
+    private EditText makesMeFeelBetter;
 
-    //Spinner
-    Spinner dosageType;
-    ArrayAdapter<CharSequence> spinnerValues;
-    String dosageTypeValue;
+    //Edit Button
+    private Button saveContent;
 
-    //Button
-    Button addMedication;
     //Firebase User Authentication
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
-
-    //Firebase Database
-    private DatabaseReference dbRef, patientDbRef;
 
     //ID of logged in carer, and patient for profile
     private String userId;
@@ -56,38 +54,29 @@ public class AddMedicationActivity extends AppCompatActivity {
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_medication);
+        setContentView(R.layout.activity_edit_this_is_me);
 
-        medicationName = (EditText) findViewById(R.id.medicationName);
-        dosageValue = (EditText) findViewById(R.id.medicationDosageValue);
-        dosageTime = (EditText) findViewById(R.id.medicationTime);
-        addMedication = (Button) findViewById(R.id.medicationSubmit);
+        //Initialising Text Fields
+        fullName = findViewById(R.id.fullNameText);
+        preferredName = findViewById(R.id.preferredNameText);
+        knowsBest = findViewById(R.id.knowsMeBestText);
+        myBackground = findViewById(R.id.myBackGroundText);
+        myRoutine = findViewById(R.id.myRoutineText);
+        mayUpsetMe = findViewById(R.id.mayUpsetMeText);
+        makesMeFeelBetter = findViewById(R.id.makesMeFeelBetterText);
 
-        //Dropdown
-        dosageType = (Spinner) findViewById(R.id.dosageType);
-        spinnerValues = ArrayAdapter.createFromResource(this, R.array.dosageType, android.R.layout.simple_spinner_item);
-        spinnerValues.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dosageType.setAdapter(spinnerValues);
-        dosageType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) view).setTextColor(getResources().getColor(R.color.colorPrimary));
-                dosageTypeValue = parent.getItemAtPosition(position).toString();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        //Initialising Button
+        saveContent = findViewById(R.id.save_content);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         //Create a database reference
-        dbRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
         //Get the current user
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -96,18 +85,17 @@ public class AddMedicationActivity extends AppCompatActivity {
         //Get the ID of the patient from the Intent extra String
         patientId = getIntent().getStringExtra("patientID");
         patientName = getIntent().getStringExtra("patientName");
-
-        /**
-         * CODE FOR NAVIGATION DRAWER
+        /*
+          CODE FOR NAVIGATION DRAWER
          */
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.addMedicationDrawerLayout); //Drawer from layout file
-        mToggle = new ActionBarDrawerToggle(AddMedicationActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
+        mDrawerLayout = findViewById(R.id.editThisIsMeDrawerLayout); //Drawer from layout file
+        mToggle = new ActionBarDrawerToggle(EditThisIsMeActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
-        getSupportActionBar().setTitle("Add Medication"); //Set the title of the page
+        getSupportActionBar().setTitle("Edit This Is Me"); //Set the title of the page
 
-        NavigationView navigationView = findViewById(R.id.addMedication_navigation_view); //Navigation view from layout file
+        NavigationView navigationView = findViewById(R.id.edit_thisIsMe_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -136,34 +124,58 @@ public class AddMedicationActivity extends AppCompatActivity {
             }
         });
 
-        addMedication.setOnClickListener(new View.OnClickListener() {
+        //Populate text fields
+        DatabaseReference patientDbRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("ThisIsMe");
+        patientDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
+                    fullName.setText(dataSnapshot.child("fullName").getValue().toString());
+                    preferredName.setText(dataSnapshot.child("preferredName").getValue().toString());
+                    knowsBest.setText(dataSnapshot.child("knowsBest").getValue().toString());
+                    myBackground.setText(dataSnapshot.child("myBackground").getValue().toString());
+                    myRoutine.setText(dataSnapshot.child("myRoutine").getValue().toString());
+                    mayUpsetMe.setText(dataSnapshot.child("upsetMe").getValue().toString());
+                    makesMeFeelBetter.setText(dataSnapshot.child("makeBetter").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        saveContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference patientDb = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
-                String medicationNameString = medicationName.getText().toString();
-                String dosageValueString = dosageValue.getText().toString();
-                String dosageValueTypeString = dosageTypeValue;
-                String medicationTimeString = dosageTime.getText().toString();
-                String medicationId = patientDb.push().getKey();
-                Map newMedication = new HashMap();
-                newMedication.put("id", medicationId);
-                newMedication.put("name", medicationNameString);
-                newMedication.put("dosageValue", dosageValueString);
-                newMedication.put("dosageType", dosageValueTypeString);
-                newMedication.put("time", medicationTimeString);
-                newMedication.put("taken", 0);
-                patientDb.child(medicationId).setValue(newMedication);
-                Toast.makeText(AddMedicationActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);
+                String fullNameString = fullName.getText().toString();
+                String preferredNameString = preferredName.getText().toString();
+                String knowsBestString = knowsBest.getText().toString();
+                String myBackgroundString = myBackground.getText().toString();
+                String myRoutineString = myRoutine.getText().toString();
+                String upsetMeString = mayUpsetMe.getText().toString();
+                String makeBetterString = makesMeFeelBetter.getText().toString();
+                final DatabaseReference patient_db = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+                Map thisIsMe = new HashMap();
+                thisIsMe.put("fullName", fullNameString);
+                thisIsMe.put("preferredName", preferredNameString);
+                thisIsMe.put("knowsBest", knowsBestString);
+                thisIsMe.put("myBackground", myBackgroundString);
+                thisIsMe.put("myRoutine", myRoutineString);
+                thisIsMe.put("upsetMe", upsetMeString);
+                thisIsMe.put("makeBetter", makeBetterString);
+                patient_db.child("Patients").child(patientId).child("ThisIsMe").setValue(thisIsMe);
+                Toast.makeText(EditThisIsMeActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ThisIsMeActivity.class);
                 intent.putExtra("patientID", patientId);
                 startActivity(intent);
             }
         });
 
-
-        /**
-         * Code to check a user is logged in.
-         * If they are not logged in, return them to the login page.
+        /*
+          Code to check a user is logged in.
+          If they are not logged in, return them to the login page.
          */
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -175,12 +187,13 @@ public class AddMedicationActivity extends AppCompatActivity {
                 }
             }
         };
+
     }
 
     /**
      * Code to sign out a user.
      */
-    public void signOut() {
+    private void signOut() {
         mAuth.signOut();
     }
 
@@ -192,19 +205,7 @@ public class AddMedicationActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    /**
-     * When a user navigates back to this page, this code is called.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
+        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     /**

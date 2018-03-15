@@ -1,12 +1,12 @@
-package com.rgu.honours.dementiacareapp;
+package com.rgu.honours.dementiacareapp.Patient;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,13 +14,11 @@ import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
-import com.google.firebase.database.ValueEventListener;
+import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.MainActivity;
+import com.rgu.honours.dementiacareapp.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,10 +27,8 @@ public class AddPatientActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
-    private DatabaseReference dbRef;
     private String userId;
     private EditText patientName, patientAge, patientGender;
-    private Button addPatient;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -43,16 +39,16 @@ public class AddPatientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_patient);
 
-        patientName = (EditText) findViewById(R.id.addPatientName);
-        patientAge = (EditText) findViewById(R.id.addPatientAge);
-        patientGender = (EditText) findViewById(R.id.addPatientGender);
-        addPatient = (Button) findViewById(R.id.addPatientButton);
+        patientName = findViewById(R.id.addPatientName);
+        patientAge = findViewById(R.id.addPatientAge);
+        patientGender = findViewById(R.id.addPatientGender);
+        Button addPatient = findViewById(R.id.addPatientButton);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         //Create a database reference
-        dbRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
         //Get the current user
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -78,10 +74,10 @@ public class AddPatientActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         * CODE FOR NAVIGATION DRAWER
+        /*
+          CODE FOR NAVIGATION DRAWER
          */
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.addPatientDrawerLayout); //Drawer from layout file
+        mDrawerLayout = findViewById(R.id.addPatientDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(AddPatientActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
@@ -130,34 +126,26 @@ public class AddPatientActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     /**
      * Code to sign out a user.
      */
-    public void signOut() {
+    private void signOut() {
         mAuth.signOut();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(authListener);
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
-        if(authListener != null){
+        if (authListener != null) {
             mAuth.removeAuthStateListener(authListener);
         }
     }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
-    tools:context="com.rgu.honours.dementiacareapp.EditThisIsMeActivity">
+    tools:context="com.rgu.honours.dementiacareapp.ThisIsMe.EditThisIsMeActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,7 +35,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/fullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
@@ -43,6 +42,7 @@
                     android:text="@string/fullName" />
 
                 <EditText
+                    android:labelFor="@+id/fullNameText"
                     android:id="@+id/fullNameText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,7 +51,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/preferredName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -68,7 +67,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/knowsMeBest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -85,7 +83,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/myBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -102,7 +99,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/myRoutine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -119,7 +115,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/mayUpsetMe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -136,7 +131,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/makesMeFeelBetter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"

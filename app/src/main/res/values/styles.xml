@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
@@ -11,11 +11,6 @@
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="actionOverflowMenuStyle">@style/optionsTheme</item>
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme</item>
-    </style>
-
-    <style name="toolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:colorBackground">@color/colorPrimary</item>
     </style>
 
     <style name="optionsTheme" parent="Widget.AppCompat.PopupMenu.Overflow">
@@ -31,16 +26,7 @@
         <item name="android:textColor">@drawable/color_item_popup</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="AlertDialog" parent = "Theme.AppCompat.Light.Dialog.Alert">
-        <item name ="android:textColor">@color/colorPrimary</item>
+    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 </resources>

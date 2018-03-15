@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
-    tools:context="com.rgu.honours.dementiacareapp.CareHomeActivity"
+    tools:context="com.rgu.honours.dementiacareapp.Carer.CareHomeActivity"
     android:id="@+id/careHomeDrawerLayout">
 
     <android.support.constraint.ConstraintLayout
@@ -73,15 +73,14 @@
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
-    
+
     <android.support.design.widget.NavigationView
         android:id="@+id/care_home_navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:menu="@menu/care_home_navigation"
         android:layout_gravity="start"
-        app:itemTextColor="@color/colorPrimary">
-    </android.support.design.widget.NavigationView>
+        app:itemTextColor="@color/colorPrimary" />
 
 
 </android.support.v4.widget.DrawerLayout>

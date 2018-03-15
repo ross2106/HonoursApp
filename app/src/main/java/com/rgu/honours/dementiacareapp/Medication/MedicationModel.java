@@ -1,22 +1,16 @@
-package com.rgu.honours.dementiacareapp;
+package com.rgu.honours.dementiacareapp.Medication;
 
 /**
  * Created by ross1 on 13/03/2018.
  */
 
-public class MedicationModel {
+class MedicationModel {
 
-    String id, name, dosageValue, dosageType, time;
+    private String id, name, dosageValue, dosageType;
+    private Long time;
+    private int taken;
 
-    public MedicationModel(String id, String name, String dosageValue, String dosageType, String time) {
-        this.id = id;
-        this.name = name;
-        this.dosageValue = dosageValue;
-        this.dosageType = dosageType;
-        this.time = time;
-    }
-
-    public MedicationModel(){
+    public MedicationModel() {
 
     }
 
@@ -52,11 +46,19 @@ public class MedicationModel {
         this.dosageType = dosageType;
     }
 
-    public String getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Long time) {
         this.time = time;
+    }
+
+    public int getTaken() {
+        return taken;
+    }
+
+    public void setTaken(int taken) {
+        this.taken = taken;
     }
 }

@@ -1,24 +1,14 @@
-package com.rgu.honours.dementiacareapp;
+package com.rgu.honours.dementiacareapp.Medication;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,13 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,17 +28,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
+import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.MainActivity;
+import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
+import com.rgu.honours.dementiacareapp.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Date;
 
 public class MedicationActivity extends AppCompatActivity {
 
     //Initialising list of patients
-    ArrayList<MedicationModel> medicationArrayList = new ArrayList<>();
+    private final ArrayList<MedicationModel> medicationArrayList = new ArrayList<>();
     //private RecyclerView medicationList;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -62,7 +50,7 @@ public class MedicationActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
 
     //Firebase Database
-    private DatabaseReference dbRef, patientDbRef;
+    private DatabaseReference dbRef;
 
     //ID of logged in carer, and patient for profile
     private String userId;
@@ -78,13 +66,14 @@ public class MedicationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
 
-        final RecyclerView medicationList = (RecyclerView) findViewById(R.id.medicationMorningView);
+        final RecyclerView medicationList = findViewById(R.id.medicationMorningView);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         //Create a database reference
         dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.keepSynced(true);
 
         //Get the current user
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -94,14 +83,14 @@ public class MedicationActivity extends AppCompatActivity {
         patientId = getIntent().getStringExtra("patientID");
         patientName = getIntent().getStringExtra("patientName");
 
-        /**
-         * CODE FOR NAVIGATION DRAWER
+        /*
+          CODE FOR NAVIGATION DRAWER
          */
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.medicationDrawerLayout); //Drawer from layout file
+        mDrawerLayout = findViewById(R.id.medicationDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(MedicationActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
             getSupportActionBar().setTitle("Medication"); //Set the title of the page
         }
@@ -139,27 +128,39 @@ public class MedicationActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 medicationArrayList.clear();
+                int counter = 0;
                 for (final DataSnapshot ds : dataSnapshot.getChildren()) {
-                    MedicationModel medication = new MedicationModel();
+                    final MedicationModel medication = new MedicationModel();
                     medication.setName(ds.getValue(MedicationModel.class).getName());
                     medication.setDosageValue(ds.getValue(MedicationModel.class).getDosageValue());
                     medication.setDosageType(ds.getValue(MedicationModel.class).getDosageType());
                     medication.setTime(ds.getValue(MedicationModel.class).getTime());
+                    medication.setId(ds.getValue(MedicationModel.class).getId());
+                    medication.setTaken(ds.getValue(MedicationModel.class).getTaken());
                     medicationArrayList.add(medication);
-                    MyAdapter adapter = new MyAdapter(getApplicationContext(), medicationArrayList);
-                    medicationList.setAdapter(adapter);
+                    for (int i = 0; i < medicationArrayList.size(); i++) {
+                        if (medicationArrayList.get(i).getTime() > medicationArrayList.get(counter).getTime()) {
+                            Collections.swap(medicationArrayList, i, counter);
+                        }
+                    }
+                    counter++;
                     mLayoutManager = new LinearLayoutManager(getApplicationContext());
                     medicationList.setLayoutManager(mLayoutManager);
+                    MyAdapter adapter = new MyAdapter(getApplicationContext(), medicationArrayList);
+                    medicationList.setAdapter(adapter);
+
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
-        /**
-         * Code to check a user is logged in.
-         * If they are not logged in, return them to the login page.
+
+        /*
+          Code to check a user is logged in.
+          If they are not logged in, return them to the login page.
          */
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -174,10 +175,14 @@ public class MedicationActivity extends AppCompatActivity {
 
     }
 
+    private String timeParse(Long time) {
+        return new SimpleDateFormat("HH:mm").format(new Date(time));
+    }
+
     /**
      * Code to sign out a user.
      */
-    public void signOut() {
+    private void signOut() {
         mAuth.signOut();
     }
 
@@ -209,14 +214,6 @@ public class MedicationActivity extends AppCompatActivity {
     }
 
     /**
-     * When a user navigates back to this page, this code is called.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    /**
      * On Start is called when the activity restarts.
      */
     @Override
@@ -242,8 +239,8 @@ public class MedicationActivity extends AppCompatActivity {
      */
     public class MyAdapter extends RecyclerView.Adapter<MedicationActivity.MyAdapter.ViewHolder> {
 
-        private Context mContext;
-        private ArrayList<MedicationModel> medicationList;
+        private final Context mContext;
+        private final ArrayList<MedicationModel> medicationList;
 
         MyAdapter(Context context, ArrayList<MedicationModel> list) {
             mContext = context;
@@ -254,19 +251,34 @@ public class MedicationActivity extends AppCompatActivity {
         public MedicationActivity.MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             View view = layoutInflater.inflate(R.layout.medication_card, parent, false);
-            MedicationActivity.MyAdapter.ViewHolder viewHolder = new MedicationActivity.MyAdapter.ViewHolder(view, mContext, medicationList);
-            return viewHolder;
+            return new ViewHolder(view, mContext, medicationList);
         }
 
         @Override
-        public void onBindViewHolder(MedicationActivity.MyAdapter.ViewHolder holder, int position) {
-            MedicationModel medication = medicationList.get(position);
+        public void onBindViewHolder(final MedicationActivity.MyAdapter.ViewHolder holder, int position) {
+            final MedicationModel medication = medicationList.get(position);
             TextView medicationName = holder.medicationName;
             TextView medicationDosage = holder.medicationDosage;
             TextView medicationTime = holder.medicationTime;
+            final CheckBox checkBox = holder.checkbox;
             medicationName.setText(medication.getName());
             medicationDosage.setText(medication.getDosageValue() + " " + medication.getDosageType());
-            medicationTime.setText(medication.getTime());
+            medicationTime.setText(timeParse(medication.getTime()));
+            if (medication.getTaken() == 1) {
+                checkBox.setChecked(true);
+            }
+            final DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        medRef.child(medication.getId()).child("taken").setValue(1);
+                    }
+                    if (!isChecked) {
+                        medRef.child(medication.getId()).child("taken").setValue(0);
+                    }
+                }
+            });
         }
 
         @Override
@@ -276,24 +288,29 @@ public class MedicationActivity extends AppCompatActivity {
 
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            TextView medicationName, medicationDosage, medicationTime;
-            CheckBox checkbox;
-            ArrayList<MedicationModel> medicationList = new ArrayList<MedicationModel>();
-            Context context;
+            final TextView medicationName;
+            final TextView medicationDosage;
+            final TextView medicationTime;
+            final CheckBox checkbox;
+            ArrayList<MedicationModel> medicationList = new ArrayList<>();
 
-            public ViewHolder(final View itemView, Context context, ArrayList<MedicationModel> medicationList) {
+            public ViewHolder(final View itemView, Context context, final ArrayList<MedicationModel> medicationList) {
                 super(itemView);
                 this.medicationList = medicationList;
-                this.context = context;
                 itemView.setOnClickListener(this);
                 medicationName = itemView.findViewById(R.id.medicationName);
                 medicationDosage = itemView.findViewById(R.id.medicationDosage);
                 medicationTime = itemView.findViewById(R.id.medicationTime);
-                checkbox = (CheckBox) itemView.findViewById(R.id.medicationTaken);
-                checkbox.setOnClickListener(new View.OnClickListener(){
+                checkbox = itemView.findViewById(R.id.medicationTaken);
+                checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
-                    public void onClick(View v) {
-                        itemView.setBackgroundColor(Color.parseColor("#43A047"));
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            itemView.setBackgroundColor(Color.parseColor("#43A047"));
+                        }
+                        if (!isChecked) {
+                            itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                        }
                     }
                 });
             }
@@ -304,11 +321,10 @@ public class MedicationActivity extends AppCompatActivity {
                 MedicationModel medication = medicationList.get(position);
                 Intent intent = new Intent(MedicationActivity.this, EditMedication.class);
                 intent.putExtra("patientID", patientId);
-                intent.putExtra("medicationID", medication.getId().toString());
+                intent.putExtra("medicationID", medication.getId());
                 intent.putExtra("patientName", patientName);
                 startActivity(intent);
             }
         }
-
     }
 }

@@ -2,8 +2,7 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:theme="@style/optionsTheme"
-    app:popupTheme="@style/optionsTheme"
-    >
+    app:popupTheme="@style/optionsTheme">
     <item
         android:icon="@drawable/delete"
         app:showAsAction="ifRoom"
@@ -12,7 +11,7 @@
             <item
                 android:id="@+id/deletePatient"
                 android:title="Delete Patient"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimary" />
         </menu>
     </item>
 </menu>

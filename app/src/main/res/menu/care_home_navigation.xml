@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/care_home"
+    <item
+        android:id="@+id/care_home"
         android:title="Carer Home Page"
-        android:icon="@drawable/heart"/>
+        android:icon="@drawable/heart" />
 
-    <item android:id="@+id/settings"
+    <item
         android:title="Application Settings"
-        android:icon="@drawable/settings"/>
+        android:icon="@drawable/settings" />
 
-    <item android:id="@+id/log_out"
+    <item
+        android:id="@+id/log_out"
         android:title="Log Out"
         android:icon="@drawable/logout" />
 </menu>

@@ -5,138 +5,149 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
-    tools:context="com.rgu.honours.dementiacareapp.PatientProfile"
+    tools:context="com.rgu.honours.dementiacareapp.Patient.PatientProfile"
     android:id="@+id/patientProfileDrawerLayout">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/imageTitleLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/topRow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1">
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:id="@+id/patientMainProfileImage"
-            android:layout_marginTop="8sp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop" />
-
-        <TextView
-            android:id="@+id/patientProfileName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/imageTitleLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16sp"
-
-            android:textSize="32sp"
-            android:gravity="center"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/topRow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/patientImage" />
-    </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_weight="1">
 
-    <LinearLayout
-        android:id="@+id/topRow"
-        android:layout_width="match_parent"
-        android:layout_height="100sp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/bottomRow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageTitleLayout">
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/patientMainProfileImage"
+                android:layout_marginTop="8sp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:contentDescription="TODO" />
 
-        <Button
-            android:id="@+id/thisIsMeButton"
+            <TextView
+                android:id="@+id/patientProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16sp"
+
+                android:textSize="32sp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/patientImage" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/topRow"
             android:layout_width="match_parent"
-            android:layout_height="80sp"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/person_white"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:textSize="16sp"
-            android:background="@color/colorPrimary"
-            android:textAlignment="center"
-            android:layout_gravity="center"
-            android:text="@string/thisIsMe"
-            app:layout_constraintEnd_toStartOf="@+id/medicationButton"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/medicationButton"
-            android:layout_width="match_parent"
-            android:layout_height="80sp"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:drawableTop="@drawable/medication"
-            android:background="@color/colorPrimary"
-            android:textAlignment="center"
-            android:layout_gravity="center"
-            android:text="@string/medication"
+            android:layout_height="100sp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/bottomRow"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/thisIsMeButton" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageTitleLayout"
+            style="?android:attr/buttonBarStyle">
 
-    </LinearLayout>
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/thisIsMeButton"
+                android:layout_width="match_parent"
+                android:layout_height="80sp"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/person_white"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:textSize="16sp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/primaryTextColor"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:text="@string/thisIsMe"
+                app:layout_constraintEnd_toStartOf="@+id/medicationButton"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/bottomRow"
-        android:layout_width="match_parent"
-        android:layout_height="100sp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topRow">
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/medicationButton"
+                android:layout_width="match_parent"
+                android:layout_height="80sp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textColor="@color/primaryTextColor"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:drawableTop="@drawable/medication"
+                android:background="@color/colorPrimary"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:text="@string/medication"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/thisIsMeButton" />
 
-        <Button
-            android:id="@+id/familyButton"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottomRow"
             android:layout_width="match_parent"
-            android:layout_height="80sp"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:drawableTop="@drawable/family"
-            android:layout_gravity="center"
-            android:textSize="16sp"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:background="@color/colorPrimary"
-            android:text="@string/myFamily"
-            app:layout_constraintEnd_toStartOf="@+id/calendarButton"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/calendarButton"
-            android:layout_width="match_parent"
-            android:layout_height="80sp"
-            android:layout_weight="1"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:drawableTop="@drawable/calendar"
-            android:layout_gravity="center"
-            android:background="@color/colorPrimary"
-            android:text="@string/calendar"
+            android:layout_height="100sp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/familyButton" />
-    </LinearLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topRow"
+            style="?android:attr/buttonBarStyle">
+
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/familyButton"
+                android:layout_width="match_parent"
+                android:layout_height="80sp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:drawableTop="@drawable/family"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/primaryTextColor"
+                android:text="@string/myFamily"
+                app:layout_constraintEnd_toStartOf="@+id/calendarButton"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/calendarButton"
+                android:layout_width="match_parent"
+                android:layout_height="80sp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:drawableTop="@drawable/calendar"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/primaryTextColor"
+                android:text="@string/calendar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/familyButton" />
+        </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
 
@@ -146,8 +157,7 @@
         android:layout_height="match_parent"
         app:menu="@menu/care_home_navigation"
         android:layout_gravity="start"
-        app:itemTextColor="@color/colorPrimary">
-    </android.support.design.widget.NavigationView>
+        app:itemTextColor="@color/colorPrimary" />
 
 
 </android.support.v4.widget.DrawerLayout>

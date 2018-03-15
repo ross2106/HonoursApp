@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
-    tools:context="com.rgu.honours.dementiacareapp.ThisIsMeActivity">
+    tools:context="com.rgu.honours.dementiacareapp.ThisIsMe.ThisIsMeActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,7 +24,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/fullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
@@ -39,7 +38,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/preferredName"
                     android:textStyle="bold"
                     android:layout_marginTop="5dp"
                     android:textSize="20sp"
@@ -55,7 +53,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/knowsMeBest"
                     android:textStyle="bold"
                     android:layout_marginTop="5dp"
                     android:textSize="20sp"
@@ -71,7 +68,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/myBackground"
                     android:textStyle="bold"
                     android:layout_marginTop="5dp"
                     android:textSize="20sp"
@@ -87,7 +83,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/myRoutine"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_marginTop="5dp"
@@ -103,7 +98,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/mayUpsetMe"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_marginTop="5dp"
@@ -119,7 +113,6 @@
                     android:textColor="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/makesMeFeelBetter"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_marginTop="5dp"
@@ -143,5 +136,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemTextColor="@color/colorPrimary"
-        app:menu="@menu/patient_profile_navigation"></android.support.design.widget.NavigationView>
+        app:menu="@menu/patient_profile_navigation" />
 </android.support.v4.widget.DrawerLayout>

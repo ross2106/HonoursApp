@@ -1,4 +1,4 @@
-package com.rgu.honours.dementiacareapp;
+package com.rgu.honours.dementiacareapp.Patient;
 
 import android.net.Uri;
 
@@ -34,14 +34,6 @@ public class PatientModel {
         this.name = name;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public String getAge() {
         return age;
     }
@@ -58,11 +50,4 @@ public class PatientModel {
         this.id = id;
     }
 
-    public Uri getImage() {
-        return image;
-    }
-
-    public void setImage(Uri image) {
-        this.image = image;
-    }
 }

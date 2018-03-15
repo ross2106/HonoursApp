@@ -16,7 +16,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,19 +25,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LogInActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".CareHomeActivity" />
-        <activity android:name=".PasswordResetActivity" />
-        <activity android:name=".AddPatientActivity" />
-        <activity android:name=".PatientProfile" />
-        <activity android:name=".ThisIsMeActivity" />
+        <activity android:name=".UserAccess.LogInActivity" />
+        <activity android:name=".UserAccess.SignUpActivity" />
+        <activity android:name=".Carer.CareHomeActivity" />
+        <activity android:name=".UserAccess.PasswordResetActivity" />
+        <activity android:name=".Patient.AddPatientActivity" />
+        <activity android:name=".Patient.PatientProfile" />
+        <activity android:name=".ThisIsMe.ThisIsMeActivity" />
         <activity android:name=".FamilyActivity" />
         <activity android:name=".CalendarActivity" />
-        <activity android:name=".EditThisIsMeActivity" />
-        <activity android:name=".MedicationActivity" />
-        <activity android:name=".EditMedication" />
-        <activity android:name=".AddMedicationActivity"></activity>
+        <activity android:name=".ThisIsMe.EditThisIsMeActivity" />
+        <activity android:name=".Medication.MedicationActivity" />
+        <activity android:name=".Medication.EditMedication" />
+        <activity android:name=".Medication.AddMedicationActivity" />
     </application>
 
 </manifest>

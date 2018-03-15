@@ -5,26 +5,25 @@
     android:id="@+id/medicationDrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rgu.honours.dementiacareapp.MedicationActivity">
+    tools:context="com.rgu.honours.dementiacareapp.Medication.MedicationActivity">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp">
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/medicationMorningScrollView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/medicationMorningView"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.v4.widget.NestedScrollView>
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-</LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/medicationMorningView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
     <android.support.design.widget.NavigationView
         android:id="@+id/medication_navigation_view"
         android:layout_width="wrap_content"

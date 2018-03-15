@@ -1,12 +1,16 @@
-package com.rgu.honours.dementiacareapp;
+package com.rgu.honours.dementiacareapp.Medication;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,22 +28,31 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.MainActivity;
+import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
+import com.rgu.honours.dementiacareapp.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EditMedication extends AppCompatActivity {
 
     //Text Fields
-    EditText editMedicationName, editDosageValue, editDosageTime;
+    private EditText editMedicationName;
+    private EditText editDosageValue;
+    private EditText editDosageTime;
 
     //Spinner
-    Spinner editDosageType;
-    ArrayAdapter<CharSequence> editSpinnerValues;
-    String editDosageTypeValue;
+    private Spinner editDosageType;
+    private ArrayAdapter<CharSequence> editSpinnerValues;
+    private String editDosageTypeValue;
 
     //Button
-    Button editMedication;
+    private Button editMedication;
 
 
     //Firebase User Authentication
@@ -58,18 +71,19 @@ public class EditMedication extends AppCompatActivity {
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_medication);
 
-        editMedicationName = (EditText) findViewById(R.id.editMedicationName);
-        editDosageValue = (EditText) findViewById(R.id.editMedicationDosageValue);
-        editDosageTime = (EditText) findViewById(R.id.editMedicationTime);
-        editMedication = (Button) findViewById(R.id.editMedicationSubmit);
+        editMedicationName = findViewById(R.id.editMedicationName);
+        editDosageValue = findViewById(R.id.editMedicationDosageValue);
+        editDosageTime = findViewById(R.id.editMedicationTime);
+        editMedication = findViewById(R.id.editMedicationSubmit);
 
         //Dropdown
-        editDosageType = (Spinner) findViewById(R.id.editDosageType);
+        editDosageType = findViewById(R.id.editDosageType);
         editSpinnerValues = ArrayAdapter.createFromResource(this, R.array.dosageType, android.R.layout.simple_spinner_item);
         editSpinnerValues.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editDosageType.setAdapter(editSpinnerValues);
@@ -79,6 +93,7 @@ public class EditMedication extends AppCompatActivity {
                 ((TextView) view).setTextColor(getResources().getColor(R.color.colorPrimary));
                 editDosageTypeValue = parent.getItemAtPosition(position).toString();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -100,10 +115,10 @@ public class EditMedication extends AppCompatActivity {
         medicationId = getIntent().getStringExtra("medicationID");
         patientName = getIntent().getStringExtra("patientName");
 
-        /**
-         * CODE FOR NAVIGATION DRAWER
+        /*
+          CODE FOR NAVIGATION DRAWER
          */
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.editMedicationDrawerLayout); //Drawer from layout file
+        mDrawerLayout = findViewById(R.id.editMedicationDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(EditMedication.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
@@ -141,14 +156,27 @@ public class EditMedication extends AppCompatActivity {
         DatabaseReference medicationRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication").child(medicationId);
         medicationRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChildren()) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
                     editMedicationName.setText(dataSnapshot.child("name").getValue().toString());
                     editDosageValue.setText(dataSnapshot.child("dosageValue").getValue().toString());
-                    editDosageTime.setText(dataSnapshot.child("time").getValue().toString());
-                    editDosageValue.setText(dataSnapshot.child("dosageType").getValue().toString());
+                    editDosageTime.setText(timeParse((Long) dataSnapshot.child("time").getValue()));
+                    editDosageTypeValue = dataSnapshot.child("dosageType").getValue().toString();
+                    editDosageType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            ((TextView) view).setTextColor(getResources().getColor(R.color.colorPrimary));
+                            editDosageTypeValue = parent.getItemAtPosition(position).toString();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -156,18 +184,26 @@ public class EditMedication extends AppCompatActivity {
         editMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference patientDb = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
+                DatabaseReference medicationRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication").child(medicationId);
                 String medicationNameString = editMedicationName.getText().toString();
                 String dosageValueString = editDosageValue.getText().toString();
                 String dosageValueTypeString = editDosageTypeValue;
-                String medicationTimeString = editDosageTime.getText().toString();
-                String medicationId = patientDb.push().getKey();
-                Map newMedication = new HashMap();
-                newMedication.put("name", medicationNameString);
-                newMedication.put("dosageValue", dosageValueString);
-                newMedication.put("dosageType", dosageValueTypeString);
-                newMedication.put("time", medicationTimeString);
-                patientDb.child(medicationId).setValue(newMedication);
+                Long medicationTime = null;
+                try {
+                    //Time medicationTimeString = dosageTime.getText().toString();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                    Date parsedDate = dateFormat.parse(editDosageTime.getText().toString());
+                    medicationTime = parsedDate.getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Map editMedication = new HashMap();
+                editMedication.put("id", medicationId);
+                editMedication.put("name", medicationNameString);
+                editMedication.put("dosageValue", dosageValueString);
+                editMedication.put("dosageType", dosageValueTypeString);
+                editMedication.put("time", medicationTime);
+                medicationRef.updateChildren(editMedication);
                 Toast.makeText(EditMedication.this, "Content Edited!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);
                 intent.putExtra("patientID", patientId);
@@ -176,9 +212,9 @@ public class EditMedication extends AppCompatActivity {
         });
 
 
-        /**
-         * Code to check a user is logged in.
-         * If they are not logged in, return them to the login page.
+        /*
+          Code to check a user is logged in.
+          If they are not logged in, return them to the login page.
          */
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -192,11 +228,22 @@ public class EditMedication extends AppCompatActivity {
         };
     }
 
+    private String timeParse(Long time) {
+        return new SimpleDateFormat("HH:mm").format(new Date(time));
+    }
+
     /**
      * Code to sign out a user.
      */
-    public void signOut() {
+    private void signOut() {
         mAuth.signOut();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mMenuInflater = getMenuInflater();
+        mMenuInflater.inflate(R.menu.edit_medication_dropdown, menu);
+        return true;
     }
 
     /**
@@ -210,17 +257,31 @@ public class EditMedication extends AppCompatActivity {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        if (item.getItemId() == R.id.deleteMedication) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditMedication.this, R.style.AlertDialog);
+            builder.setMessage("Are you sure you want to delete this medication?")
+                    .setTitle("Delete Medication");
+            // Add the buttons
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Intent intent = new Intent(EditMedication.this, MedicationActivity.class);
+                    intent.putExtra("patientID", patientId);
+                    startActivity(intent);
+                    dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication").child(medicationId).removeValue();
+                    finish();
+                }
+            });
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = builder.show();
+        }
         return super.onOptionsItemSelected(item);
     }
 
-
-    /**
-     * When a user navigates back to this page, this code is called.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     /**
      * On Start is called when the activity restarts.

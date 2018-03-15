@@ -1,11 +1,9 @@
-package com.rgu.honours.dementiacareapp;
+package com.rgu.honours.dementiacareapp.UserAccess;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,14 +18,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.MainActivity;
+import com.rgu.honours.dementiacareapp.R;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    //UI Elements
-    private Button signUpButton;
     private EditText emailText, passwordText, name, age;
 
     private FirebaseAuth mAuth;
@@ -47,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         //End Auth
 
         //Button
-        signUpButton = findViewById(R.id.confirmSignUp);
+        Button signUpButton = findViewById(R.id.confirmSignUp);
 
         //Form fields
         emailText = findViewById(R.id.signUpUsername);
@@ -125,14 +124,9 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
-        if(mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(this, CareHomeActivity.class));
         }

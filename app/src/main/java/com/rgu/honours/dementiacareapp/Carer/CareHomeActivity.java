@@ -1,4 +1,4 @@
-package com.rgu.honours.dementiacareapp;
+package com.rgu.honours.dementiacareapp.Carer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +30,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.rgu.honours.dementiacareapp.MainActivity;
+import com.rgu.honours.dementiacareapp.Patient.AddPatientActivity;
+import com.rgu.honours.dementiacareapp.Patient.PatientModel;
+import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
+import com.rgu.honours.dementiacareapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,7 +43,7 @@ public class CareHomeActivity extends AppCompatActivity {
 
     //Initialising list of patients
     private RecyclerView patientListView;
-    ArrayList<PatientModel> patientArrayList = new ArrayList<>();
+    private final ArrayList<PatientModel> patientArrayList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
 
     //Initialising Firebase Authorisation
@@ -61,10 +66,10 @@ public class CareHomeActivity extends AppCompatActivity {
         //Get Firebase Auth Instance
         mAuth = FirebaseAuth.getInstance();
 
-        /**
-         * CREATING NAVIGATION DRAWER
+        /*
+          CREATING NAVIGATION DRAWER
          */
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.careHomeDrawerLayout); //Drawer from layout file
+        mDrawerLayout = findViewById(R.id.careHomeDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(CareHomeActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
@@ -86,9 +91,9 @@ public class CareHomeActivity extends AppCompatActivity {
         });
 
         //Button to add Patient
-        Button addPatient = (Button) findViewById(R.id.addPatient);
+        Button addPatient = findViewById(R.id.addPatient);
         //List of patients
-        patientListView = (RecyclerView) findViewById(R.id.patientView);
+        patientListView = findViewById(R.id.patientView);
 
         //Reference to Realtime Database
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -98,9 +103,9 @@ public class CareHomeActivity extends AppCompatActivity {
         final FirebaseUser user = mAuth.getCurrentUser();
         userId = user.getUid();
 
-        /**
-         * Check to see if a user is logged In.
-         * If no user is logged in, return to main page.
+        /*
+          Check to see if a user is logged In.
+          If no user is logged in, return to main page.
          */
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -113,8 +118,8 @@ public class CareHomeActivity extends AppCompatActivity {
             }
         };
 
-        /**
-         * Code to get a list of patients from the Realtime Database
+        /*
+          Code to get a list of patients from the Realtime Database
          */
         DatabaseReference patientDbRef = dbRef.child("Users").child(userId).child("Patients");
         patientDbRef.addValueEventListener(new ValueEventListener() {
@@ -139,8 +144,8 @@ public class CareHomeActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         * On Click Listener for the "Add Patient" Button.
+        /*
+          On Click Listener for the "Add Patient" Button.
          */
         addPatient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,35 +165,14 @@ public class CareHomeActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     /**
      * Code to sign a user out
      */
-    public void signOut() {
+    private void signOut() {
         mAuth.signOut();
-    }
-
-    /**
-     * When a user navigates back to this page, this code is called.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    /**
-     * When the activity is restarted, this code is called.
-     */
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //finish();
-        //startActivity(getIntent());
     }
 
     /**
@@ -217,8 +201,8 @@ public class CareHomeActivity extends AppCompatActivity {
      */
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-        private Context mContext;
-        private ArrayList<PatientModel> patients;
+        private final Context mContext;
+        private final ArrayList<PatientModel> patients;
 
         MyAdapter(Context context, ArrayList<PatientModel> list) {
             mContext = context;
@@ -229,8 +213,7 @@ public class CareHomeActivity extends AppCompatActivity {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             View view = layoutInflater.inflate(R.layout.patient_card, parent, false);
-            ViewHolder viewHolder = new ViewHolder(view, mContext, patients);
-            return viewHolder;
+            return new ViewHolder(view, mContext, patients);
         }
 
         @Override
@@ -262,10 +245,11 @@ public class CareHomeActivity extends AppCompatActivity {
 
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            ImageView patientImage;
-            TextView patientName, patientAge;
-            ArrayList<PatientModel> patientList = new ArrayList<PatientModel>();
-            Context context;
+            final ImageView patientImage;
+            final TextView patientName;
+            final TextView patientAge;
+            ArrayList<PatientModel> patientList = new ArrayList<>();
+            final Context context;
 
             public ViewHolder(View itemView, Context context, ArrayList<PatientModel> patientList) {
                 super(itemView);
