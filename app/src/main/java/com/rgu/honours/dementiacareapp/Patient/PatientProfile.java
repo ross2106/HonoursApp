@@ -31,6 +31,7 @@ import com.google.firebase.storage.UploadTask;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Medication.MedicationActivity;
+import com.rgu.honours.dementiacareapp.Medication.MedicationTabbedActivity;
 import com.rgu.honours.dementiacareapp.R;
 import com.rgu.honours.dementiacareapp.ThisIsMe.ThisIsMeActivity;
 import com.squareup.picasso.Picasso;
@@ -85,6 +86,7 @@ public class PatientProfile extends AppCompatActivity {
 
         //Create a database reference
         dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.keepSynced(true);
 
         //Get the current user
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -160,7 +162,7 @@ public class PatientProfile extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MedicationTabbedActivity.class);
                 intent.putExtra("patientID", patientId);
                 intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);

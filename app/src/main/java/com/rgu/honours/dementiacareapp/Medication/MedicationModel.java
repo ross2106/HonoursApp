@@ -4,9 +4,9 @@ package com.rgu.honours.dementiacareapp.Medication;
  * Created by ross1 on 13/03/2018.
  */
 
-class MedicationModel {
+public class MedicationModel {
 
-    private String id, name, dosageValue, dosageType;
+    private String id, name, dosageValue, dosageType, category;
     private Long time;
     private int taken;
 
@@ -60,5 +60,13 @@ class MedicationModel {
 
     public void setTaken(int taken) {
         this.taken = taken;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

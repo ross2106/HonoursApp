@@ -188,14 +188,29 @@ public class EditMedication extends AppCompatActivity {
                 String medicationNameString = editMedicationName.getText().toString();
                 String dosageValueString = editDosageValue.getText().toString();
                 String dosageValueTypeString = editDosageTypeValue;
-                Long medicationTime = null;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                Long medicationTime = null, morningStartTime = null, morningFinishTime = null, afternoonStartTime = null, afternoonFinishTime = null, eveningStartTime = null, eveningFinishTime = null;
+                String category = "";
                 try {
-                    //Time medicationTimeString = dosageTime.getText().toString();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-                    Date parsedDate = dateFormat.parse(editDosageTime.getText().toString());
-                    medicationTime = parsedDate.getTime();
+                    medicationTime = dateFormat.parse(editDosageTime.getText().toString()).getTime();
+                    morningStartTime = dateFormat.parse("00:00").getTime();
+                    morningFinishTime = dateFormat.parse("11:59").getTime();
+                    afternoonStartTime = dateFormat.parse("12:00").getTime();
+                    afternoonFinishTime = dateFormat.parse("16:59").getTime();
+                    eveningStartTime = dateFormat.parse("17:00").getTime();
+                    eveningFinishTime = dateFormat.parse("23:59").getTime();
                 } catch (ParseException e) {
                     e.printStackTrace();
+                }
+                if (medicationTime >= morningStartTime && medicationTime <= morningFinishTime) {
+                    category = "Morning";
+                }
+                if (medicationTime >= afternoonStartTime && medicationTime <= afternoonFinishTime) {
+                    category = "Afternoon";
+                }
+                if (medicationTime >= eveningStartTime && medicationTime <= eveningFinishTime)
+                {
+                    category = "Evening";
                 }
                 Map editMedication = new HashMap();
                 editMedication.put("id", medicationId);
@@ -203,9 +218,10 @@ public class EditMedication extends AppCompatActivity {
                 editMedication.put("dosageValue", dosageValueString);
                 editMedication.put("dosageType", dosageValueTypeString);
                 editMedication.put("time", medicationTime);
+                editMedication.put("category", category);
                 medicationRef.updateChildren(editMedication);
                 Toast.makeText(EditMedication.this, "Content Edited!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MedicationTabbedActivity.class);
                 intent.putExtra("patientID", patientId);
                 startActivity(intent);
             }

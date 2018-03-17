@@ -28,7 +28,6 @@ import com.rgu.honours.dementiacareapp.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,14 +149,29 @@ public class AddMedicationActivity extends AppCompatActivity {
                 String medicationNameString = medicationName.getText().toString();
                 String dosageValueString = dosageValue.getText().toString();
                 String dosageValueTypeString = dosageTypeValue;
-                Long medicationTime = null;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                Long medicationTime = null, morningStartTime = null, morningFinishTime = null, afternoonStartTime = null, afternoonFinishTime = null, eveningStartTime = null, eveningFinishTime = null;
+                String category = "";
                 try {
-                    //Time medicationTimeString = dosageTime.getText().toString();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-                    Date parsedDate = dateFormat.parse(dosageTime.getText().toString());
-                    medicationTime = parsedDate.getTime();
+                    medicationTime = dateFormat.parse(dosageTime.getText().toString()).getTime();
+                    morningStartTime = dateFormat.parse("00:00").getTime();
+                    morningFinishTime = dateFormat.parse("11:59").getTime();
+                    afternoonStartTime = dateFormat.parse("12:00").getTime();
+                    afternoonFinishTime = dateFormat.parse("16:59").getTime();
+                    eveningStartTime = dateFormat.parse("17:00").getTime();
+                    eveningFinishTime = dateFormat.parse("23:59").getTime();
                 } catch (ParseException e) {
                     e.printStackTrace();
+                }
+                if (medicationTime >= morningStartTime && medicationTime <= morningFinishTime) {
+                    category = "Morning";
+                }
+                if (medicationTime >= afternoonStartTime && medicationTime <= afternoonFinishTime) {
+                    category = "Afternoon";
+                }
+                if (medicationTime >= eveningStartTime && medicationTime <= eveningFinishTime)
+                {
+                    category = "Evening";
                 }
                 String medicationId = patientDb.push().getKey();
                 Map newMedication = new HashMap();
@@ -167,10 +181,20 @@ public class AddMedicationActivity extends AppCompatActivity {
                 newMedication.put("dosageType", dosageValueTypeString);
                 newMedication.put("time", medicationTime);
                 newMedication.put("taken", 0);
-                patientDb.child(medicationId).setValue(newMedication);
-                Toast.makeText(AddMedicationActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MedicationActivity.class);
+                newMedication.put("category", category);
+
+                patientDb.
+
+                        child(medicationId).
+
+                        setValue(newMedication);
+                Toast.makeText(AddMedicationActivity.this, "Content Saved!", Toast.LENGTH_SHORT).
+
+                        show();
+
+                Intent intent = new Intent(getApplicationContext(), MedicationTabbedActivity.class);
                 intent.putExtra("patientID", patientId);
+
                 startActivity(intent);
             }
         });
@@ -180,7 +204,9 @@ public class AddMedicationActivity extends AppCompatActivity {
           Code to check a user is logged in.
           If they are not logged in, return them to the login page.
          */
-        authListener = new FirebaseAuth.AuthStateListener() {
+        authListener = new FirebaseAuth.AuthStateListener()
+
+        {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -189,7 +215,9 @@ public class AddMedicationActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        };
+        }
+
+        ;
     }
 
     /**
