@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,6 +52,8 @@ public class MedicationTabbedActivity extends AppCompatActivity {
     private String patientId;
     private String patientName;
 
+    private FloatingActionButton addMed;
+
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -62,6 +66,8 @@ public class MedicationTabbedActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication_tabbed);
+
+        addMed = findViewById(R.id.addMedication);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -81,16 +87,14 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         /*
           CODE FOR NAVIGATION DRAWER
          */
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.medicationTabbedDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(MedicationTabbedActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
-            getSupportActionBar().setTitle("Medication"); //Set the title of the page
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
+        getSupportActionBar().setTitle("Medication"); //Set the title of the page
         NavigationView navigationView = findViewById(R.id.medication_tabbed_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
             @Override
@@ -126,6 +130,16 @@ public class MedicationTabbedActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        addMed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddMedicationActivity.class);
+                intent.putExtra("patientID", patientId);
+                intent.putExtra("patientName", patientName);
+                startActivity(intent);
+            }
+        });
 
         /*
           Code to check a user is logged in.
