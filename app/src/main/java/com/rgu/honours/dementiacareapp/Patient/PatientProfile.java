@@ -1,5 +1,6 @@
 package com.rgu.honours.dementiacareapp.Patient;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
@@ -211,7 +213,19 @@ public class PatientProfile extends AppCompatActivity {
             builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     startActivity(new Intent(getApplicationContext(), CareHomeActivity.class));
+                    Toast.makeText(getApplicationContext(), "The individual has been successfully deleted from your care.", Toast.LENGTH_LONG).show();
                     dbRef.child("Users").child(userId).child("Patients").child(patientId).removeValue();
+                    profilePhotoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
                     finish();
                 }
             });
@@ -253,11 +267,15 @@ public class PatientProfile extends AppCompatActivity {
      */
     private void uploadProfilePicture() {
         if (imageUri != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
             profilePhotoRef.delete();
             profilePhotoRef.putFile(imageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
                             Toast.makeText(PatientProfile.this, "Image uploaded.", Toast.LENGTH_LONG).show();
                             Picasso.with(getApplicationContext()).load(imageUri).into(patientImage);
                         }
@@ -266,7 +284,13 @@ public class PatientProfile extends AppCompatActivity {
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(PatientProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.setMessage("Uploading image...");
+                }
             });
+
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
