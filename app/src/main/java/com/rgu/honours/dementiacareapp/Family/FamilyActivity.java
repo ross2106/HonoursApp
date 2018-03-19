@@ -1,4 +1,4 @@
-package com.rgu.honours.dementiacareapp.Carer;
+package com.rgu.honours.dementiacareapp.Family;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Patient.AddPatientActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientModel;
@@ -40,11 +41,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class CareHomeActivity extends AppCompatActivity {
+public class FamilyActivity extends AppCompatActivity {
 
     //Initialising list of patients
-    private RecyclerView patientListView;
-    private final ArrayList<PatientModel> patientArrayList = new ArrayList<>();
+    private RecyclerView familyList;
+    private final ArrayList<FamilyModel> familyArrayList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
 
     //Initialising Firebase Authorisation
@@ -53,6 +54,8 @@ public class CareHomeActivity extends AppCompatActivity {
 
     //String for the currently logged in user
     private String userId;
+    private String patientId;
+    private String patientName;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -62,25 +65,55 @@ public class CareHomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_care_home);
+        setContentView(R.layout.activity_family);
 
         //Get Firebase Auth Instance
         mAuth = FirebaseAuth.getInstance();
 
+        patientId = getIntent().getStringExtra("patientID");
+        patientName = getIntent().getStringExtra("patientName");
+
+        //Button to add Patient
+        FloatingActionButton addFamily = findViewById(R.id.addFamily);
+        //List of patients
+        familyList = findViewById(R.id.familyView);
+
+        //Reference to Realtime Database
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.keepSynced(true);
+
+        //Get the currently logged in user
+        final FirebaseUser user = mAuth.getCurrentUser();
+        userId = user.getUid();
+
         /*
           CREATING NAVIGATION DRAWER
          */
-        mDrawerLayout = findViewById(R.id.careHomeDrawerLayout); //Drawer from layout file
-        mToggle = new ActionBarDrawerToggle(CareHomeActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
+        mDrawerLayout = findViewById(R.id.familyDrawerLayout); //Drawer from layout file
+        mToggle = new ActionBarDrawerToggle(FamilyActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
-        getSupportActionBar().setTitle("Carer Home Page"); //Set the title of the page
-        NavigationView navigationView = findViewById(R.id.care_home_navigation_view); //Navigation view from layout file
+        getSupportActionBar().setTitle("Family Members"); //Set the title of the page
+        NavigationView navigationView = findViewById(R.id.family_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.care_home:
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        startActivity(new Intent(getApplicationContext(), CareHomeActivity.class));
+                        break;
+                    case R.id.patient_profile:
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        Intent intent = new Intent(getApplicationContext(), PatientProfile.class);
+                        intent.putExtra("patientID", patientId);
+                        intent.putExtra("patientName", patientName);
+                        startActivity(intent);
+
+                        break;
                     case R.id.log_out:
                         item.setChecked(true);
                         mDrawerLayout.closeDrawers();
@@ -90,19 +123,6 @@ public class CareHomeActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        //Button to add Patient
-        FloatingActionButton addPatient = findViewById(R.id.addPatient);
-        //List of patients
-        patientListView = findViewById(R.id.patientView);
-
-        //Reference to Realtime Database
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-        dbRef.keepSynced(true);
-
-        //Get the currently logged in user
-        final FirebaseUser user = mAuth.getCurrentUser();
-        userId = user.getUid();
 
         /*
           Check to see if a user is logged In.
@@ -122,20 +142,19 @@ public class CareHomeActivity extends AppCompatActivity {
         /*
           Code to get a list of patients from the Realtime Database
          */
-        DatabaseReference patientDbRef = dbRef.child("Users").child(userId).child("Patients");
+        DatabaseReference patientDbRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Family");
         patientDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (final DataSnapshot ds : dataSnapshot.getChildren()) {
-                    final PatientModel patient = new PatientModel();
-                    patient.setId(ds.getValue(PatientModel.class).getId());
-                    patient.setName(ds.getValue(PatientModel.class).getName());
-                    patient.setAge(ds.getValue(PatientModel.class).getAge());
-                    patientArrayList.add(patient);
+                    final FamilyModel familyMember = new FamilyModel();
+                    familyMember.setName(ds.getValue(FamilyModel.class).getName());
+                    familyMember.setPhoneNumber(ds.getValue(FamilyModel.class).getPhoneNumber());
+                    familyArrayList.add(familyMember);
                     mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
-                    patientListView.setLayoutManager(mLayoutManager);
-                    MyAdapter adapter = new MyAdapter(getApplicationContext(), patientArrayList);
-                    patientListView.setAdapter(adapter);
+                    familyList.setLayoutManager(mLayoutManager);
+                    MyAdapter adapter = new MyAdapter(getApplicationContext(), familyArrayList);
+                    familyList.setAdapter(adapter);
                 }
             }
 
@@ -148,11 +167,13 @@ public class CareHomeActivity extends AppCompatActivity {
         /*
           On Click Listener for the "Add Patient" Button.
          */
-        addPatient.setOnClickListener(new View.OnClickListener() {
+        addFamily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), AddPatientActivity.class);
-                startActivity(i);
+                Intent intent = new Intent(getApplicationContext(), AddFamily.class);
+                intent.putExtra("patientID", patientId);
+                intent.putExtra("patientName", patientName);
+                startActivity(intent);
             }
         });
 
@@ -203,29 +224,27 @@ public class CareHomeActivity extends AppCompatActivity {
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         private final Context mContext;
-        private final ArrayList<PatientModel> patients;
+        private final ArrayList<FamilyModel> family;
 
-        MyAdapter(Context context, ArrayList<PatientModel> list) {
+        MyAdapter(Context context, ArrayList<FamilyModel> list) {
             mContext = context;
-            patients = list;
+            family = list;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-            View view = layoutInflater.inflate(R.layout.patient_card, parent, false);
-            return new ViewHolder(view, mContext, patients);
+            View view = layoutInflater.inflate(R.layout.family_card, parent, false);
+            return new ViewHolder(view, mContext, family);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            PatientModel patient = patients.get(position);
-            TextView patientName = holder.patientName;
-            TextView patientAge = holder.patientAge;
-            final ImageView patientProfileImage = holder.patientImage;
-            patientName.setText(patient.getName());
-            patientAge.setText(patient.getAge());
-            StorageReference patientImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patient.getId()).child("Profile Picture");
+            FamilyModel family = familyArrayList.get(position);
+            TextView familyMemberName = holder.familyMemberName;
+            //final ImageView familyMemberImage = holder.familyMemberImage;
+            familyMemberName.setText(family.getName());
+/*            StorageReference familyImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patientId).child("Family");
             patientImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -236,40 +255,38 @@ public class CareHomeActivity extends AppCompatActivity {
                 public void onFailure(@NonNull Exception e) {
                     patientProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.person));
                 }
-            });
+            });*/
         }
 
         @Override
         public int getItemCount() {
-            return patients.size();
+            return familyArrayList.size();
         }
 
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            final ImageView patientImage;
-            final TextView patientName;
-            final TextView patientAge;
-            ArrayList<PatientModel> patientList = new ArrayList<>();
+            final ImageView familyMemberImage;
+            final TextView familyMemberName;
+            ArrayList<FamilyModel> familyList = new ArrayList<>();
             final Context context;
 
-            public ViewHolder(View itemView, Context context, ArrayList<PatientModel> patientList) {
+            public ViewHolder(View itemView, Context context, ArrayList<FamilyModel> familyList) {
                 super(itemView);
-                this.patientList = patientList;
+                this.familyList = familyList;
                 this.context = context;
                 itemView.setOnClickListener(this);
-                patientImage = itemView.findViewById(R.id.patientProfileImage);
-                patientName = itemView.findViewById(R.id.patientName);
-                patientAge = itemView.findViewById(R.id.patientAge);
+                familyMemberImage = itemView.findViewById(R.id.familyMemberImage);
+                familyMemberName = itemView.findViewById(R.id.familyMemberName);
             }
 
             @Override
             public void onClick(View view) {
-                int position = getAdapterPosition();
-                PatientModel patient = this.patientList.get(position);
+/*                int position = getAdapterPosition();
+                FamilyModel patient = this.familyList.get(position);
                 Intent intent = new Intent(context, PatientProfile.class);
-                intent.putExtra("patientID", patient.getId());
+                intent.putExtra("patientID", patientId);
                 intent.putExtra("patientName", patient.getName());
-                this.context.startActivity(intent);
+                this.context.startActivity(intent);*/
             }
         }
 

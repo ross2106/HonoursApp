@@ -13,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +45,10 @@ public class AddMedicationActivity extends AppCompatActivity {
     private ArrayAdapter<CharSequence> spinnerValues;
     private String dosageTypeValue;
 
+    //Radio Buttons
+    private RadioGroup buttonGroup;
+    private RadioButton radioButton, timedButton, asRequiredButton;
+
     //Button
     private Button addMedication;
     //Firebase User Authentication
@@ -71,8 +77,11 @@ public class AddMedicationActivity extends AppCompatActivity {
         dosageTime = findViewById(R.id.medicationTime);
         addMedication = findViewById(R.id.medicationSubmit);
 
+        buttonGroup = findViewById(R.id.dosageTypeGroup);
+
         //Dropdown
         dosageType = findViewById(R.id.dosageType);
+        dosageType.setPrompt("Dosage Type");
         spinnerValues = ArrayAdapter.createFromResource(this, R.array.dosageType, android.R.layout.simple_spinner_item);
         spinnerValues.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dosageType.setAdapter(spinnerValues);
@@ -141,6 +150,7 @@ public class AddMedicationActivity extends AppCompatActivity {
                 return true;
             }
         });
+
 
         addMedication.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -33,16 +33,14 @@
         <activity android:name=".Patient.AddPatientActivity" />
         <activity android:name=".Patient.PatientProfile" />
         <activity android:name=".ThisIsMe.ThisIsMeActivity" />
-        <activity android:name=".FamilyActivity" />
+        <activity android:name=".Family.FamilyActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".ThisIsMe.EditThisIsMeActivity" />
         <activity android:name=".Medication.MedicationActivity" />
         <activity android:name=".Medication.EditMedication" />
         <activity android:name=".Medication.AddMedicationActivity" />
-        <activity
-            android:name=".Medication.MedicationTabbedActivity"
-            android:label="@string/title_activity_medication_tabbed"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Medication.MedicationTabbedActivity"/>
+        <activity android:name=".Family.AddFamily" />
     </application>
 
 </manifest>

@@ -8,7 +8,6 @@ import android.net.Uri;
 
 public class PatientModel {
 
-    private Uri image;
     private String name;
     private String gender;
     private String age;
@@ -18,12 +17,11 @@ public class PatientModel {
 
     }
 
-    public PatientModel(String id, String name, String gender, String age/*, int image*/) {
+    public PatientModel(String id, String name, String gender, String age) {
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.id = id;
-        //this.image = image;
     }
 
     public String getName() {

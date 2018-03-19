@@ -31,6 +31,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.Family.FamilyActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Medication.MedicationActivity;
 import com.rgu.honours.dementiacareapp.Medication.MedicationTabbedActivity;
@@ -45,6 +46,7 @@ public class PatientProfile extends AppCompatActivity {
     private ImageView patientImage;
     private Button thisIsMe;
     private Button medicationButton;
+    private Button familyButton;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -82,6 +84,8 @@ public class PatientProfile extends AppCompatActivity {
         thisIsMe = findViewById(R.id.thisIsMeButton);
         //medicationButton
         medicationButton = findViewById(R.id.medicationButton);
+        //Family Button
+        familyButton = findViewById(R.id.familyButton);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -165,6 +169,17 @@ public class PatientProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MedicationTabbedActivity.class);
+                intent.putExtra("patientID", patientId);
+                intent.putExtra("patientName", patientName.getText().toString());
+                startActivity(intent);
+            }
+        });
+
+        //Set on click listener for family button
+        familyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), FamilyActivity.class);
                 intent.putExtra("patientID", patientId);
                 intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
