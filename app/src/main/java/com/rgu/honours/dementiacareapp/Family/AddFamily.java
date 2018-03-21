@@ -68,6 +68,7 @@ public class AddFamily extends AppCompatActivity {
                 final DatabaseReference patient_db = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Family");
                 String id = patient_db.push().getKey();
                 Map newFamily = new HashMap();
+                newFamily.put("id", id);
                 newFamily.put("name", name);
                 newFamily.put("contactNo", contactNo);
                 patient_db.child(id).setValue(newFamily);
@@ -105,7 +106,6 @@ public class AddFamily extends AppCompatActivity {
                         intent.putExtra("patientID", patientId);
                         intent.putExtra("patientName", patientName);
                         startActivity(intent);
-
                         break;
                     case R.id.log_out:
                         item.setChecked(true);

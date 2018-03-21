@@ -1,5 +1,6 @@
 package com.rgu.honours.dementiacareapp.Family;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,7 +32,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Patient.AddPatientActivity;
@@ -60,6 +64,9 @@ public class FamilyActivity extends AppCompatActivity {
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+
+    private StorageReference familyImageRef;
+
 
     //On Activity Creation
     @Override
@@ -112,7 +119,6 @@ public class FamilyActivity extends AppCompatActivity {
                         intent.putExtra("patientID", patientId);
                         intent.putExtra("patientName", patientName);
                         startActivity(intent);
-
                         break;
                     case R.id.log_out:
                         item.setChecked(true);
@@ -149,7 +155,8 @@ public class FamilyActivity extends AppCompatActivity {
                 for (final DataSnapshot ds : dataSnapshot.getChildren()) {
                     final FamilyModel familyMember = new FamilyModel();
                     familyMember.setName(ds.getValue(FamilyModel.class).getName());
-                    familyMember.setPhoneNumber(ds.getValue(FamilyModel.class).getPhoneNumber());
+                    familyMember.setContactNo(ds.getValue(FamilyModel.class).getContactNo());
+                    familyMember.setId(ds.getValue(FamilyModel.class).getId());
                     familyArrayList.add(familyMember);
                     mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
                     familyList.setLayoutManager(mLayoutManager);
@@ -242,20 +249,21 @@ public class FamilyActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             FamilyModel family = familyArrayList.get(position);
             TextView familyMemberName = holder.familyMemberName;
-            //final ImageView familyMemberImage = holder.familyMemberImage;
+            final ImageView familyMemberImage = holder.familyMemberImage;
             familyMemberName.setText(family.getName());
-/*            StorageReference familyImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patientId).child("Family");
-            patientImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Picasso.with(CareHomeActivity.this).load(uri).into(patientProfileImage);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    patientProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.person));
-                }
-            });*/
+            familyImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patientId).child("Family").child(family.getId());
+                familyImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.with(FamilyActivity.this).load(uri).into(familyMemberImage);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        familyMemberImage.setImageDrawable(getResources().getDrawable(R.drawable.person));
+                    }
+                });
+
         }
 
         @Override
@@ -264,7 +272,7 @@ public class FamilyActivity extends AppCompatActivity {
         }
 
 
-        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
             final ImageView familyMemberImage;
             final TextView familyMemberName;
             ArrayList<FamilyModel> familyList = new ArrayList<>();
@@ -280,17 +288,21 @@ public class FamilyActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onClick(View view) {
-/*                int position = getAdapterPosition();
-                FamilyModel patient = this.familyList.get(position);
-                Intent intent = new Intent(context, PatientProfile.class);
+            public void onClick(View v) {
+                int position = getAdapterPosition();
+                FamilyModel family = this.familyList.get(position);
+                Intent intent = new Intent(context, FamilyProfileActivity.class);
                 intent.putExtra("patientID", patientId);
-                intent.putExtra("patientName", patient.getName());
-                this.context.startActivity(intent);*/
+                intent.putExtra("patientName", patientName);
+                intent.putExtra("familyID", family.getId());
+                this.context.startActivity(intent);
             }
         }
 
     }
+
+
+
 }
 
 

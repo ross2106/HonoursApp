@@ -207,7 +207,9 @@ public class MedicationEveningTab extends Fragment {
             return medicationList.size();
         }
 
-
+        /**
+         *
+         */
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             final TextView medicationName;
             final TextView medicationDosage;

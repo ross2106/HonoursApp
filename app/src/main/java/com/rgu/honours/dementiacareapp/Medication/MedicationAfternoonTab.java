@@ -187,7 +187,7 @@ public class MedicationAfternoonTab extends Fragment {
             if (medication.getTaken() == 1) {
                 checkBox.setChecked(true);
             }
-            final DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication").child("Afternoon");
+            final DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

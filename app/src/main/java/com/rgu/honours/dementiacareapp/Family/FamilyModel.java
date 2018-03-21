@@ -7,18 +7,27 @@ package com.rgu.honours.dementiacareapp.Family;
 public class FamilyModel {
 
     String name;
-    String phoneNumber;
+    String contactNo;
+    String id;
 
     public FamilyModel(){
 
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getId() {
+        return id;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getContactNo() {
+        return contactNo;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
     }
 
     public String getName() {

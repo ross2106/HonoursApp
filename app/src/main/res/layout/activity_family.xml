@@ -43,7 +43,7 @@
         android:id="@+id/family_navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:menu="@menu/care_home_navigation"
+        app:menu="@menu/patient_profile_navigation"
         android:layout_gravity="start"
         app:itemTextColor="@color/colorPrimary" />
 
