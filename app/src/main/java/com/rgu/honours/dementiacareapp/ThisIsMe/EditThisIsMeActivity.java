@@ -7,6 +7,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
+import com.rgu.honours.dementiacareapp.Medication.AddMedicationActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
 
@@ -38,9 +41,6 @@ public class EditThisIsMeActivity extends AppCompatActivity {
     private EditText myRoutine;
     private EditText mayUpsetMe;
     private EditText makesMeFeelBetter;
-
-    //Edit Button
-    private Button saveContent;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -68,9 +68,6 @@ public class EditThisIsMeActivity extends AppCompatActivity {
         myRoutine = findViewById(R.id.myRoutineText);
         mayUpsetMe = findViewById(R.id.mayUpsetMeText);
         makesMeFeelBetter = findViewById(R.id.makesMeFeelBetterText);
-
-        //Initialising Button
-        saveContent = findViewById(R.id.save_content);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -146,33 +143,6 @@ public class EditThisIsMeActivity extends AppCompatActivity {
             }
         });
 
-        saveContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String fullNameString = fullName.getText().toString();
-                String preferredNameString = preferredName.getText().toString();
-                String knowsBestString = knowsBest.getText().toString();
-                String myBackgroundString = myBackground.getText().toString();
-                String myRoutineString = myRoutine.getText().toString();
-                String upsetMeString = mayUpsetMe.getText().toString();
-                String makeBetterString = makesMeFeelBetter.getText().toString();
-                final DatabaseReference patient_db = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
-                Map thisIsMe = new HashMap();
-                thisIsMe.put("fullName", fullNameString);
-                thisIsMe.put("preferredName", preferredNameString);
-                thisIsMe.put("knowsBest", knowsBestString);
-                thisIsMe.put("myBackground", myBackgroundString);
-                thisIsMe.put("myRoutine", myRoutineString);
-                thisIsMe.put("upsetMe", upsetMeString);
-                thisIsMe.put("makeBetter", makeBetterString);
-                patient_db.child("Patients").child(patientId).child("ThisIsMe").setValue(thisIsMe);
-                Toast.makeText(EditThisIsMeActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), ThisIsMeActivity.class);
-                intent.putExtra("patientID", patientId);
-                startActivity(intent);
-            }
-        });
-
         /*
           Code to check a user is logged in.
           If they are not logged in, return them to the login page.
@@ -205,7 +175,40 @@ public class EditThisIsMeActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        if (item.getItemId() == R.id.saveThisIsMeEdit) {
+            String fullNameString = fullName.getText().toString();
+            String preferredNameString = preferredName.getText().toString();
+            String knowsBestString = knowsBest.getText().toString();
+            String myBackgroundString = myBackground.getText().toString();
+            String myRoutineString = myRoutine.getText().toString();
+            String upsetMeString = mayUpsetMe.getText().toString();
+            String makeBetterString = makesMeFeelBetter.getText().toString();
+            final DatabaseReference patient_db = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+            Map thisIsMe = new HashMap();
+            thisIsMe.put("fullName", fullNameString);
+            thisIsMe.put("preferredName", preferredNameString);
+            thisIsMe.put("knowsBest", knowsBestString);
+            thisIsMe.put("myBackground", myBackgroundString);
+            thisIsMe.put("myRoutine", myRoutineString);
+            thisIsMe.put("upsetMe", upsetMeString);
+            thisIsMe.put("makeBetter", makeBetterString);
+            patient_db.child("Patients").child(patientId).child("ThisIsMe").setValue(thisIsMe);
+            Toast.makeText(EditThisIsMeActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), ThisIsMeActivity.class);
+            intent.putExtra("patientID", patientId);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mMenuInflater = getMenuInflater();
+        mMenuInflater.inflate(R.menu.edit_thisisme_dropdown, menu);
+        return true;
     }
 
     /**

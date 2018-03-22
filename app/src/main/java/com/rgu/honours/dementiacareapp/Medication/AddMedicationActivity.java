@@ -192,6 +192,7 @@ public class AddMedicationActivity extends AppCompatActivity {
                 newMedication.put("time", medicationTime);
                 newMedication.put("taken", 0);
                 newMedication.put("category", category);
+                newMedication.put("takenTime", 0);
 
                 patientDb.
 

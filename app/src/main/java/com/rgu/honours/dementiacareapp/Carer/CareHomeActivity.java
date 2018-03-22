@@ -1,5 +1,6 @@
 package com.rgu.honours.dementiacareapp.Carer;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -222,19 +224,23 @@ public class CareHomeActivity extends AppCompatActivity {
             PatientModel patient = patients.get(position);
             TextView patientName = holder.patientName;
             TextView patientAge = holder.patientAge;
+            final ProgressBar progressBar = holder.progressBar;
             final ImageView patientProfileImage = holder.patientImage;
             patientName.setText(patient.getName());
             patientAge.setText(patient.getAge());
+            progressBar.setVisibility(View.VISIBLE);
             StorageReference patientImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patient.getId()).child("Profile Picture");
             patientImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     Picasso.with(CareHomeActivity.this).load(uri).into(patientProfileImage);
+                    progressBar.setVisibility(View.GONE);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     patientProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.person));
+                    progressBar.setVisibility(View.GONE);
                 }
             });
         }
@@ -249,6 +255,7 @@ public class CareHomeActivity extends AppCompatActivity {
             final ImageView patientImage;
             final TextView patientName;
             final TextView patientAge;
+            final ProgressBar progressBar;
             ArrayList<PatientModel> patientList = new ArrayList<>();
             final Context context;
 
@@ -260,6 +267,7 @@ public class CareHomeActivity extends AppCompatActivity {
                 patientImage = itemView.findViewById(R.id.patientProfileImage);
                 patientName = itemView.findViewById(R.id.patientName);
                 patientAge = itemView.findViewById(R.id.patientAge);
+                progressBar = itemView.findViewById(R.id.patientImageProgress);
             }
 
             @Override

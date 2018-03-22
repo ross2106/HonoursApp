@@ -24,14 +24,27 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_weight="1">
 
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:id="@+id/patientMainProfileImage"
-                android:layout_marginTop="8sp"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                android:contentDescription="TODO" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:id="@+id/patientMainProfileImage"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"/>
+
+                <ProgressBar
+                    android:id="@+id/patientProfileProgressBar"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible"/>
+
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/patientProfileName"
@@ -131,7 +144,7 @@
 
             <Button
                 style="?android:attr/buttonBarButtonStyle"
-                android:id="@+id/calendarButton"
+                android:id="@+id/eventsButton"
                 android:layout_width="match_parent"
                 android:layout_height="80sp"
                 android:layout_weight="1"
@@ -143,7 +156,7 @@
                 android:layout_gravity="center"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/primaryTextColor"
-                android:text="@string/calendar"
+                android:text="@string/events"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/familyButton" />
         </LinearLayout>

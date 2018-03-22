@@ -280,7 +280,7 @@ public class EditMedication extends AppCompatActivity {
             // Add the buttons
             builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent(EditMedication.this, MedicationActivity.class);
+                    Intent intent = new Intent(EditMedication.this, MedicationTabbedActivity.class);
                     intent.putExtra("patientID", patientId);
                     startActivity(intent);
                     dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication").child(medicationId).removeValue();

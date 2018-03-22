@@ -12,17 +12,9 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp">
 
-        <Button
-            android:id="@+id/save_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/greenButton"
-            android:text="Save Content" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/save_content"
             android:layout_centerHorizontal="true">
 
             <LinearLayout

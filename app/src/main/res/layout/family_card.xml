@@ -10,12 +10,26 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <ImageView
-            android:id="@+id/familyMemberImage"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:scaleType="fitXY"
-            android:contentDescription="TODO" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/familyMemberImage"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"/>
+
+            <ProgressBar
+                android:id="@+id/familyImageProgress"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="visible"/>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/familyMemberName"

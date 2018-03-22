@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,9 +32,9 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.Events.EventsActivity;
 import com.rgu.honours.dementiacareapp.Family.FamilyActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
-import com.rgu.honours.dementiacareapp.Medication.MedicationActivity;
 import com.rgu.honours.dementiacareapp.Medication.MedicationTabbedActivity;
 import com.rgu.honours.dementiacareapp.R;
 import com.rgu.honours.dementiacareapp.ThisIsMe.ThisIsMeActivity;
@@ -44,9 +45,9 @@ public class PatientProfile extends AppCompatActivity {
     //Layout views
     private TextView patientName;
     private ImageView patientImage;
-    private Button thisIsMe;
-    private Button medicationButton;
-    private Button familyButton;
+    private Button thisIsMe, medicationButton, familyButton, eventsButton;
+    private ProgressBar progressBar;
+
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -86,6 +87,11 @@ public class PatientProfile extends AppCompatActivity {
         medicationButton = findViewById(R.id.medicationButton);
         //Family Button
         familyButton = findViewById(R.id.familyButton);
+        //Events Button
+        eventsButton = findViewById(R.id.eventsButton);
+        //Progress Bar
+        progressBar = findViewById(R.id.patientProfileProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -136,11 +142,13 @@ public class PatientProfile extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.with(PatientProfile.this).load(uri).into(patientImage);
+                progressBar.setVisibility(View.GONE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 patientImage.setImageDrawable(getResources().getDrawable(R.drawable.photo));
+                progressBar.setVisibility(View.GONE);
             }
         });
         //Set an on click listener if the user wishes to change their profile picture
@@ -180,6 +188,17 @@ public class PatientProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), FamilyActivity.class);
+                intent.putExtra("patientID", patientId);
+                intent.putExtra("patientName", patientName.getText().toString());
+                startActivity(intent);
+            }
+        });
+
+        //Set on click listener for events button
+        eventsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EventsActivity.class);
                 intent.putExtra("patientID", patientId);
                 intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);

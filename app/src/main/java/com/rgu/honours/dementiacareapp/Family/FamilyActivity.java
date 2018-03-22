@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -250,17 +251,21 @@ public class FamilyActivity extends AppCompatActivity {
             FamilyModel family = familyArrayList.get(position);
             TextView familyMemberName = holder.familyMemberName;
             final ImageView familyMemberImage = holder.familyMemberImage;
+            final ProgressBar progressBar = holder.progressBar;
+            progressBar.setVisibility(View.VISIBLE);
             familyMemberName.setText(family.getName());
             familyImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patientId).child("Family").child(family.getId());
                 familyImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.with(FamilyActivity.this).load(uri).into(familyMemberImage);
+                        progressBar.setVisibility(View.GONE);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         familyMemberImage.setImageDrawable(getResources().getDrawable(R.drawable.person));
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
 
@@ -275,6 +280,7 @@ public class FamilyActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
             final ImageView familyMemberImage;
             final TextView familyMemberName;
+            final ProgressBar progressBar;
             ArrayList<FamilyModel> familyList = new ArrayList<>();
             final Context context;
 
@@ -285,6 +291,7 @@ public class FamilyActivity extends AppCompatActivity {
                 itemView.setOnClickListener(this);
                 familyMemberImage = itemView.findViewById(R.id.familyMemberImage);
                 familyMemberName = itemView.findViewById(R.id.familyMemberName);
+                progressBar = itemView.findViewById(R.id.familyImageProgress);
             }
 
             @Override

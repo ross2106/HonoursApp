@@ -37,7 +37,7 @@
     <string name="thisIsMe">This is me</string>
     <string name="medication">Medication</string>
     <string name="myFamily">My Family</string>
-    <string name="calendar">Calendar</string>
+    <string name="events">Events</string>
 
     <!-- ************* Drawer Layout ************* -->
     <string name="open">Open</string>

@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <supports-screens
         android:largeScreens="true"
@@ -35,14 +35,15 @@
         <activity android:name=".Patient.PatientProfile" />
         <activity android:name=".ThisIsMe.ThisIsMeActivity" />
         <activity android:name=".Family.FamilyActivity" />
-        <activity android:name=".CalendarActivity" />
+        <activity android:name=".Events.EventsActivity" />
         <activity android:name=".ThisIsMe.EditThisIsMeActivity" />
-        <activity android:name=".Medication.MedicationActivity" />
         <activity android:name=".Medication.EditMedication" />
         <activity android:name=".Medication.AddMedicationActivity" />
         <activity android:name=".Medication.MedicationTabbedActivity" />
         <activity android:name=".Family.AddFamily" />
-        <activity android:name=".Family.FamilyProfileActivity"></activity>
+        <activity android:name=".Family.FamilyProfileActivity" />
+        <activity android:name=".Events.AddEventActivity" />
+        <activity android:name=".Events.EditEventActivity"></activity>
     </application>
 
 </manifest>
