@@ -148,8 +148,10 @@ public class FamilyProfileActivity extends AppCompatActivity {
         familyDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                familyMemberName.setText(dataSnapshot.getValue(FamilyModel.class).getName());
-                phoneNo = dataSnapshot.getValue(FamilyModel.class).getContactNo();
+                if (dataSnapshot.hasChildren()) {
+                    familyMemberName.setText(dataSnapshot.getValue(FamilyModel.class).getName());
+                    phoneNo = dataSnapshot.getValue(FamilyModel.class).getContactNo();
+                }
             }
 
             @Override
@@ -238,9 +240,11 @@ public class FamilyProfileActivity extends AppCompatActivity {
             // Add the buttons
             builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    startActivity(new Intent(getApplicationContext(), CareHomeActivity.class));
-                    Toast.makeText(getApplicationContext(), "The family member has been successfully deleted.", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(FamilyProfileActivity.this, FamilyActivity.class);
+                    intent.putExtra("patientID", patientId);
+                    startActivity(intent);
                     dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Family").child(familyId).removeValue();
+                    Toast.makeText(getApplicationContext(), "The family member has been successfully deleted.", Toast.LENGTH_LONG).show();
                     profilePhotoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

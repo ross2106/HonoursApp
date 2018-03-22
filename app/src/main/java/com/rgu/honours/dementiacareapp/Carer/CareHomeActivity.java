@@ -83,6 +83,11 @@ public class CareHomeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.care_home:
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        startActivity(new Intent(getApplicationContext(), CareHomeActivity.class));
+                        break;
                     case R.id.log_out:
                         item.setChecked(true);
                         mDrawerLayout.closeDrawers();

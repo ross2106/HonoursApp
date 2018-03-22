@@ -164,12 +164,6 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         mAuth.signOut();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater mMenuInflater = getMenuInflater();
-        mMenuInflater.inflate(R.menu.medication_dropdown, menu);
-        return true;
-    }
 
     /**
      * Code for the Navigation drawer "hamburger". Opens the drawer.
@@ -181,12 +175,6 @@ public class MedicationTabbedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
-        }
-        if (item.getItemId() == R.id.addMedication) {
-            Intent intent = new Intent(getApplicationContext(), AddMedicationActivity.class);
-            intent.putExtra("patientID", patientId);
-            intent.putExtra("patientName", patientName);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

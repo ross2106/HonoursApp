@@ -182,10 +182,12 @@ public class MedicationEveningTab extends Fragment {
             TextView medicationName = holder.medicationName;
             TextView medicationDosage = holder.medicationDosage;
             TextView medicationTime = holder.medicationTime;
+            TextView medicationDosageType = holder.medicationDosageType;
             final CheckBox checkBox = holder.checkbox;
             medicationName.setText(medication.getName());
-            medicationDosage.setText(medication.getDosageValue() + " " + medication.getDosageType());
+            medicationDosage.setText(medication.getDosageValue());
             medicationTime.setText(timeParse(medication.getTime()));
+            medicationDosageType.setText(medication.getDosageType());
             if (medication.getTaken() == 1) {
                 checkBox.setChecked(true);
             }
@@ -236,6 +238,7 @@ public class MedicationEveningTab extends Fragment {
             final TextView medicationName;
             final TextView medicationDosage;
             final TextView medicationTime;
+            final TextView medicationDosageType;
             final CheckBox checkbox;
             ArrayList<MedicationModel> medicationList = new ArrayList<>();
 
@@ -247,6 +250,7 @@ public class MedicationEveningTab extends Fragment {
                 medicationDosage = itemView.findViewById(R.id.medicationDosage);
                 medicationTime = itemView.findViewById(R.id.medicationTime);
                 checkbox = itemView.findViewById(R.id.medicationTaken);
+                medicationDosageType = itemView.findViewById(R.id.medicationDosageType);
                 checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

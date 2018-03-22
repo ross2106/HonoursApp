@@ -3,113 +3,204 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/editMedicationDrawerLayout"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp"
     tools:context="com.rgu.honours.dementiacareapp.Medication.EditMedication">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_medicationName"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/medication_name_layout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/dosageLayout"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/dosageLayout"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/editMedicationName"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.25"
                 android:ems="10"
-                android:hint="@string/medicationName"
-                android:inputType="textPersonName"
-                android:textColor="@color/colorPrimary" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_gravity="center_vertical"
+                android:textAlignment="center"
+                android:text="Name"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_medicationName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editMedicationName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/medicationName"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/colorPrimary" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <!--<LinearLayout
+            android:id="@+id/medication_type_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/medication_name_layout"
+            app:layout_constraintBottom_toTopOf="@id/dosageLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:layout_gravity="center_vertical"
+                android:textAlignment="center"
+                android:ems="10"
+                android:text="Medication Type" />
+
+            <RadioGroup
+                android:id="@+id/dosageTypeGroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:ems="10"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/timed_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Timed Medication" />
+
+                <RadioButton
+                    android:id="@+id/asRequired_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="As Required" />
+            </RadioGroup>
+        </LinearLayout>-->
+
 
         <LinearLayout
             android:id="@+id/dosageLayout"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/input_layout_medicationTime"
+            app:layout_constraintTop_toBottomOf="@id/medication_name_layout"
+            app:layout_constraintBottom_toTopOf="@id/medication_dosage_value_layout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_layout_medicationName">
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:layout_gravity="center_vertical"
+                android:textAlignment="center"
+                android:ems="10"
+                android:text="Select Dosage Type" />
+
+            <Spinner
+                android:id="@+id/editDosageType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:ems="10"
+                android:textColor="@color/colorPrimary" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/medication_dosage_value_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/dosageLayout"
+            app:layout_constraintBottom_toTopOf="@id/medication_time_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:layout_gravity="center_vertical"
+                android:textAlignment="center"
+                android:ems="10"
+                android:text="Dosage Value" />
 
             <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="0.75">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/editMedicationDosageValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="e.g 2 Pills or 500mg"
+                    android:hint="Dosage Value e.g 2 Pills or 500mg"
                     android:inputType="number"
                     android:textColor="@color/colorPrimary" />
             </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/editDosageType"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/medication_time_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/medication_dosage_value_layout"
+            app:layout_constraintBottom_toTopOf="@id/editMedicationSubmit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:layout_gravity="center_vertical"
+                android:textAlignment="center"
+                android:ems="10"
+                android:text="Medication Time" />
+
+            <Button
+                android:id="@+id/editMedicationTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:ems="10"
+                android:text="@string/medTimeHint"/>
+
 
         </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_medicationTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@id/medicationSubmit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dosageLayout">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/editMedicationTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="time"
-                android:textColor="@color/colorPrimary" />
-        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/editMedicationSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
+            android:layout_width="410dp"
+            android:layout_height="65dp"
             android:background="@color/greenButton"
             android:text="Submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/input_layout_medicationTime" />
+            app:layout_constraintTop_toBottomOf="@id/medication_time_layout" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView
@@ -118,5 +209,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemTextColor="@color/colorPrimary"
-        app:menu="@menu/patient_profile_navigation" />
+        app:menu="@menu/patient_navigation_drawer" />
 </android.support.v4.widget.DrawerLayout>

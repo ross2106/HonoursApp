@@ -26,6 +26,7 @@ import com.rgu.honours.dementiacareapp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -81,11 +82,20 @@ public class UpComingEventsTab extends Fragment {
                 int counter = 0;
                 for(DataSnapshot ds: dataSnapshot.getChildren()){
                     EventsModel event = new EventsModel();
-                    event.setName(ds.getValue(EventsModel.class).getName());
-                    event.setStartTime(ds.getValue(EventsModel.class).getStartTime());
-                    event.setFinishTime(ds.getValue(EventsModel.class).getFinishTime());
-                    eventsArrayList.add(event);
-                    counter++;
+                    if(ds.getValue(EventsModel.class).getDate() > System.currentTimeMillis()){
+                        event.setId(ds.getValue(EventsModel.class).getId());
+                        event.setName(ds.getValue(EventsModel.class).getName());
+                        event.setDate(ds.getValue(EventsModel.class).getDate());
+                        event.setStartTime(ds.getValue(EventsModel.class).getStartTime());
+                        event.setFinishTime(ds.getValue(EventsModel.class).getFinishTime());
+                        eventsArrayList.add(event);
+                        for (int i = 0; i < eventsArrayList.size(); i++) {
+                            if (eventsArrayList.get(i).getDate() > eventsArrayList.get(counter).getDate()) {
+                                Collections.swap(eventsArrayList, i, counter);
+                            }
+                        }
+                        counter++;
+                    }
                 }
                 mLayoutManager = new LinearLayoutManager(getActivity());
                 eventsListView.setLayoutManager(mLayoutManager);
@@ -118,6 +128,10 @@ public class UpComingEventsTab extends Fragment {
 
     private String timeParse(Long time) {
         return new SimpleDateFormat("HH:mm").format(new Date(time));
+    }
+
+    private String dateParse(Long date){
+        return new SimpleDateFormat("dd/MM/yyyy").format(new Date(date));
     }
 
     /**
@@ -167,9 +181,11 @@ public class UpComingEventsTab extends Fragment {
             TextView eventName = holder.eventName;
             TextView eventStart = holder.eventStart;
             TextView eventFinish = holder.eventFinish;
+            TextView eventDate = holder.eventDate;
             eventName.setText(event.getName());
             eventStart.setText(timeParse(event.getStartTime()));
             eventFinish.setText(timeParse(event.getFinishTime()));
+            eventDate.setText(dateParse(event.getDate()));
         }
 
         @Override
@@ -179,7 +195,7 @@ public class UpComingEventsTab extends Fragment {
 
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            final TextView eventName, eventStart, eventFinish;
+            final TextView eventName, eventStart, eventFinish, eventDate;
             ArrayList<EventsModel> eventsList = new ArrayList<>();
 
             public ViewHolder(final View itemView, Context context, final ArrayList<EventsModel> eventsList) {
@@ -189,6 +205,7 @@ public class UpComingEventsTab extends Fragment {
                 eventName = itemView.findViewById(R.id.eventName);
                 eventStart = itemView.findViewById(R.id.eventStart);
                 eventFinish = itemView.findViewById(R.id.eventFinish);
+                eventDate = itemView.findViewById(R.id.eventDate);
             }
 
             @Override

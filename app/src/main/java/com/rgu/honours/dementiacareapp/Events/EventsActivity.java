@@ -92,7 +92,7 @@ public class EventsActivity extends AppCompatActivity {
         mToggle.syncState(); //Synchronize with drawer layout state
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
         getSupportActionBar().setTitle("Events"); //Set the title of the page
-        NavigationView navigationView = findViewById(R.id.medication_tabbed_navigation_view); //Navigation view from layout file
+        NavigationView navigationView = findViewById(R.id.events_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -158,6 +158,17 @@ public class EventsActivity extends AppCompatActivity {
      */
     private void signOut() {
         mAuth.signOut();
+    }
+
+    /**
+     * Code for the Navigation drawer "hamburger". Opens the drawer.
+     *
+     * @param item The Item in the menu
+     * @return Returns the selected Items
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     /**

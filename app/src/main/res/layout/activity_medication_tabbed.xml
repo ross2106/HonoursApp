@@ -78,7 +78,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemTextColor="@color/colorPrimary"
-        app:menu="@menu/patient_profile_navigation">
+        app:menu="@menu/patient_navigation_drawer">
 
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

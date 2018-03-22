@@ -17,7 +17,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/medication_type_layout"
+                app:layout_constraintBottom_toTopOf="@id/dosageLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:id="@+id/medication_type_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                         android:layout_weight="0.5"
                         android:text="As Required" />
                 </RadioGroup>
-            </LinearLayout>
+            </LinearLayout>-->
 
 
             <LinearLayout
@@ -100,7 +100,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/medication_type_layout"
+                app:layout_constraintTop_toBottomOf="@id/medication_name_layout"
                 app:layout_constraintBottom_toTopOf="@id/medication_dosage_value_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -179,26 +179,13 @@
                     android:ems="10"
                     android:text="Medication Time" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_medicationTime"
+                <Button
+                    android:id="@+id/medicationTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_weight="0.75"
-                    app:layout_constraintBottom_toTopOf="@id/medicationSubmit"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/dosageLayout">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/medicationTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Medication Time"
-                        android:inputType="time"
-                        android:textColor="@color/colorPrimary" />
-                </android.support.design.widget.TextInputLayout>
+                    android:ems="10"
+                    android:text="@string/medTimeHint"/>
 
 
             </LinearLayout>
@@ -222,5 +209,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemTextColor="@color/colorPrimary"
-        app:menu="@menu/patient_profile_navigation" />
+        app:menu="@menu/patient_navigation_drawer" />
 </android.support.v4.widget.DrawerLayout>

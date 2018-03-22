@@ -1,6 +1,9 @@
 package com.rgu.honours.dementiacareapp.Medication;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -17,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +34,7 @@ import com.rgu.honours.dementiacareapp.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +43,9 @@ public class AddMedicationActivity extends AppCompatActivity {
     //Text Fields
     private EditText medicationName;
     private EditText dosageValue;
-    private EditText dosageTime;
+    private Button dosageTime;
+
+    private TimePickerDialog.OnTimeSetListener mMedicationTimeListener;
 
     //Spinner
     private Spinner dosageType;
@@ -77,7 +84,30 @@ public class AddMedicationActivity extends AppCompatActivity {
         dosageTime = findViewById(R.id.medicationTime);
         addMedication = findViewById(R.id.medicationSubmit);
 
-        buttonGroup = findViewById(R.id.dosageTypeGroup);
+        dosageTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                int hour = cal.get(Calendar.HOUR_OF_DAY);
+                int min = cal.get(Calendar.MINUTE);
+                TimePickerDialog dialog = new TimePickerDialog(
+                        AddMedicationActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mMedicationTimeListener,
+                        hour, min,
+                        true);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+        mMedicationTimeListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                dosageTime.setText(String.format("%02d:%02d", hourOfDay, minute));
+            }
+        };
+
+        //buttonGroup = findViewById(R.id.dosageTypeGroup);
 
         //Dropdown
         dosageType = findViewById(R.id.dosageType);
@@ -226,9 +256,7 @@ public class AddMedicationActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        }
-
-        ;
+        };
     }
 
     /**
