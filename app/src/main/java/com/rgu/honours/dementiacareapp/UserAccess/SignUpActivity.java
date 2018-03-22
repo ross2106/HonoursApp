@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private EditText emailText, passwordText, name, age;
+    private EditText emailText, passwordText, name;
 
     private FirebaseAuth mAuth;
 
@@ -52,7 +52,6 @@ public class SignUpActivity extends AppCompatActivity {
         emailText = findViewById(R.id.signUpUsername);
         passwordText = findViewById(R.id.signUpPassword);
         name = findViewById(R.id.name);
-        age = findViewById(R.id.age);
 
         //Sign up on click listener
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +60,6 @@ public class SignUpActivity extends AppCompatActivity {
                 final String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
                 final String nameText = name.getText().toString();
-                final String ageText = age.getText().toString();
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
                     return;
@@ -91,7 +89,6 @@ public class SignUpActivity extends AppCompatActivity {
                                     Map newUser = new HashMap();
                                     newUser.put("email", email);
                                     newUser.put("name", nameText);
-                                    newUser.put("age", ageText);
                                     current_user_db.setValue(newUser);
 
                                     Log.d(TAG, "createUserWithEmail: success");

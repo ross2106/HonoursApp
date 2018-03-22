@@ -7,8 +7,8 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/logIn"
         android:textAlignment="center"
         android:gravity="center"
@@ -74,49 +74,51 @@
     <Button
         android:id="@+id/confirmLogin"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:textSize="24sp"
         android:background="@color/greenButton"
         android:elevation="2dp"
         android:text="@string/logIn"
         android:textColor="@color/primaryTextColor"
-        app:layout_constraintBottom_toTopOf="@+id/forgottenSignUp"
+        app:layout_constraintBottom_toTopOf="@+id/button_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_layout" />
 
-    <Button
-        android:id="@+id/forgottenSignUp"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-        android:text="@string/forgottenSignUp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/resetPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmLogin" />
-
-    <Button
-        android:id="@+id/resetPassword"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-        android:text="@string/resetPassword"
-        android:textSize="14sp"
-        android:textColor="@color/colorPrimary"
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forgottenSignUp" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmLogin">
+
+        <Button
+            android:id="@+id/forgottenSignUp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="@string/forgottenSignUp"
+            android:textColor="@color/primaryTextColor"
+            android:background="@color/colorPrimaryDark"
+            android:layout_margin="5dp"/>
+
+        <Button
+            android:id="@+id/resetPassword"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="@string/resetPassword"
+            android:textColor="@color/primaryTextColor"
+            android:background="@color/red"
+            android:layout_margin="5dp"/>
+
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

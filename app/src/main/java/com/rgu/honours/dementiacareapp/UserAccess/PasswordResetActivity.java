@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,11 +15,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
+import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.R;
 
 public class PasswordResetActivity extends AppCompatActivity {
 
     private EditText emailInput;
+    private Button btnReset;
     private FirebaseAuth mAuth;
 
     @Override
@@ -26,18 +29,13 @@ public class PasswordResetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_reset);
 
+        getSupportActionBar().setTitle("Reset Password");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         emailInput = findViewById(R.id.resetEmail);
-        Button btnBack = findViewById(R.id.backButton);
-        Button btnReset = findViewById(R.id.resetPasswordButton);
+        btnReset = findViewById(R.id.resetPasswordButton);
 
         mAuth = FirebaseAuth.getInstance();
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +62,17 @@ public class PasswordResetActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() != null) {
@@ -71,4 +80,6 @@ public class PasswordResetActivity extends AppCompatActivity {
             startActivity(new Intent(this, CareHomeActivity.class));
         }
     }
+
+
 }

@@ -9,7 +9,7 @@
     <!-- ************* Log In Page************* -->
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="forgottenSignUp">Forgotten to register? Click here!</string>
+    <string name="forgottenSignUp">Register</string>
     <string name="resetPassword">Reset Password</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
     <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
@@ -72,6 +72,6 @@
     <string name="finishTime">Finish Time</string>
     <string name="finishHint">Select finish time</string>
     <string name="addEvent">Add Event</string>
-    <string name="editEvent">Edit Event</string>
+    <string name="editEvent">Save Event</string>
 
 </resources>
