@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp">
+    android:layout_margin="20dp">
 
     <TextView
         android:id="@+id/title"
@@ -34,14 +34,12 @@
             android:id="@+id/input_layout_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:visibility="visible">
+            android:layout_centerHorizontal="true">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/username"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:drawableStart="@drawable/person"
                 android:ems="10"
                 android:hint="@string/email"
@@ -54,13 +52,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/input_layout_username"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp">
+            android:layout_centerHorizontal="true">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:drawableStart="@drawable/padlock"
                 android:ems="10"
                 android:hint="@string/password"

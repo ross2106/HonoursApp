@@ -191,32 +191,31 @@ public class MedicationAfternoonTab extends Fragment {
                 checkBox.setChecked(true);
             }
             final DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
+            medRef.child(medication.getId()).child("takenTime").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Date takenDate = new Date((Long) dataSnapshot.getValue());
+                    Date todayDate = new Date(System.currentTimeMillis());
+                    Calendar cal1 = Calendar.getInstance();
+                    Calendar cal2 = Calendar.getInstance();
+                    cal1.setTime(takenDate);
+                    cal2.setTime(todayDate);
+                    if (cal1.get(Calendar.DATE) < cal2.get(Calendar.DATE)) {
+                        medRef.child(medication.getId()).child("taken").setValue(0);
+                        medRef.child(medication.getId()).child("takenTime").setValue(0);
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         medRef.child(medication.getId()).child("taken").setValue(1);
                         medRef.child(medication.getId()).child("takenTime").setValue(System.currentTimeMillis());
-                        medRef.child(medication.getId()).child("takenTime").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Date takenDate = new Date((Long) dataSnapshot.getValue());
-                                Date todayDate = new Date(System.currentTimeMillis());
-                                Calendar cal1 = Calendar.getInstance();
-                                Calendar cal2 = Calendar.getInstance();
-                                cal1.setTime(takenDate);
-                                cal2.setTime(todayDate);
-                                boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-                                if (cal1.get(Calendar.DATE) < cal2.get(Calendar.DATE)) {
-                                    medRef.child(medication.getId()).child("taken").setValue(0);
-                                    medRef.child(medication.getId()).child("takenTime").setValue(0);
-                                }
-                            }
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
                     }
                     if (!isChecked) {
                         medRef.child(medication.getId()).child("taken").setValue(0);
@@ -224,7 +223,6 @@ public class MedicationAfternoonTab extends Fragment {
                 }
             });
         }
-
         @Override
         public int getItemCount() {
             return medicationList.size();

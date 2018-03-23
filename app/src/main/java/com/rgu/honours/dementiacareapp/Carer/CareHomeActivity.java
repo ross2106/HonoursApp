@@ -3,6 +3,7 @@ package com.rgu.honours.dementiacareapp.Carer;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +50,7 @@ public class CareHomeActivity extends AppCompatActivity {
     private RecyclerView patientListView;
     private final ArrayList<PatientModel> patientArrayList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
+    private int noOfColumns;
 
     //Initialising Firebase Authorisation
     private FirebaseAuth mAuth;
@@ -139,7 +142,8 @@ public class CareHomeActivity extends AppCompatActivity {
                     patient.setName(ds.getValue(PatientModel.class).getName());
                     patient.setAge(ds.getValue(PatientModel.class).getAge());
                     patientArrayList.add(patient);
-                    mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+                    orientation();
+                    mLayoutManager = new GridLayoutManager(getApplicationContext(), noOfColumns);
                     patientListView.setLayoutManager(mLayoutManager);
                     MyAdapter adapter = new MyAdapter(getApplicationContext(), patientArrayList);
                     patientListView.setAdapter(adapter);
@@ -162,6 +166,17 @@ public class CareHomeActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+    }
+
+    private void orientation(){
+        boolean landscape = getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        if(landscape){
+            noOfColumns = 3;
+        }
+        if(!landscape){
+            noOfColumns = 2;
+        }
 
     }
 
