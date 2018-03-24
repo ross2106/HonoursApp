@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
@@ -24,6 +25,8 @@ import com.rgu.honours.dementiacareapp.R;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -61,17 +64,23 @@ public class SignUpActivity extends AppCompatActivity {
                 String password = passwordText.getText().toString();
                 final String nameText = name.getText().toString();
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    emailText.setError("Required!");
                     return;
                 }
-
+                if(!isValidEmail(email)){
+                    emailText.setError("Not a valid email format!");
+                    return;
+                }
                 if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    passwordText.setError("Required!");
                     return;
                 }
-
+                if (TextUtils.isEmpty(nameText)) {
+                    name.setError("Required!");
+                    return;
+                }
                 if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+                    passwordText.setError("Password too short, enter minimum 6 characters!");
                     return;
                 }
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -81,19 +90,14 @@ public class SignUpActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     //Sign in success
                                     Log.d(TAG, "createUserWithEmail: success");
-                                    Toast.makeText(SignUpActivity.this, "Sign up successful!",
+                                    Toast.makeText(SignUpActivity.this, "Sign up successful! You have now logged in.",
                                             Toast.LENGTH_SHORT).show();
-
                                     String user_id = mAuth.getCurrentUser().getUid();
                                     DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
                                     Map newUser = new HashMap();
                                     newUser.put("email", email);
                                     newUser.put("name", nameText);
                                     current_user_db.setValue(newUser);
-
-                                    Log.d(TAG, "createUserWithEmail: success");
-                                    Toast.makeText(SignUpActivity.this, "Sign up successful!",
-                                            Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                                     startActivity(intent);
                                 } else {
@@ -107,6 +111,16 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+
+    private boolean isValidEmail(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     @Override

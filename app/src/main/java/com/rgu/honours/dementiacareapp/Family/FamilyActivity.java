@@ -2,6 +2,7 @@ package com.rgu.honours.dementiacareapp.Family;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,6 +45,8 @@ import com.rgu.honours.dementiacareapp.Patient.AddPatientActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientModel;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
+import com.rgu.honours.dementiacareapp.ThisIsMe.EditThisIsMeActivity;
+import com.rgu.honours.dementiacareapp.ThisIsMe.ThisIsMeActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -155,17 +159,41 @@ public class FamilyActivity extends AppCompatActivity {
         patientDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (final DataSnapshot ds : dataSnapshot.getChildren()) {
-                    final FamilyModel familyMember = new FamilyModel();
-                    familyMember.setName(ds.getValue(FamilyModel.class).getName());
-                    familyMember.setContactNo(ds.getValue(FamilyModel.class).getContactNo());
-                    familyMember.setId(ds.getValue(FamilyModel.class).getId());
-                    familyArrayList.add(familyMember);
-                    orientation();
-                    mLayoutManager = new GridLayoutManager(getApplicationContext(), noOfColumns);
-                    familyList.setLayoutManager(mLayoutManager);
-                    MyAdapter adapter = new MyAdapter(getApplicationContext(), familyArrayList);
-                    familyList.setAdapter(adapter);
+                if(dataSnapshot.hasChildren()) {
+                    for (final DataSnapshot ds : dataSnapshot.getChildren()) {
+                        final FamilyModel familyMember = new FamilyModel();
+                        familyMember.setName(ds.getValue(FamilyModel.class).getName());
+                        familyMember.setContactNo(ds.getValue(FamilyModel.class).getContactNo());
+                        familyMember.setId(ds.getValue(FamilyModel.class).getId());
+                        familyArrayList.add(familyMember);
+                        orientation();
+                        mLayoutManager = new GridLayoutManager(getApplicationContext(), noOfColumns);
+                        familyList.setLayoutManager(mLayoutManager);
+                        MyAdapter adapter = new MyAdapter(getApplicationContext(), familyArrayList);
+                        familyList.setAdapter(adapter);
+                    }
+                }
+                if(!dataSnapshot.hasChildren()){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FamilyActivity.this, R.style.AlertDialog);
+                    builder.setMessage("This individual has no family members added. Would you like to add some now?")
+                            .setTitle("Add Family Member");
+                    // Add the buttons
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(FamilyActivity.this, AddFamily.class);
+                            intent.putExtra("patientID", patientId);
+                            intent.putExtra("patientName", patientName);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog dialog = builder.show();
                 }
             }
 

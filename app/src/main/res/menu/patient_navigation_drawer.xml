@@ -11,9 +11,9 @@
         android:title="Patient Profile Page"
         android:icon="@drawable/person" />
 
-    <item
+<!--    <item
         android:title="Application Settings"
-        android:icon="@drawable/settings" />
+        android:icon="@drawable/settings" />-->
 
     <item
         android:id="@+id/log_out"

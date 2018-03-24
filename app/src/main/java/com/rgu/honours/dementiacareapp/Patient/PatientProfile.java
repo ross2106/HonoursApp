@@ -47,6 +47,7 @@ public class PatientProfile extends AppCompatActivity {
     private ImageView patientImage;
     private Button thisIsMe, medicationButton, familyButton, eventsButton;
     private ProgressBar progressBar;
+    private Button uploadPhoto;
 
 
     //Firebase User Authentication
@@ -81,6 +82,9 @@ public class PatientProfile extends AppCompatActivity {
         patientName.setText(getIntent().getStringExtra("patientName"));
         //Patient Profile Picture
         patientImage = findViewById(R.id.patientMainProfileImage);
+        //Photo upload button
+        uploadPhoto = findViewById(R.id.uploadPhoto);
+        uploadPhoto.setVisibility(View.GONE);
         //thisIsMeButton
         thisIsMe = findViewById(R.id.thisIsMeButton);
         //medicationButton
@@ -147,15 +151,21 @@ public class PatientProfile extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                patientImage.setImageDrawable(getResources().getDrawable(R.drawable.photo));
                 progressBar.setVisibility(View.GONE);
+                uploadPhoto.setVisibility(View.VISIBLE);
+                uploadPhoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("image/*");
+                        startActivityForResult(intent, GALLERY_INTENT);
+                    }
+                });
             }
         });
-        //Set an on click listener if the user wishes to change their profile picture
         patientImage.setOnClickListener(new View.OnClickListener() {
-
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, GALLERY_INTENT);
@@ -324,7 +334,7 @@ public class PatientProfile extends AppCompatActivity {
                     progressDialog.setMessage("Uploading image...");
                 }
             });
-
+            uploadPhoto.setVisibility(View.GONE);
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }

@@ -2,6 +2,7 @@ package com.rgu.honours.dementiacareapp.Carer;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -11,10 +12,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,6 +60,7 @@ public class CareHomeActivity extends AppCompatActivity {
     //Initialising Firebase Authorisation
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
+    private DatabaseReference dbRef;
 
     //String for the currently logged in user
     private String userId;
@@ -107,7 +113,7 @@ public class CareHomeActivity extends AppCompatActivity {
         patientListView = findViewById(R.id.patientView);
 
         //Reference to Realtime Database
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.keepSynced(true);
 
         //Get the currently logged in user
@@ -180,6 +186,13 @@ public class CareHomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mMenuInflater = getMenuInflater();
+        mMenuInflater.inflate(R.menu.care_home_dropdown, menu);
+        return true;
+    }
+
     /**
      * Code for the Navigation drawer "hamburger". Opens the drawer.
      *
@@ -188,7 +201,33 @@ public class CareHomeActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        if (item.getItemId() == R.id.deleteProfile) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(CareHomeActivity.this, R.style.AlertDialog);
+            builder.setMessage("Warning: This will delete your login and all associated data!")
+                    .setTitle("Are you sure you want to delete your carer profile?")
+            .setIcon(R.drawable.warning);
+            // Add the buttons
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    Toast.makeText(getApplicationContext(), "Carer profile deleted.", Toast.LENGTH_LONG).show();
+                    dbRef.child("Users").child(userId).removeValue();
+                    mAuth.getCurrentUser().delete();
+                    finish();
+                }
+            });
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = builder.show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

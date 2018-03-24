@@ -42,10 +42,9 @@ public class PasswordResetActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = emailInput.getText().toString();
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplication(), "Enter your registered email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), "Please enter your registered email!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 mAuth.sendPasswordResetEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

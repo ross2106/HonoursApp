@@ -69,15 +69,19 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = username.getText().toString();
                 final String pass = password.getText().toString();
+                if (TextUtils.isEmpty(email) && TextUtils.isEmpty(pass)) {
+                    username.setError("Required!");
+                    password.setError("Required!");
+                    return;
+                }
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Please enter your email address!", Toast.LENGTH_SHORT).show();
+                    username.setError("Required!");
                     return;
                 }
                 if (TextUtils.isEmpty(pass)) {
-                    Toast.makeText(getApplicationContext(), "Please enter your password!", Toast.LENGTH_SHORT).show();
+                    password.setError("Required!");
                     return;
                 }
-                //authenticate user
                 mAuth.signInWithEmailAndPassword(email, pass)
                         .addOnCompleteListener(LogInActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -112,8 +116,8 @@ public class LogInActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() != null) {
-            finish();
-            startActivity(new Intent(this, CareHomeActivity.class));
+                finish();
+                startActivity(new Intent(this, CareHomeActivity.class));
         }
     }
 }
