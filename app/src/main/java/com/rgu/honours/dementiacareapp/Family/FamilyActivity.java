@@ -3,6 +3,7 @@ package com.rgu.honours.dementiacareapp.Family;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -52,6 +53,7 @@ public class FamilyActivity extends AppCompatActivity {
     private RecyclerView familyList;
     private final ArrayList<FamilyModel> familyArrayList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
+    private int noOfColumns;
 
     //Initialising Firebase Authorisation
     private FirebaseAuth mAuth;
@@ -159,7 +161,8 @@ public class FamilyActivity extends AppCompatActivity {
                     familyMember.setContactNo(ds.getValue(FamilyModel.class).getContactNo());
                     familyMember.setId(ds.getValue(FamilyModel.class).getId());
                     familyArrayList.add(familyMember);
-                    mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+                    orientation();
+                    mLayoutManager = new GridLayoutManager(getApplicationContext(), noOfColumns);
                     familyList.setLayoutManager(mLayoutManager);
                     MyAdapter adapter = new MyAdapter(getApplicationContext(), familyArrayList);
                     familyList.setAdapter(adapter);
@@ -184,6 +187,17 @@ public class FamilyActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+    }
+
+    private void orientation(){
+        boolean landscape = getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        if(landscape){
+            noOfColumns = 3;
+        }
+        if(!landscape){
+            noOfColumns = 2;
+        }
 
     }
 

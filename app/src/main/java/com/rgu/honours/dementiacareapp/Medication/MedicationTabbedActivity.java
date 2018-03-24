@@ -94,6 +94,7 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
+        getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("Medication"); //Set the title of the page
         NavigationView navigationView = findViewById(R.id.medication_tabbed_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
@@ -129,6 +130,7 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(mViewPager);
 
         addMed.setOnClickListener(new View.OnClickListener() {
@@ -204,6 +206,8 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         adapter.addFragment(new MedicationMorningTab(), "Morning");
         adapter.addFragment(new MedicationAfternoonTab(), "Afternoon");
         adapter.addFragment(new MedicationEveningTab(), "Evening");
+        adapter.addFragment(new MedicationBedTab(), "Bed");
+        adapter.addFragment(new MedicationAsRequiredTab(), "As Required");
         viewPager.setAdapter(adapter);
     }
 

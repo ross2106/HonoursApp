@@ -26,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +34,7 @@ import java.util.Date;
  * Created by ross1 on 17/03/2018.
  */
 
-public class MedicationAfternoonTab extends Fragment {
+public class MedicationAsRequiredTab extends Fragment {
 
     RecyclerView medicationList;
 
@@ -45,7 +44,6 @@ public class MedicationAfternoonTab extends Fragment {
 
     //Initialising list of patients
     private final ArrayList<MedicationModel> medicationArrayList = new ArrayList<>();
-    //private RecyclerView medicationList;
     private RecyclerView.LayoutManager mLayoutManager;
 
     //Firebase User Authentication
@@ -58,8 +56,8 @@ public class MedicationAfternoonTab extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.medication_afternoon_tab, container, false);
-        medicationList = view.findViewById(R.id.medicationAfternoonView);
+        View view = inflater.inflate(R.layout.medication_asrequired_tab, container, false);
+        medicationList = view.findViewById(R.id.medicationRequiredView);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -80,22 +78,20 @@ public class MedicationAfternoonTab extends Fragment {
         medicationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChildren()) {
-                    medicationArrayList.clear();
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        MedicationModel medication = new MedicationModel();
-                        if (ds.child("afternoon").getValue().equals(true)) {
-                            medication.setName(ds.getValue(MedicationModel.class).getName());
-                            medication.setDosageType(ds.getValue(MedicationModel.class).getDosageType());
-                            medication.setId(ds.getValue(MedicationModel.class).getId());
-                            medication.setAfternoonTaken(ds.getValue(MedicationModel.class).getAfternoonTaken());
-                            medicationArrayList.add(medication);
-                        }
-                        mLayoutManager = new LinearLayoutManager(getActivity());
-                        medicationList.setLayoutManager(mLayoutManager);
-                        MyAdapter adapter = new MyAdapter(getContext(), medicationArrayList);
-                        medicationList.setAdapter(adapter);
+                medicationArrayList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    MedicationModel medication = new MedicationModel();
+                    if (ds.child("asRequired").getValue().equals(true)) {
+                        medication.setCategory(ds.getValue(MedicationModel.class).getCategory());
+                        medication.setName(ds.getValue(MedicationModel.class).getName());
+                        medication.setDosageType(ds.getValue(MedicationModel.class).getDosageType());
+                        medication.setId(ds.getValue(MedicationModel.class).getId());
+                        medicationArrayList.add(medication);
                     }
+                    mLayoutManager = new LinearLayoutManager(getActivity());
+                    medicationList.setLayoutManager(mLayoutManager);
+                    MyAdapter adapter = new MyAdapter(getContext(), medicationArrayList);
+                    medicationList.setAdapter(adapter);
                 }
             }
 
@@ -120,7 +116,6 @@ public class MedicationAfternoonTab extends Fragment {
         };
         return view;
     }
-
 
     /**
      * On Start is called when the activity restarts.
@@ -159,7 +154,7 @@ public class MedicationAfternoonTab extends Fragment {
         @Override
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-            View view = layoutInflater.inflate(R.layout.medication_card, parent, false);
+            View view = layoutInflater.inflate(R.layout.medication_asrequired_card, parent, false);
             return new MyAdapter.ViewHolder(view, mContext, medicationList);
         }
 
@@ -168,48 +163,10 @@ public class MedicationAfternoonTab extends Fragment {
             final MedicationModel medication = medicationList.get(position);
             TextView medicationName = holder.medicationName;
             TextView medicationDosageType = holder.medicationDosageType;
-            final CheckBox checkBox = holder.checkbox;
             medicationName.setText(medication.getName());
             medicationDosageType.setText(medication.getDosageType());
-            if (medication.getAfternoonTaken() == 1) {
-                checkBox.setChecked(true);
-            }
-            final DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
-            medRef.child(medication.getId()).child("afternoonTakenTime").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.hasChildren()){
-                        Date takenDate = new Date((Long) dataSnapshot.getValue());
-                        Date todayDate = new Date(System.currentTimeMillis());
-                        Calendar cal1 = Calendar.getInstance();
-                        Calendar cal2 = Calendar.getInstance();
-                        cal1.setTime(takenDate);
-                        cal2.setTime(todayDate);
-                        if (cal1.get(Calendar.DATE) < cal2.get(Calendar.DATE)) {
-                            medRef.child(medication.getId()).child("afternoonTaken").setValue(0);
-                            medRef.child(medication.getId()).child("afternoonTakenTime").setValue(0);
-                        }
-                    }
-
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        medRef.child(medication.getId()).child("afternoonTaken").setValue(1);
-                        medRef.child(medication.getId()).child("afternoonTakenTime").setValue(System.currentTimeMillis());
-                    }
-                    if (!isChecked) {
-                        medRef.child(medication.getId()).child("afternoonTaken").setValue(0);
-                    }
-                }
-            });
         }
+
         @Override
         public int getItemCount() {
             return medicationList.size();
@@ -218,10 +175,7 @@ public class MedicationAfternoonTab extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             final TextView medicationName;
-            //final TextView medicationDosage;
-            //final TextView medicationTime;
             final TextView medicationDosageType;
-            final CheckBox checkbox;
             ArrayList<MedicationModel> medicationList = new ArrayList<>();
 
             public ViewHolder(final View itemView, Context context, final ArrayList<MedicationModel> medicationList) {
@@ -229,19 +183,8 @@ public class MedicationAfternoonTab extends Fragment {
                 this.medicationList = medicationList;
                 itemView.setOnClickListener(this);
                 medicationName = itemView.findViewById(R.id.medicationName);
-                checkbox = itemView.findViewById(R.id.medicationTaken);
                 medicationDosageType = itemView.findViewById(R.id.medicationDosageType);
-                checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            itemView.setBackgroundColor(Color.parseColor("#43A047"));
-                        }
-                        if (!isChecked) {
-                            itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                        }
-                    }
-                });
+
             }
 
             @Override

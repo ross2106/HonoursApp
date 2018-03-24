@@ -31,7 +31,7 @@
     <string name="personName">Name</string>
     <string name="age">Age</string>
     <string name="gender">Gender</string>
-    <string name="savePatient">Save</string>
+    <string name="save">Save</string>
 
     <!-- ************* Patient Profile ************* -->
     <string name="thisIsMe">This is me</string>

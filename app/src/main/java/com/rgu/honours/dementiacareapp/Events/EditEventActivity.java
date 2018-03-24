@@ -254,6 +254,7 @@ public class EditEventActivity extends AppCompatActivity {
                     Toast.makeText(EditEventActivity.this, "Event Saved!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), EventsActivity.class);
                     intent.putExtra("patientID", patientId);
+                    intent.putExtra("patientName", patientName);
                     startActivity(intent);
                 }
             }

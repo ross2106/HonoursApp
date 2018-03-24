@@ -215,7 +215,7 @@ public class PreviousEventsTab extends Fragment {
                 Intent intent = new Intent(getActivity(), EditEventActivity.class);
                 intent.putExtra("patientID", patientId);
                 intent.putExtra("eventID", event.getId());
-                intent.putExtra("patientName", patientName);
+                intent.putExtra("patientName", getActivity().getIntent().getStringExtra("patientName"));
                 startActivity(intent);
             }
         }

@@ -1,11 +1,13 @@
 package com.rgu.honours.dementiacareapp.ThisIsMe;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
+import com.rgu.honours.dementiacareapp.Medication.EditMedication;
+import com.rgu.honours.dementiacareapp.Medication.MedicationTabbedActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
 
@@ -128,6 +132,28 @@ public class ThisIsMeActivity extends AppCompatActivity {
                     myRoutine.setText(dataSnapshot.child("myRoutine").getValue().toString());
                     mayUpsetMe.setText(dataSnapshot.child("upsetMe").getValue().toString());
                     makesMeFeelBetter.setText(dataSnapshot.child("makeBetter").getValue().toString());
+                }
+                if(!dataSnapshot.hasChildren()){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ThisIsMeActivity.this, R.style.AlertDialog);
+                    builder.setMessage("There is no 'This is Me' information for this individual yet. Would you like to add this now?")
+                            .setTitle("This is Me");
+                    // Add the buttons
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(ThisIsMeActivity.this, EditThisIsMeActivity.class);
+                            intent.putExtra("patientID", patientId);
+                            intent.putExtra("patientName", patientName);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog dialog = builder.show();
                 }
             }
 

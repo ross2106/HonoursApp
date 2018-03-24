@@ -1,9 +1,6 @@
 package com.rgu.honours.dementiacareapp.Medication;
 
-import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,15 +9,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,9 +23,6 @@ import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,19 +30,10 @@ public class AddMedicationActivity extends AppCompatActivity {
 
     //Text Fields
     private EditText medicationName;
-    private EditText dosageValue;
-    private Button dosageTime;
+    private EditText dosageType;
 
-    private TimePickerDialog.OnTimeSetListener mMedicationTimeListener;
-
-    //Spinner
-    private Spinner dosageType;
-    private ArrayAdapter<CharSequence> spinnerValues;
-    private String dosageTypeValue;
-
-    //Radio Buttons
-    private RadioGroup buttonGroup;
-    private RadioButton radioButton, timedButton, asRequiredButton;
+    //Checkboxes
+    CheckBox morningCheck, afternoonCheck, eveningCheck, bedCheck, asRequiredCheck;
 
     //Button
     private Button addMedication;
@@ -80,53 +59,15 @@ public class AddMedicationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_medication);
 
         medicationName = findViewById(R.id.medicationName);
-        dosageValue = findViewById(R.id.medicationDosageValue);
-        dosageTime = findViewById(R.id.medicationTime);
+        dosageType = findViewById(R.id.dosageType);
+        morningCheck = findViewById(R.id.morningCheck);
+        afternoonCheck = findViewById(R.id.afternoonCheck);
+        eveningCheck = findViewById(R.id.eveningCheck);
+        bedCheck = findViewById(R.id.bedtimeCheck);
+        asRequiredCheck = findViewById(R.id.asRequiredCheck);
+
         addMedication = findViewById(R.id.medicationSubmit);
 
-        dosageTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int hour = cal.get(Calendar.HOUR_OF_DAY);
-                int min = cal.get(Calendar.MINUTE);
-                TimePickerDialog dialog = new TimePickerDialog(
-                        AddMedicationActivity.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mMedicationTimeListener,
-                        hour, min,
-                        true);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-        mMedicationTimeListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                dosageTime.setText(String.format("%02d:%02d", hourOfDay, minute));
-            }
-        };
-
-        //buttonGroup = findViewById(R.id.dosageTypeGroup);
-
-        //Dropdown
-        dosageType = findViewById(R.id.dosageType);
-        dosageType.setPrompt("Dosage Type");
-        spinnerValues = ArrayAdapter.createFromResource(this, R.array.dosageType, android.R.layout.simple_spinner_item);
-        spinnerValues.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dosageType.setAdapter(spinnerValues);
-        dosageType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) view).setTextColor(getResources().getColor(R.color.colorPrimary));
-                dosageTypeValue = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -185,57 +126,36 @@ public class AddMedicationActivity extends AppCompatActivity {
         addMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference patientDb = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
                 String medicationNameString = medicationName.getText().toString();
-                String dosageValueString = dosageValue.getText().toString();
-                String dosageValueTypeString = dosageTypeValue;
-                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-                Long medicationTime = null, morningStartTime = null, morningFinishTime = null, afternoonStartTime = null, afternoonFinishTime = null, eveningStartTime = null, eveningFinishTime = null;
-                String category = "";
-                try {
-                    medicationTime = dateFormat.parse(dosageTime.getText().toString()).getTime();
-                    morningStartTime = dateFormat.parse("00:00").getTime();
-                    morningFinishTime = dateFormat.parse("11:59").getTime();
-                    afternoonStartTime = dateFormat.parse("12:00").getTime();
-                    afternoonFinishTime = dateFormat.parse("16:59").getTime();
-                    eveningStartTime = dateFormat.parse("17:00").getTime();
-                    eveningFinishTime = dateFormat.parse("23:59").getTime();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                if (medicationTime >= morningStartTime && medicationTime <= morningFinishTime) {
-                    category = "Morning";
-                }
-                if (medicationTime >= afternoonStartTime && medicationTime <= afternoonFinishTime) {
-                    category = "Afternoon";
-                }
-                if (medicationTime >= eveningStartTime && medicationTime <= eveningFinishTime)
-                {
-                    category = "Evening";
-                }
-                String medicationId = patientDb.push().getKey();
+                String medicationDosageTypeString = dosageType.getText().toString();
+                Boolean morningChecked = morningCheck.isChecked();
+                Boolean afternoonChecked = afternoonCheck.isChecked();
+                Boolean eveningChecked = eveningCheck.isChecked();
+                Boolean bedChecked = bedCheck.isChecked();
+                Boolean asRequiredChecked = asRequiredCheck.isChecked();
+                DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
+                String medicationId = medRef.push().getKey();
                 Map newMedication = new HashMap();
                 newMedication.put("id", medicationId);
                 newMedication.put("name", medicationNameString);
-                newMedication.put("dosageValue", dosageValueString);
-                newMedication.put("dosageType", dosageValueTypeString);
-                newMedication.put("time", medicationTime);
-                newMedication.put("taken", 0);
-                newMedication.put("category", category);
-                newMedication.put("takenTime", 0);
-
-                patientDb.
-
-                        child(medicationId).
-
-                        setValue(newMedication);
-                Toast.makeText(AddMedicationActivity.this, "Content Saved!", Toast.LENGTH_SHORT).
-
-                        show();
-
+                newMedication.put("dosageType", medicationDosageTypeString);
+                newMedication.put("morning", morningChecked);
+                newMedication.put("morningTaken", 0);
+                newMedication.put("morningTakenTime", 0);
+                newMedication.put("afternoon", afternoonChecked);
+                newMedication.put("afternoonTaken", 0);
+                newMedication.put("afternoonTakenTime", 0);
+                newMedication.put("evening", eveningChecked);
+                newMedication.put("eveningTaken", 0);
+                newMedication.put("eveningTakenTime", 0);
+                newMedication.put("bed", bedChecked);
+                newMedication.put("bedTaken", 0);
+                newMedication.put("bedTakenTime", 0);
+                newMedication.put("asRequired", asRequiredChecked);
+                medRef.child(medicationId).setValue(newMedication);
+                Toast.makeText(AddMedicationActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MedicationTabbedActivity.class);
                 intent.putExtra("patientID", patientId);
-
                 startActivity(intent);
             }
         });

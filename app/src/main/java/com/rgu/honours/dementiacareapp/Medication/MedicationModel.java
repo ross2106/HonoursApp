@@ -8,7 +8,7 @@ public class MedicationModel {
 
     private String id, name, dosageValue, dosageType, category;
     private Long time;
-    private int taken;
+    private int morningTaken, afternoonTaken, eveningTaken, bedTaken;
 
     public MedicationModel() {
 
@@ -54,19 +54,43 @@ public class MedicationModel {
         this.time = time;
     }
 
-    public int getTaken() {
-        return taken;
-    }
-
-    public void setTaken(int taken) {
-        this.taken = taken;
-    }
-
     public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public int getMorningTaken() {
+        return morningTaken;
+    }
+
+    public void setMorningTaken(int morningTaken) {
+        this.morningTaken = morningTaken;
+    }
+
+    public int getAfternoonTaken() {
+        return afternoonTaken;
+    }
+
+    public void setAfternoonTaken(int afternoonTaken) {
+        this.afternoonTaken = afternoonTaken;
+    }
+
+    public int getEveningTaken() {
+        return eveningTaken;
+    }
+
+    public void setEveningTaken(int eveningTaken) {
+        this.eveningTaken = eveningTaken;
+    }
+
+    public int getBedTaken() {
+        return bedTaken;
+    }
+
+    public void setBedTaken(int bedTaken) {
+        this.bedTaken = bedTaken;
     }
 }

@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,18 +49,14 @@ import java.util.Map;
 public class EditMedication extends AppCompatActivity {
 
     //Text Fields
-    private EditText editMedicationName, editDosageValue;
-    private Button editDosageTime;
+    private EditText editMedicationName, editDosageType;
 
-    //Spinner
-    private Spinner editDosageType;
-    private ArrayAdapter<CharSequence> editSpinnerValues;
-    private String editDosageTypeValue;
+    //Checkboxes
+    CheckBox morningCheck, afternoonCheck, eveningCheck, bedCheck, asRequiredCheck;
 
     //Button
     private Button editMedication;
 
-    private TimePickerDialog.OnTimeSetListener mMedicationTimeListener;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -73,6 +70,7 @@ public class EditMedication extends AppCompatActivity {
     private String patientId;
     private String medicationId;
     private String patientName;
+    private String category;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -84,50 +82,14 @@ public class EditMedication extends AppCompatActivity {
         setContentView(R.layout.activity_edit_medication);
 
         editMedicationName = findViewById(R.id.editMedicationName);
-        editDosageValue = findViewById(R.id.editMedicationDosageValue);
-        editDosageTime = findViewById(R.id.editMedicationTime);
-        editMedication = findViewById(R.id.editMedicationSubmit);
-
-        //Dropdown
         editDosageType = findViewById(R.id.editDosageType);
-        editSpinnerValues = ArrayAdapter.createFromResource(this, R.array.dosageType, android.R.layout.simple_spinner_item);
-        editSpinnerValues.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        editDosageType.setAdapter(editSpinnerValues);
-        editDosageType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) view).setTextColor(getResources().getColor(R.color.colorPrimary));
-                editDosageTypeValue = parent.getItemAtPosition(position).toString();
-            }
+        morningCheck = findViewById(R.id.morningCheck);
+        afternoonCheck = findViewById(R.id.afternoonCheck);
+        eveningCheck = findViewById(R.id.eveningCheck);
+        bedCheck = findViewById(R.id.bedtimeCheck);
+        asRequiredCheck = findViewById(R.id.asRequiredCheck);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        editDosageTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int hour = cal.get(Calendar.HOUR_OF_DAY);
-                int min = cal.get(Calendar.MINUTE);
-                TimePickerDialog dialog = new TimePickerDialog(
-                        EditMedication.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mMedicationTimeListener,
-                        hour, min,
-                        true);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-        mMedicationTimeListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                editDosageTime.setText(String.format("%02d:%02d", hourOfDay, minute));
-            }
-        };
+        editMedication = findViewById(R.id.editMedicationSubmit);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -188,21 +150,12 @@ public class EditMedication extends AppCompatActivity {
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
                     editMedicationName.setText(dataSnapshot.child("name").getValue().toString());
-                    editDosageValue.setText(dataSnapshot.child("dosageValue").getValue().toString());
-                    editDosageTime.setText(timeParse((Long) dataSnapshot.child("time").getValue()));
-                    editDosageTypeValue = dataSnapshot.child("dosageType").getValue().toString();
-                    editDosageType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            ((TextView) view).setTextColor(getResources().getColor(R.color.colorPrimary));
-                            editDosageTypeValue = parent.getItemAtPosition(position).toString();
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
+                    editDosageType.setText(dataSnapshot.child("dosageType").getValue().toString());
+                    morningCheck.setChecked((Boolean) dataSnapshot.child("morning").getValue());
+                    afternoonCheck.setChecked((Boolean) dataSnapshot.child("afternoon").getValue());
+                    eveningCheck.setChecked((Boolean) dataSnapshot.child("evening").getValue());
+                    bedCheck.setChecked((Boolean) dataSnapshot.child("bed").getValue());
+                    asRequiredCheck.setChecked((Boolean) dataSnapshot.child("asRequired").getValue());
                 }
             }
 
@@ -210,46 +163,37 @@ public class EditMedication extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
         editMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference medicationRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication").child(medicationId);
                 String medicationNameString = editMedicationName.getText().toString();
-                String dosageValueString = editDosageValue.getText().toString();
-                String dosageValueTypeString = editDosageTypeValue;
-                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-                Long medicationTime = null, morningStartTime = null, morningFinishTime = null, afternoonStartTime = null, afternoonFinishTime = null, eveningStartTime = null, eveningFinishTime = null;
-                String category = "";
-                try {
-                    medicationTime = dateFormat.parse(editDosageTime.getText().toString()).getTime();
-                    morningStartTime = dateFormat.parse("00:00").getTime();
-                    morningFinishTime = dateFormat.parse("11:59").getTime();
-                    afternoonStartTime = dateFormat.parse("12:00").getTime();
-                    afternoonFinishTime = dateFormat.parse("16:59").getTime();
-                    eveningStartTime = dateFormat.parse("17:00").getTime();
-                    eveningFinishTime = dateFormat.parse("23:59").getTime();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                if (medicationTime >= morningStartTime && medicationTime <= morningFinishTime) {
-                    category = "Morning";
-                }
-                if (medicationTime >= afternoonStartTime && medicationTime <= afternoonFinishTime) {
-                    category = "Afternoon";
-                }
-                if (medicationTime >= eveningStartTime && medicationTime <= eveningFinishTime)
-                {
-                    category = "Evening";
-                }
-                Map editMedication = new HashMap();
-                editMedication.put("id", medicationId);
-                editMedication.put("name", medicationNameString);
-                editMedication.put("dosageValue", dosageValueString);
-                editMedication.put("dosageType", dosageValueTypeString);
-                editMedication.put("time", medicationTime);
-                editMedication.put("category", category);
-                medicationRef.updateChildren(editMedication);
-                Toast.makeText(EditMedication.this, "Content Edited!", Toast.LENGTH_SHORT).show();
+                String medicationDosageTypeString = editDosageType.getText().toString();
+                Boolean morningChecked = morningCheck.isChecked();
+                Boolean afternoonChecked = afternoonCheck.isChecked();
+                Boolean eveningChecked = eveningCheck.isChecked();
+                Boolean bedChecked = bedCheck.isChecked();
+                Boolean asRequiredChecked = asRequiredCheck.isChecked();
+                DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
+                Map newMedication = new HashMap();
+                newMedication.put("id", medicationId);
+                newMedication.put("name", medicationNameString);
+                newMedication.put("dosageType", medicationDosageTypeString);
+                newMedication.put("morning", morningChecked);
+                newMedication.put("morningTaken", 0);
+                newMedication.put("morningTakenTime", 0);
+                newMedication.put("afternoon", afternoonChecked);
+                newMedication.put("afternoonTaken", 0);
+                newMedication.put("afternoonTakenTime", 0);
+                newMedication.put("evening", eveningChecked);
+                newMedication.put("eveningTaken", 0);
+                newMedication.put("eveningTakenTime", 0);
+                newMedication.put("bed", bedChecked);
+                newMedication.put("bedTaken", 0);
+                newMedication.put("bedTakenTime", 0);
+                newMedication.put("asRequired", asRequiredChecked);
+                medRef.child(medicationId).updateChildren(newMedication);
+                Toast.makeText(EditMedication.this, "Content Saved!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MedicationTabbedActivity.class);
                 intent.putExtra("patientID", patientId);
                 startActivity(intent);
