@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,8 +26,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -47,7 +51,7 @@ public class PatientProfile extends AppCompatActivity {
     private ImageView patientImage;
     private Button thisIsMe, medicationButton, familyButton, eventsButton;
     private ProgressBar progressBar;
-    private Button uploadPhoto;
+    private FloatingActionButton uploadPhoto;
 
 
     //Firebase User Authentication
@@ -79,12 +83,11 @@ public class PatientProfile extends AppCompatActivity {
 
         //Patient Name
         patientName = findViewById(R.id.patientProfileName);
-        patientName.setText(getIntent().getStringExtra("patientName"));
+        //patientName.setText(getIntent().getStringExtra("patientName"));
         //Patient Profile Picture
         patientImage = findViewById(R.id.patientMainProfileImage);
         //Photo upload button
         uploadPhoto = findViewById(R.id.uploadPhoto);
-        uploadPhoto.setVisibility(View.GONE);
         //thisIsMeButton
         thisIsMe = findViewById(R.id.thisIsMeButton);
         //medicationButton
@@ -117,7 +120,6 @@ public class PatientProfile extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
-        getSupportActionBar().setTitle("Profile Page"); //Set the title of the page
         NavigationView navigationView = findViewById(R.id.patient_profile_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
             @Override
@@ -139,6 +141,18 @@ public class PatientProfile extends AppCompatActivity {
 
         //Get the ID of the patient from the Intent extra String
         patientId = getIntent().getStringExtra("patientID");
+        DatabaseReference patientNameRef = dbRef.child("Users").child(userId).child("Patients").child(patientId);
+        patientNameRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                getSupportActionBar().setTitle(dataSnapshot.child("name").getValue().toString()); //Set the title of the page
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         //Retrieve the profile picture based on the patient ID
         profilePhotoRef = FirebaseStorage.getInstance().getReference().child(userId).child(patientId).child("Profile Picture");
         //Code to populate the profile picture
@@ -151,16 +165,16 @@ public class PatientProfile extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                patientImage.setImageDrawable(getResources().getDrawable(R.drawable.person));
                 progressBar.setVisibility(View.GONE);
-                uploadPhoto.setVisibility(View.VISIBLE);
-                uploadPhoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, GALLERY_INTENT);
-                    }
-                });
+            }
+        });
+        uploadPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, GALLERY_INTENT);
             }
         });
         patientImage.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +191,7 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ThisIsMeActivity.class);
                 intent.putExtra("patientID", patientId);
-                intent.putExtra("patientName", patientName.getText().toString());
+                //intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
@@ -188,7 +202,7 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MedicationTabbedActivity.class);
                 intent.putExtra("patientID", patientId);
-                intent.putExtra("patientName", patientName.getText().toString());
+                //intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
@@ -199,7 +213,7 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), FamilyActivity.class);
                 intent.putExtra("patientID", patientId);
-                intent.putExtra("patientName", patientName.getText().toString());
+                //intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
@@ -210,7 +224,7 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), EventsActivity.class);
                 intent.putExtra("patientID", patientId);
-                intent.putExtra("patientName", patientName.getText().toString());
+                //intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
@@ -334,7 +348,6 @@ public class PatientProfile extends AppCompatActivity {
                     progressDialog.setMessage("Uploading image...");
                 }
             });
-            uploadPhoto.setVisibility(View.GONE);
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }

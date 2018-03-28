@@ -1,17 +1,14 @@
 package com.rgu.honours.dementiacareapp.Family;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +48,8 @@ public class FamilyProfileActivity extends AppCompatActivity {
     private TextView familyMemberName;
     private ImageView familyImage;
     private Button callButton;
+    private FloatingActionButton uploadPhoto;
+    private ProgressBar progressBar;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -87,6 +87,11 @@ public class FamilyProfileActivity extends AppCompatActivity {
         familyImage = findViewById(R.id.familyProfilePicture);
         //Call button
         callButton = findViewById(R.id.callButton);
+        //Image upload
+        uploadPhoto = findViewById(R.id.uploadPhoto);
+        //Progress Bar
+        progressBar = findViewById(R.id.familyProfileProgress);
+        progressBar.setVisibility(View.VISIBLE);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -166,15 +171,17 @@ public class FamilyProfileActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.with(FamilyProfileActivity.this).load(uri).into(familyImage);
+                progressBar.setVisibility(View.GONE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                familyImage.setImageDrawable(getResources().getDrawable(R.drawable.photo));
+                progressBar.setVisibility(View.GONE);
+                familyImage.setImageDrawable(getResources().getDrawable(R.drawable.person));
             }
         });
         //Set an on click listener if the user wishes to change their profile picture
-        familyImage.setOnClickListener(new View.OnClickListener() {
+        uploadPhoto.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
