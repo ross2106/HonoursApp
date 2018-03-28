@@ -66,6 +66,24 @@ public class CareHomeActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
 
+    private static String getSizeName(Context context) {
+        int screenLayout = context.getResources().getConfiguration().screenLayout;
+        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        switch (screenLayout) {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                return "small";
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return "normal";
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                return "large";
+            case 4: // Configuration.SCREENLAYOUT_SIZE_XLARGE is API >= 9
+                return "xlarge";
+            default:
+                return "undefined";
+        }
+    }
+
     //On Activity Creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +163,9 @@ public class CareHomeActivity extends AppCompatActivity {
                     patient.setId(ds.getValue(PatientModel.class).getId());
                     patient.setName(ds.getValue(PatientModel.class).getName());
                     patient.setAge(ds.getValue(PatientModel.class).getAge());
+                    patient.setGender(ds.getValue(PatientModel.class).getGender());
                     patientArrayList.add(patient);
-                    orientation();
+                    adjustGrid();
                     mLayoutManager = new GridLayoutManager(getApplicationContext(), noOfColumns);
                     patientListView.setLayoutManager(mLayoutManager);
                     MyAdapter adapter = new MyAdapter(getApplicationContext(), patientArrayList);
@@ -173,15 +192,38 @@ public class CareHomeActivity extends AppCompatActivity {
 
     }
 
-    private void orientation(){
+    private void adjustGrid() {
         boolean landscape = getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
-        if(landscape){
+        boolean largeScreen = false;
+        boolean normalScreen = false;
+        boolean xlargeScreen = false;
+        if (getSizeName(getApplicationContext()).equals("normal")) {
+            normalScreen = true;
+        }
+        if (getSizeName(getApplicationContext()).equals("large")) {
+            largeScreen = true;
+        }
+        if (getSizeName(getApplicationContext()).equals("xlarge")) {
+            xlargeScreen = true;
+        }
+        if (landscape && normalScreen) {
             noOfColumns = 3;
         }
-        if(!landscape){
+        if (landscape && largeScreen) {
+            noOfColumns = 6;
+        }
+        if (landscape && xlargeScreen) {
+            noOfColumns = 6;
+        }
+        if (!landscape && normalScreen) {
             noOfColumns = 2;
         }
-
+        if (!landscape && largeScreen) {
+            noOfColumns = 4;
+        }
+        if (!landscape && xlargeScreen) {
+            noOfColumns = 4;
+        }
     }
 
     @Override
@@ -281,10 +323,12 @@ public class CareHomeActivity extends AppCompatActivity {
             PatientModel patient = patients.get(position);
             TextView patientName = holder.patientName;
             TextView patientAge = holder.patientAge;
+            TextView patientGender = holder.patientGender;
             final ProgressBar progressBar = holder.progressBar;
             final ImageView patientProfileImage = holder.patientImage;
             patientName.setText(patient.getName());
             patientAge.setText(patient.getAge());
+            patientGender.setText(patient.getGender());
             progressBar.setVisibility(View.VISIBLE);
             StorageReference patientImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patient.getId()).child("Profile Picture");
             patientImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -312,6 +356,7 @@ public class CareHomeActivity extends AppCompatActivity {
             final ImageView patientImage;
             final TextView patientName;
             final TextView patientAge;
+            final TextView patientGender;
             final ProgressBar progressBar;
             ArrayList<PatientModel> patientList = new ArrayList<>();
             final Context context;
@@ -325,6 +370,7 @@ public class CareHomeActivity extends AppCompatActivity {
                 patientName = itemView.findViewById(R.id.patientName);
                 patientAge = itemView.findViewById(R.id.patientAge);
                 progressBar = itemView.findViewById(R.id.patientImageProgress);
+                patientGender = itemView.findViewById(R.id.patientGender);
             }
 
             @Override

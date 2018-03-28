@@ -1,7 +1,5 @@
 package com.rgu.honours.dementiacareapp.Patient;
 
-import android.net.Uri;
-
 /**
  * Created by ross1 on 01/03/2018.
  */
@@ -48,4 +46,11 @@ public class PatientModel {
         this.id = id;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 }

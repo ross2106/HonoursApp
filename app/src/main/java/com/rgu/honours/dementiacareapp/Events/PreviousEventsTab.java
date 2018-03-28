@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.MainActivity;
-import com.rgu.honours.dementiacareapp.Medication.MedicationMorningTab;
 import com.rgu.honours.dementiacareapp.R;
 
 import java.text.SimpleDateFormat;
@@ -74,7 +73,7 @@ public class PreviousEventsTab extends Fragment {
         patientId = getActivity().getIntent().getStringExtra("patientID");
         patientName = getActivity().getIntent().getStringExtra("patientName");
 
-        DatabaseReference eventRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Events");
+        final DatabaseReference eventRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Events");
         eventRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -96,13 +95,15 @@ public class PreviousEventsTab extends Fragment {
                         }
                         counter++;
                     }
+                    if (ds.getValue(EventsModel.class).getDate() < (System.currentTimeMillis() - 604800000)) {
+                        eventRef.child(ds.getValue(EventsModel.class).getId()).removeValue();
+                    }
                 }
                 mLayoutManager = new LinearLayoutManager(getActivity());
                 eventsListView.setLayoutManager(mLayoutManager);
                 MyAdapter adapter = new MyAdapter(getContext(), eventsArrayList);
                 eventsListView.setAdapter(adapter);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

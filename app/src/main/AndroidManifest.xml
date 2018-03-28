@@ -43,7 +43,7 @@
         <activity android:name=".Family.AddFamily" />
         <activity android:name=".Family.FamilyProfileActivity" />
         <activity android:name=".Events.AddEventActivity" />
-        <activity android:name=".Events.EditEventActivity"></activity>
+        <activity android:name=".Events.EditEventActivity" />
     </application>
 
 </manifest>

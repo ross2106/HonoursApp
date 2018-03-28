@@ -91,6 +91,7 @@ public class EventsActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
+        getSupportActionBar().setElevation(0); //remove shadow
         getSupportActionBar().setTitle("Events"); //Set the title of the page
         NavigationView navigationView = findViewById(R.id.events_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items
@@ -121,10 +122,10 @@ public class EventsActivity extends AppCompatActivity {
         });
 
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         addEvent.setOnClickListener(new View.OnClickListener() {
