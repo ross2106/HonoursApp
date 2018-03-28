@@ -29,7 +29,6 @@ import com.rgu.honours.dementiacareapp.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -179,13 +178,9 @@ public class MedicationMorningTab extends Fragment {
         public void onBindViewHolder(final MyAdapter.ViewHolder holder, int position) {
             final MedicationModel medication = medicationList.get(position);
             TextView medicationName = holder.medicationName;
-            //TextView medicationDosage = holder.medicationDosage;
-            //TextView medicationTime = holder.medicationTime;
             TextView medicationDosageType = holder.medicationDosageType;
             final CheckBox checkBox = holder.checkbox;
             medicationName.setText(medication.getName());
-            //medicationDosage.setText(medication.getDosageValue());
-            //medicationTime.setText(timeParse(medication.getTime()));
             medicationDosageType.setText(medication.getDosageType());
             if (medication.getMorningTaken() == 1) {
                 checkBox.setChecked(true);
@@ -194,20 +189,17 @@ public class MedicationMorningTab extends Fragment {
             medRef.child(medication.getId()).child("morningTakenTime").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.hasChildren()){
-                        Date takenDate = new Date((Long) dataSnapshot.getValue());
-                        Date todayDate = new Date(System.currentTimeMillis());
-                        Calendar cal1 = Calendar.getInstance();
-                        Calendar cal2 = Calendar.getInstance();
-                        cal1.setTime(takenDate);
-                        cal2.setTime(todayDate);
-                        boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-                        if (cal1.get(Calendar.DATE) < cal2.get(Calendar.DATE)) {
-                            medRef.child(medication.getId()).child("morningTaken").setValue(0);
-                            medRef.child(medication.getId()).child("morningTakenTime").setValue(0);
-                        }
+                    Date takenDate = new Date((Long) dataSnapshot.getValue());
+                    Date todayDate = new Date(System.currentTimeMillis());
+                    Calendar cal1 = Calendar.getInstance();
+                    Calendar cal2 = Calendar.getInstance();
+                    cal1.setTime(takenDate);
+                    cal2.setTime(todayDate);
+                    //boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+                    if (cal1.get(Calendar.DATE) < cal2.get(Calendar.DATE)) {
+                        medRef.child(medication.getId()).child("morningTaken").setValue(0);
+                        medRef.child(medication.getId()).child("morningTakenTime").setValue(0);
                     }
-
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {

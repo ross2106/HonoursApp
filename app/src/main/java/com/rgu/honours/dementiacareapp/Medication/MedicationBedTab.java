@@ -26,10 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -173,21 +171,19 @@ public class MedicationBedTab extends Fragment {
                 checkBox.setChecked(true);
             }
             final DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
-            medRef.child(medication.getId()).child("takenTime").addValueEventListener(new ValueEventListener() {
+            medRef.child(medication.getId()).child("bedTakenTime").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.hasChildren()){
-                        Date takenDate = new Date((Long) dataSnapshot.getValue());
-                        Date todayDate = new Date(System.currentTimeMillis());
-                        Calendar cal1 = Calendar.getInstance();
-                        Calendar cal2 = Calendar.getInstance();
-                        cal1.setTime(takenDate);
-                        cal2.setTime(todayDate);
-                        boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-                        if (cal1.get(Calendar.DATE) < cal2.get(Calendar.DATE)) {
-                            medRef.child(medication.getId()).child("bedTaken").setValue(0);
-                            medRef.child(medication.getId()).child("bedTakenTime").setValue(0);
-                        }
+                    Date takenDate = new Date((Long) dataSnapshot.getValue());
+                    Date todayDate = new Date(System.currentTimeMillis());
+                    Calendar cal1 = Calendar.getInstance();
+                    Calendar cal2 = Calendar.getInstance();
+                    cal1.setTime(takenDate);
+                    cal2.setTime(todayDate);
+                    //boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+                    if (cal1.get(Calendar.DATE) < cal2.get(Calendar.DATE)) {
+                        medRef.child(medication.getId()).child("bedTaken").setValue(0);
+                        medRef.child(medication.getId()).child("bedTakenTime").setValue(0);
                     }
                 }
                 @Override
