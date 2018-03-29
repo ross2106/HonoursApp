@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
             android:hint="@string/personName"
-            android:drawableStart="@drawable/person"
+            android:drawableStart="@drawable/person_purple"
             android:inputType="textPersonName" />
     </android.support.design.widget.TextInputLayout>
 

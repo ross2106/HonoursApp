@@ -5,16 +5,15 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp">
 
-
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
-        android:layout_height="111dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/signUpTitle"
         android:textAlignment="center"
         android:textColor="#673AB7"
-        android:textSize="32sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/username_layout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +23,7 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/username_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/signUp_password_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,18 +32,17 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/signUpUsername"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
+            android:layout_height="match_parent"
             android:drawableStart="@drawable/email"
             android:hint="@string/email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="@color/colorPrimary" />
     </android.support.design.widget.TextInputLayout>
-
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/signUp_password_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@+id/name_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/confirmSignUp"
@@ -53,17 +51,17 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/signUpPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
+            android:layout_height="match_parent"
             android:drawableStart="@drawable/padlock"
             android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="@color/colorPrimary" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/name_input_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="@id/confirmSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,11 +70,11 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:hint="@string/personName"
+            android:layout_height="match_parent"
             android:drawableStart="@drawable/person_purple"
-            android:inputType="textPersonName" />
+            android:hint="@string/personName"
+            android:inputType="textPersonName"
+            android:textColor="@color/colorPrimary" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -85,11 +83,11 @@
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:background="@color/greenButton"
+        android:drawableTop="@drawable/register_icon"
+        android:padding="5dp"
         android:text="@string/signUp"
         android:textColor="@color/primaryTextColor"
         android:textSize="16sp"
-        android:padding="5dp"
-        android:drawableTop="@drawable/register_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -2,6 +2,7 @@ package com.rgu.honours.dementiacareapp.Medication;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,9 +18,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -31,8 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
-import com.rgu.honours.dementiacareapp.Family.AddFamily;
-import com.rgu.honours.dementiacareapp.Family.FamilyActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
@@ -64,7 +60,6 @@ public class MedicationTabbedActivity extends AppCompatActivity {
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
-    private Toolbar toolbar;
 
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
@@ -166,12 +161,13 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         });
 
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setupWithViewPager(mViewPager);
+        orientationHelper();
+        //TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        //tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        //tabLayout.setupWithViewPager(mViewPager);
 
         addMed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,6 +193,20 @@ public class MedicationTabbedActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    private void orientationHelper() {
+        boolean landscape = getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        if (!landscape) {
+            TabLayout tabLayout = findViewById(R.id.tabs);
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            tabLayout.setupWithViewPager(mViewPager);
+        }
+        if (landscape) {
+            TabLayout tabLayout = findViewById(R.id.tabs);
+            //tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            tabLayout.setupWithViewPager(mViewPager);
+        }
     }
 
     /**

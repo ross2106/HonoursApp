@@ -14,10 +14,11 @@
 
         <LinearLayout
             android:id="@+id/imageTitleLayout"
-            android:layout_width="match_parent"
+            android:layout_width="500dp"
             android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="0.5">
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -64,13 +65,14 @@
             android:id="@+id/topRow"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="0.25">
+            android:layout_weight="0.25"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/thisIsMeButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="100sp"
+                android:layout_height="80sp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
@@ -86,8 +88,9 @@
 
             <Button
                 android:id="@+id/medicationButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="100sp"
+                android:layout_height="80sp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
@@ -105,15 +108,17 @@
 
         <LinearLayout
             android:id="@+id/bottomRow"
+            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="0.25">
+            android:layout_weight="0.25"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/familyButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="100sp"
+                android:layout_height="80sp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
@@ -127,8 +132,9 @@
 
             <Button
                 android:id="@+id/eventsButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="100sp"
+                android:layout_height="80sp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"

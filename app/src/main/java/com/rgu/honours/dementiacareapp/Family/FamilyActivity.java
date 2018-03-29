@@ -1,6 +1,5 @@
 package com.rgu.honours.dementiacareapp.Family;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,11 +19,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,17 +33,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
-import com.rgu.honours.dementiacareapp.Patient.AddPatientActivity;
-import com.rgu.honours.dementiacareapp.Patient.PatientModel;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
-import com.rgu.honours.dementiacareapp.ThisIsMe.EditThisIsMeActivity;
-import com.rgu.honours.dementiacareapp.ThisIsMe.ThisIsMeActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -169,7 +160,7 @@ public class FamilyActivity extends AppCompatActivity {
                         orientation();
                         mLayoutManager = new GridLayoutManager(getApplicationContext(), noOfColumns);
                         familyList.setLayoutManager(mLayoutManager);
-                        MyAdapter adapter = new MyAdapter(getApplicationContext(), familyArrayList);
+                        MyAdapter adapter = new MyAdapter(FamilyActivity.this, familyArrayList);
                         familyList.setAdapter(adapter);
                     }
                 }
@@ -340,7 +331,8 @@ public class FamilyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int position = getAdapterPosition();
                 FamilyModel family = this.familyList.get(position);
-                Intent intent = new Intent(context, FamilyProfileActivity.class);
+                Intent intent = new Intent(FamilyActivity.this, FamilyProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("patientID", patientId);
                 intent.putExtra("patientName", patientName);
                 intent.putExtra("familyID", family.getId());

@@ -1,5 +1,6 @@
 package com.rgu.honours.dementiacareapp.Events;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -176,16 +177,17 @@ public class PreviousEventsTab extends Fragment {
             return new MyAdapter.ViewHolder(view, mContext, eventsList);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(final MyAdapter.ViewHolder holder, int position) {
             final EventsModel event = eventsList.get(position);
             TextView eventName = holder.eventName;
             TextView eventStart = holder.eventStart;
-            TextView eventFinish = holder.eventFinish;
+            //TextView eventFinish = holder.eventFinish;
             TextView eventDate = holder.eventDate;
             eventName.setText(event.getName());
-            eventStart.setText(timeParse(event.getStartTime()));
-            eventFinish.setText(timeParse(event.getFinishTime()));
+            eventStart.setText(timeParse(event.getStartTime()) + " until " + timeParse(event.getFinishTime()));
+            //eventFinish.setText(timeParse(event.getFinishTime()));
             eventDate.setText(dateParse(event.getDate()));
         }
 
@@ -196,7 +198,7 @@ public class PreviousEventsTab extends Fragment {
 
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            final TextView eventName, eventStart, eventFinish, eventDate;
+            final TextView eventName, eventStart/*, eventFinish =  ""*/, eventDate;
             ArrayList<EventsModel> eventsList = new ArrayList<>();
 
             public ViewHolder(final View itemView, Context context, final ArrayList<EventsModel> eventsList) {
@@ -205,7 +207,7 @@ public class PreviousEventsTab extends Fragment {
                 itemView.setOnClickListener(this);
                 eventName = itemView.findViewById(R.id.eventName);
                 eventStart = itemView.findViewById(R.id.eventStart);
-                eventFinish = itemView.findViewById(R.id.eventFinish);
+                //eventFinish = itemView.findViewById(R.id.eventFinish);
                 eventDate = itemView.findViewById(R.id.eventDate);
             }
 
@@ -214,6 +216,7 @@ public class PreviousEventsTab extends Fragment {
                 int position = getAdapterPosition();
                 EventsModel event = eventsList.get(position);
                 Intent intent = new Intent(getActivity(), EditEventActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("patientID", patientId);
                 intent.putExtra("eventID", event.getId());
                 intent.putExtra("patientName", getActivity().getIntent().getStringExtra("patientName"));

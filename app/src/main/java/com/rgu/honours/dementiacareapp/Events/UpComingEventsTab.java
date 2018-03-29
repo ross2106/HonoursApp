@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.MainActivity;
-import com.rgu.honours.dementiacareapp.Medication.MedicationMorningTab;
 import com.rgu.honours.dementiacareapp.R;
 
 import java.text.SimpleDateFormat;
@@ -180,11 +179,11 @@ public class UpComingEventsTab extends Fragment {
             final EventsModel event = eventsList.get(position);
             TextView eventName = holder.eventName;
             TextView eventStart = holder.eventStart;
-            TextView eventFinish = holder.eventFinish;
+            //TextView eventFinish = holder.eventFinish;
             TextView eventDate = holder.eventDate;
             eventName.setText(event.getName());
-            eventStart.setText(timeParse(event.getStartTime()));
-            eventFinish.setText(timeParse(event.getFinishTime()));
+            eventStart.setText(timeParse(event.getStartTime()) + " until " + timeParse(event.getFinishTime()));
+            //eventFinish.setText(timeParse(event.getFinishTime()));
             eventDate.setText(dateParse(event.getDate()));
         }
 
@@ -195,7 +194,8 @@ public class UpComingEventsTab extends Fragment {
 
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            final TextView eventName, eventStart, eventFinish, eventDate;
+            final TextView eventName, eventStart, /*eventFinish,*/
+                    eventDate;
             ArrayList<EventsModel> eventsList = new ArrayList<>();
 
             public ViewHolder(final View itemView, Context context, final ArrayList<EventsModel> eventsList) {
@@ -204,7 +204,7 @@ public class UpComingEventsTab extends Fragment {
                 itemView.setOnClickListener(this);
                 eventName = itemView.findViewById(R.id.eventName);
                 eventStart = itemView.findViewById(R.id.eventStart);
-                eventFinish = itemView.findViewById(R.id.eventFinish);
+                //eventFinish = itemView.findViewById(R.id.eventFinish);
                 eventDate = itemView.findViewById(R.id.eventDate);
             }
 
@@ -213,6 +213,7 @@ public class UpComingEventsTab extends Fragment {
                 int position = getAdapterPosition();
                 EventsModel event = eventsList.get(position);
                 Intent intent = new Intent(getActivity(), EditEventActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("patientID", patientId);
                 intent.putExtra("eventID", event.getId());
                 intent.putExtra("patientName", getActivity().getIntent().getStringExtra("patientName"));

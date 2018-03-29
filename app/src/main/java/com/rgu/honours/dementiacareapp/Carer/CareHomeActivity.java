@@ -52,7 +52,7 @@ public class CareHomeActivity extends AppCompatActivity {
     private RecyclerView patientListView;
     private final ArrayList<PatientModel> patientArrayList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
-    private int noOfColumns;
+    //private int noOfColumns;
 
     //Initialising Firebase Authorisation
     private FirebaseAuth mAuth;
@@ -65,24 +65,6 @@ public class CareHomeActivity extends AppCompatActivity {
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
-
-    private static String getSizeName(Context context) {
-        int screenLayout = context.getResources().getConfiguration().screenLayout;
-        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
-
-        switch (screenLayout) {
-            case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                return "small";
-            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                return "normal";
-            case Configuration.SCREENLAYOUT_SIZE_LARGE:
-                return "large";
-            case 4: // Configuration.SCREENLAYOUT_SIZE_XLARGE is API >= 9
-                return "xlarge";
-            default:
-                return "undefined";
-        }
-    }
 
     //On Activity Creation
     @Override
@@ -165,10 +147,10 @@ public class CareHomeActivity extends AppCompatActivity {
                     patient.setAge(ds.getValue(PatientModel.class).getAge());
                     patient.setGender(ds.getValue(PatientModel.class).getGender());
                     patientArrayList.add(patient);
-                    adjustGrid();
-                    mLayoutManager = new GridLayoutManager(getApplicationContext(), noOfColumns);
+                    //adjustGrid();
+                    mLayoutManager = new GridLayoutManager(getApplicationContext(), adjustGrid());
                     patientListView.setLayoutManager(mLayoutManager);
-                    MyAdapter adapter = new MyAdapter(getApplicationContext(), patientArrayList);
+                    MyAdapter adapter = new MyAdapter(CareHomeActivity.this, patientArrayList);
                     patientListView.setAdapter(adapter);
                 }
             }
@@ -192,25 +174,46 @@ public class CareHomeActivity extends AppCompatActivity {
 
     }
 
-    private void adjustGrid() {
+    private int adjustGrid() {
+        String sizeName = "";
+        int noOfColumns = 0;
         boolean landscape = getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         boolean largeScreen = false;
         boolean normalScreen = false;
         boolean xlargeScreen = false;
-        if (getSizeName(getApplicationContext()).equals("normal")) {
+        int screenLayout = getApplicationContext().getResources().getConfiguration().screenLayout;
+        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+        switch (screenLayout) {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                sizeName = "small";
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                sizeName = "normal";
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                sizeName = "large";
+                break;
+            case 4: // Configuration.SCREENLAYOUT_SIZE_XLARGE is API >= 9
+                sizeName = "xlarge";
+                break;
+            default:
+                sizeName = "undefined";
+                break;
+        }
+        if (sizeName.equals("normal")) {
             normalScreen = true;
         }
-        if (getSizeName(getApplicationContext()).equals("large")) {
+        if (sizeName.equals("large")) {
             largeScreen = true;
         }
-        if (getSizeName(getApplicationContext()).equals("xlarge")) {
+        if (sizeName.equals("xlarge")) {
             xlargeScreen = true;
         }
         if (landscape && normalScreen) {
             noOfColumns = 3;
         }
         if (landscape && largeScreen) {
-            noOfColumns = 6;
+            noOfColumns = 3;
         }
         if (landscape && xlargeScreen) {
             noOfColumns = 6;
@@ -219,11 +222,12 @@ public class CareHomeActivity extends AppCompatActivity {
             noOfColumns = 2;
         }
         if (!landscape && largeScreen) {
-            noOfColumns = 4;
+            noOfColumns = 2;
         }
         if (!landscape && xlargeScreen) {
             noOfColumns = 4;
         }
+        return noOfColumns;
     }
 
     @Override
@@ -248,7 +252,7 @@ public class CareHomeActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(CareHomeActivity.this, R.style.AlertDialog);
             builder.setMessage("Warning: This will delete your login and all associated data!")
                     .setTitle("Are you sure you want to delete your carer profile?")
-            .setIcon(R.drawable.warning);
+                    .setIcon(R.drawable.warning);
             // Add the buttons
             builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -377,10 +381,11 @@ public class CareHomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int position = getAdapterPosition();
                 PatientModel patient = this.patientList.get(position);
-                Intent intent = new Intent(context, PatientProfile.class);
+                Intent intent = new Intent(CareHomeActivity.this, PatientProfile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("patientID", patient.getId());
                 intent.putExtra("patientName", patient.getName());
-                this.context.startActivity(intent);
+                startActivity(intent);
             }
         }
 

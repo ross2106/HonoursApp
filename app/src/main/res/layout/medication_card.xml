@@ -26,15 +26,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Medication:"
-                    android:layout_weight="0.4"
-                    android:ems="10"
+                    android:layout_weight="0.45"
+                    android:textSize="14sp"
                     android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/medicationName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:ems="10"/>
+                    android:layout_weight="0.55"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -48,15 +48,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Dosage Type:"
-                    android:layout_weight="0.4"
-                    android:ems="10"
+                    android:layout_weight="0.45"
+                    android:textSize="14sp"
                     android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/medicationDosageType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:ems="10"/>
+                    android:layout_weight="0.55"
+                    android:textSize="14sp" />
             </LinearLayout>
 
         </LinearLayout>

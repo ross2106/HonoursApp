@@ -2,7 +2,6 @@ package com.rgu.honours.dementiacareapp.Medication;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,8 +24,6 @@ import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by ross1 on 17/03/2018.
@@ -192,6 +187,7 @@ public class MedicationAsRequiredTab extends Fragment {
                 int position = getAdapterPosition();
                 MedicationModel medication = medicationList.get(position);
                 Intent intent = new Intent(getActivity(), EditMedication.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("patientID", patientId);
                 intent.putExtra("medicationID", medication.getId());
                 intent.putExtra("patientName", patientName);

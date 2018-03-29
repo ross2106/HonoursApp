@@ -247,6 +247,7 @@ public class MedicationAfternoonTab extends Fragment {
                 int position = getAdapterPosition();
                 MedicationModel medication = medicationList.get(position);
                 Intent intent = new Intent(getActivity(), EditMedication.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("patientID", patientId);
                 intent.putExtra("medicationID", medication.getId());
                 intent.putExtra("patientName", patientName);
