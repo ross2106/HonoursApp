@@ -5,7 +5,7 @@
     app:popupTheme="@style/optionsTheme">
     <item
         android:icon="@drawable/save_icon"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always|withText"
         android:title="Delete">
         <menu>
             <item

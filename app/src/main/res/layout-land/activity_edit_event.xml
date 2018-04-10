@@ -29,6 +29,7 @@
                 android:layout_weight="0.25"
                 android:ems="10"
                 android:text="@string/eventName"
+                android:textStyle="bold"
                 android:textAlignment="center" />
 
             <android.support.design.widget.TextInputLayout
@@ -66,6 +67,7 @@
                 android:layout_weight="0.25"
                 android:ems="10"
                 android:text="@string/date"
+                android:textStyle="bold"
                 android:textAlignment="center" />
 
             <Button
@@ -96,6 +98,7 @@
                 android:layout_weight="0.25"
                 android:ems="10"
                 android:text="@string/startTime"
+                android:textStyle="bold"
                 android:textAlignment="center" />
 
             <Button
@@ -126,6 +129,7 @@
                 android:layout_weight="0.25"
                 android:ems="10"
                 android:text="@string/finishTime"
+                android:textStyle="bold"
                 android:textAlignment="center" />
 
             <Button

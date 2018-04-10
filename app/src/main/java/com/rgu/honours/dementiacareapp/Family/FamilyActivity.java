@@ -154,6 +154,7 @@ public class FamilyActivity extends AppCompatActivity {
                     for (final DataSnapshot ds : dataSnapshot.getChildren()) {
                         final FamilyModel familyMember = new FamilyModel();
                         familyMember.setName(ds.getValue(FamilyModel.class).getName());
+                        familyMember.setRelation(ds.getValue(FamilyModel.class).getRelation());
                         familyMember.setContactNo(ds.getValue(FamilyModel.class).getContactNo());
                         familyMember.setId(ds.getValue(FamilyModel.class).getId());
                         familyArrayList.add(familyMember);
@@ -283,10 +284,12 @@ public class FamilyActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             FamilyModel family = familyArrayList.get(position);
             TextView familyMemberName = holder.familyMemberName;
+            TextView familyMemberRelation = holder.familyMemberRelation;
             final ImageView familyMemberImage = holder.familyMemberImage;
             final ProgressBar progressBar = holder.progressBar;
             progressBar.setVisibility(View.VISIBLE);
             familyMemberName.setText(family.getName());
+            familyMemberRelation.setText(family.getRelation());
             familyImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patientId).child("Family").child(family.getId());
                 familyImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -313,6 +316,7 @@ public class FamilyActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
             final ImageView familyMemberImage;
             final TextView familyMemberName;
+            final TextView familyMemberRelation;
             final ProgressBar progressBar;
             ArrayList<FamilyModel> familyList = new ArrayList<>();
             final Context context;
@@ -324,6 +328,7 @@ public class FamilyActivity extends AppCompatActivity {
                 itemView.setOnClickListener(this);
                 familyMemberImage = itemView.findViewById(R.id.familyMemberImage);
                 familyMemberName = itemView.findViewById(R.id.familyMemberName);
+                familyMemberRelation = itemView.findViewById(R.id.familyMemberRelation);
                 progressBar = itemView.findViewById(R.id.familyImageProgress);
             }
 

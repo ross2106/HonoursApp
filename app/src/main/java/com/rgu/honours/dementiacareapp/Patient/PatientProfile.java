@@ -44,6 +44,8 @@ import com.rgu.honours.dementiacareapp.R;
 import com.rgu.honours.dementiacareapp.ThisIsMe.ThisIsMeActivity;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 public class PatientProfile extends AppCompatActivity {
 
     //Layout views
@@ -351,6 +353,15 @@ public class PatientProfile extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private File getFile() {
+        File folder = new File("sdcard/mobileCare");
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        File image = new File(folder, "cam_image.jpg");
+        return image;
     }
 
     /**

@@ -5,8 +5,8 @@
     app:popupTheme="@style/optionsTheme">
     <item
         android:icon="@drawable/settings_white"
-        app:showAsAction="ifRoom"
-        android:title="More">
+        android:title="Edit"
+        app:showAsAction="always|withText">
         <menu>
             <item
                 android:id="@+id/editContentItem"

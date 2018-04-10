@@ -62,26 +62,75 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="10dp"
             android:layout_weight="0.1"
-            android:orientation="vertical">
+            android:elevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/familyProfileNameTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:text="Name:"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/familyProfileName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:textSize="32sp" />
-        </LinearLayout>
+                android:layout_weight="0.6"
+                android:textSize="24sp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="0.1"
+            android:elevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/familyProfileRelationTitle"
+                    android:layout_width="0dp"
+                android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:text="Relation:"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/familyProfileRelation"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.6"
+                    android:textSize="24sp" />
+        </LinearLayout>
+        </android.support.v7.widget.CardView>
         <LinearLayout
             android:id="@+id/callButtonLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="0.3"
             android:orientation="horizontal"
-            android:layout_weight="0.4"
             style="?android:attr/buttonBarStyle">
 
             <Button

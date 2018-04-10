@@ -31,7 +31,7 @@ public class AddFamily extends AppCompatActivity {
     private String userId;
     private String patientId;
     private String patientName;
-    private EditText familyName, familyContactNo;
+    private EditText familyName, familyContactNo, familyRelation;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -44,6 +44,7 @@ public class AddFamily extends AppCompatActivity {
 
         familyName = findViewById(R.id.addFamilyName);
         familyContactNo = findViewById(R.id.addFamilyNumber);
+        familyRelation = findViewById(R.id.addFamilyRelation);
         Button addFamily = findViewById(R.id.addFamilyButton);
 
         //Get an instance of Firebase Auth
@@ -65,11 +66,13 @@ public class AddFamily extends AppCompatActivity {
             public void onClick(View view) {
                 String name = familyName.getText().toString();
                 String contactNo = familyContactNo.getText().toString();
+                String relation = familyRelation.getText().toString();
                 final DatabaseReference patient_db = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Family");
                 String id = patient_db.push().getKey();
                 Map newFamily = new HashMap();
                 newFamily.put("id", id);
                 newFamily.put("name", name);
+                newFamily.put("relation", relation);
                 newFamily.put("contactNo", contactNo);
                 patient_db.child(id).setValue(newFamily);
                 Intent intent = new Intent(getApplicationContext(), FamilyActivity.class);

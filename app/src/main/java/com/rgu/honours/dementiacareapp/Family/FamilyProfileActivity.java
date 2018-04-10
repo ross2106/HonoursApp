@@ -45,7 +45,7 @@ import com.squareup.picasso.Picasso;
 public class FamilyProfileActivity extends AppCompatActivity {
 
     //Layout views
-    private TextView familyMemberName;
+    private TextView familyMemberName, familyMemberRelation;
     private ImageView familyImage;
     private Button callButton;
     private FloatingActionButton uploadPhoto;
@@ -83,6 +83,8 @@ public class FamilyProfileActivity extends AppCompatActivity {
 
         //Family Member Name
         familyMemberName = findViewById(R.id.familyProfileName);
+        //Family Member Relation
+        familyMemberRelation = findViewById(R.id.familyProfileRelation);
         //Family Member Profile Picture
         familyImage = findViewById(R.id.familyProfilePicture);
         //Call button
@@ -155,6 +157,7 @@ public class FamilyProfileActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
                     familyMemberName.setText(dataSnapshot.getValue(FamilyModel.class).getName());
+                    familyMemberRelation.setText(dataSnapshot.getValue(FamilyModel.class).getRelation());
                     phoneNo = dataSnapshot.getValue(FamilyModel.class).getContactNo();
                 }
             }
@@ -228,6 +231,7 @@ public class FamilyProfileActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
 
     /**
      * Code for the Navigation drawer "hamburger". Opens the drawer.

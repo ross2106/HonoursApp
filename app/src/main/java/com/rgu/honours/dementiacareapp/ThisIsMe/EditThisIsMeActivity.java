@@ -7,8 +7,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
-import com.rgu.honours.dementiacareapp.Medication.AddMedicationActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
 
@@ -41,6 +38,11 @@ public class EditThisIsMeActivity extends AppCompatActivity {
     private EditText myRoutine;
     private EditText mayUpsetMe;
     private EditText makesMeFeelBetter;
+    private EditText hearing;
+    private EditText eyesight;
+    private EditText mobility;
+    private EditText sleep;
+    private EditText eatingDrinking;
 
     private Button saveThisIsMe;
 
@@ -71,6 +73,11 @@ public class EditThisIsMeActivity extends AppCompatActivity {
         mayUpsetMe = findViewById(R.id.mayUpsetMeText);
         makesMeFeelBetter = findViewById(R.id.makesMeFeelBetterText);
         saveThisIsMe = findViewById(R.id.saveThisIsMe);
+        hearing = findViewById(R.id.editHearing);
+        eyesight = findViewById(R.id.editEyesight);
+        mobility = findViewById(R.id.editMobility);
+        sleep = findViewById(R.id.editSleep);
+        eatingDrinking = findViewById(R.id.editEatingDrinking);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -137,6 +144,11 @@ public class EditThisIsMeActivity extends AppCompatActivity {
                     myRoutine.setText(dataSnapshot.child("myRoutine").getValue().toString());
                     mayUpsetMe.setText(dataSnapshot.child("upsetMe").getValue().toString());
                     makesMeFeelBetter.setText(dataSnapshot.child("makeBetter").getValue().toString());
+                    hearing.setText(dataSnapshot.child("hearing").getValue().toString());
+                    eyesight.setText(dataSnapshot.child("eyesight").getValue().toString());
+                    mobility.setText(dataSnapshot.child("mobility").getValue().toString());
+                    sleep.setText(dataSnapshot.child("sleep").getValue().toString());
+                    eatingDrinking.setText(dataSnapshot.child("eatingDrinking").getValue().toString());
                 }
             }
 
@@ -156,6 +168,11 @@ public class EditThisIsMeActivity extends AppCompatActivity {
                 String myRoutineString = myRoutine.getText().toString();
                 String upsetMeString = mayUpsetMe.getText().toString();
                 String makeBetterString = makesMeFeelBetter.getText().toString();
+                String hearingString = hearing.getText().toString();
+                String eyesightString = eyesight.getText().toString();
+                String mobilityString = mobility.getText().toString();
+                String sleepString = sleep.getText().toString();
+                String eatingDrinkingString = eatingDrinking.getText().toString();
                 final DatabaseReference patient_db = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
                 Map thisIsMe = new HashMap();
                 thisIsMe.put("fullName", fullNameString);
@@ -165,6 +182,11 @@ public class EditThisIsMeActivity extends AppCompatActivity {
                 thisIsMe.put("myRoutine", myRoutineString);
                 thisIsMe.put("upsetMe", upsetMeString);
                 thisIsMe.put("makeBetter", makeBetterString);
+                thisIsMe.put("hearing", hearingString);
+                thisIsMe.put("eyesight", eyesightString);
+                thisIsMe.put("mobility", mobilityString);
+                thisIsMe.put("sleep", sleepString);
+                thisIsMe.put("eatingDrinking", eatingDrinkingString);
                 patient_db.child("Patients").child(patientId).child("ThisIsMe").setValue(thisIsMe);
                 Toast.makeText(EditThisIsMeActivity.this, "Content Saved!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), ThisIsMeActivity.class);

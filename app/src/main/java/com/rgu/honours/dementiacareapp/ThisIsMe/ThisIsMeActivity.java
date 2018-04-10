@@ -23,8 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
-import com.rgu.honours.dementiacareapp.Medication.EditMedication;
-import com.rgu.honours.dementiacareapp.Medication.MedicationTabbedActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
 
@@ -38,6 +36,11 @@ public class ThisIsMeActivity extends AppCompatActivity {
     private TextView myRoutine;
     private TextView mayUpsetMe;
     private TextView makesMeFeelBetter;
+    private TextView hearing;
+    private TextView eyesight;
+    private TextView mobility;
+    private TextView sleep;
+    private TextView eatingDrinking;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -63,6 +66,11 @@ public class ThisIsMeActivity extends AppCompatActivity {
         myRoutine = findViewById(R.id.myRoutineText);
         mayUpsetMe = findViewById(R.id.mayUpsetMeText);
         makesMeFeelBetter = findViewById(R.id.makesMeFeelBetterText);
+        hearing = findViewById(R.id.myHearingText);
+        eyesight = findViewById(R.id.myEyesightText);
+        mobility = findViewById(R.id.myMobilityText);
+        sleep = findViewById(R.id.mySleepText);
+        eatingDrinking = findViewById(R.id.myEatingDrinkingText);
 
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -132,6 +140,12 @@ public class ThisIsMeActivity extends AppCompatActivity {
                     myRoutine.setText(dataSnapshot.child("myRoutine").getValue().toString());
                     mayUpsetMe.setText(dataSnapshot.child("upsetMe").getValue().toString());
                     makesMeFeelBetter.setText(dataSnapshot.child("makeBetter").getValue().toString());
+                    hearing.setText(dataSnapshot.child("hearing").getValue().toString());
+                    eyesight.setText(dataSnapshot.child("eyesight").getValue().toString());
+                    mobility.setText(dataSnapshot.child("mobility").getValue().toString());
+                    sleep.setText(dataSnapshot.child("sleep").getValue().toString());
+                    eatingDrinking.setText(dataSnapshot.child("eatingDrinking").getValue().toString());
+
                 }
                 if(!dataSnapshot.hasChildren()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(ThisIsMeActivity.this, R.style.AlertDialog);
@@ -190,7 +204,7 @@ public class ThisIsMeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mMenuInflater = getMenuInflater();
-        mMenuInflater.inflate(R.menu.dropdown, menu);
+        mMenuInflater.inflate(R.menu.thisisme_dropdown, menu);
         return true;
     }
 

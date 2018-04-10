@@ -9,6 +9,7 @@ public class FamilyModel {
     String name;
     String contactNo;
     String id;
+    String relation;
 
     public FamilyModel(){
 
@@ -36,5 +37,13 @@ public class FamilyModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
     }
 }

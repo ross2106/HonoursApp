@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@id/addFamilyNumberLayout"
+            app:layout_constraintBottom_toTopOf="@id/addFamilyRelationLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addFamilyTitle">
@@ -46,6 +46,26 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/addFamilyRelationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@id/addFamilyNumberLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addFamilyNameLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/addFamilyRelation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Relation e.g. Daughter"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimary" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/addFamilyNumberLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,7 +73,7 @@
             app:layout_constraintBottom_toTopOf="@id/addFamilyButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addFamilyNameLayout">
+            app:layout_constraintTop_toBottomOf="@+id/addFamilyRelationLayout">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/addFamilyNumber"

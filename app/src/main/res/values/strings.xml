@@ -51,6 +51,11 @@
     <string name="myRoutine">My routine</string>
     <string name="mayUpsetMe">Things that may upset me</string>
     <string name="makesMeFeelBetter">Things that make me feel better</string>
+    <string name="hearing">My Hearing</string>
+    <string name="eyesight">My Eyesight</string>
+    <string name="mobility">My Mobility</string>
+    <string name="sleep">My Sleep</string>
+    <string name="eatingDrinking">My Eating and Drinking Habits</string>
 
     <!-- ************* Medication ************* -->
     <string name="medicationName">Medication Name</string>
