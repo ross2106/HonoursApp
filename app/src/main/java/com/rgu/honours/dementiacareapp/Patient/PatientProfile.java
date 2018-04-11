@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +43,7 @@ import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Medication.MedicationTabbedActivity;
 import com.rgu.honours.dementiacareapp.R;
 import com.rgu.honours.dementiacareapp.ThisIsMe.ThisIsMeActivity;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -160,8 +162,34 @@ public class PatientProfile extends AppCompatActivity {
         //Code to populate the profile picture
         profilePhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onSuccess(Uri uri) {
-                Picasso.with(PatientProfile.this).load(uri).into(patientImage);
+            public void onSuccess(final Uri uri) {
+                Picasso.with(PatientProfile.this)
+                        .load(uri)
+                        .into(patientImage, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                //Try again online if cache failed
+                                Picasso.with(PatientProfile.this)
+                                        .load(uri)
+                                        .error(R.drawable.person_white)
+                                        .into(patientImage, new Callback() {
+                                            @Override
+                                            public void onSuccess() {
+
+                                            }
+
+                                            @Override
+                                            public void onError() {
+                                                Log.v("Picasso", "Could not fetch image");
+                                            }
+                                        });
+                            }
+                        });
                 progressBar.setVisibility(View.GONE);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -172,14 +200,6 @@ public class PatientProfile extends AppCompatActivity {
             }
         });
         uploadPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(intent, GALLERY_INTENT);
-            }
-        });
-        patientImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

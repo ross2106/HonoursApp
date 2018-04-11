@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,7 @@ import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -284,17 +286,43 @@ public class FamilyActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             FamilyModel family = familyArrayList.get(position);
             TextView familyMemberName = holder.familyMemberName;
-            TextView familyMemberRelation = holder.familyMemberRelation;
+            //TextView familyMemberRelation = holder.familyMemberRelation;
             final ImageView familyMemberImage = holder.familyMemberImage;
             final ProgressBar progressBar = holder.progressBar;
             progressBar.setVisibility(View.VISIBLE);
             familyMemberName.setText(family.getName());
-            familyMemberRelation.setText(family.getRelation());
+            //familyMemberRelation.setText(family.getRelation());
             familyImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patientId).child("Family").child(family.getId());
                 familyImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.with(FamilyActivity.this).load(uri).into(familyMemberImage);
+                    public void onSuccess(final Uri uri) {
+                        Picasso.with(FamilyActivity.this)
+                                .load(uri)
+                                .into(familyMemberImage, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        //Try again online if cache failed
+                                        Picasso.with(FamilyActivity.this)
+                                                .load(uri)
+                                                .error(R.drawable.person_white)
+                                                .into(familyMemberImage, new Callback() {
+                                                    @Override
+                                                    public void onSuccess() {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onError() {
+                                                        Log.v("Picasso", "Could not fetch image");
+                                                    }
+                                                });
+                                    }
+                                });
                         progressBar.setVisibility(View.GONE);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -316,7 +344,7 @@ public class FamilyActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
             final ImageView familyMemberImage;
             final TextView familyMemberName;
-            final TextView familyMemberRelation;
+            //final TextView familyMemberRelation;
             final ProgressBar progressBar;
             ArrayList<FamilyModel> familyList = new ArrayList<>();
             final Context context;
@@ -328,7 +356,7 @@ public class FamilyActivity extends AppCompatActivity {
                 itemView.setOnClickListener(this);
                 familyMemberImage = itemView.findViewById(R.id.familyMemberImage);
                 familyMemberName = itemView.findViewById(R.id.familyMemberName);
-                familyMemberRelation = itemView.findViewById(R.id.familyMemberRelation);
+                //familyMemberRelation = itemView.findViewById(R.id.familyMemberRelation);
                 progressBar = itemView.findViewById(R.id.familyImageProgress);
             }
 

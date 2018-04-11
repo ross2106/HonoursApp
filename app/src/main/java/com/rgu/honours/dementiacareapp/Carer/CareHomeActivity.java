@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +43,8 @@ import com.rgu.honours.dementiacareapp.Patient.AddPatientActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientModel;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -326,21 +329,49 @@ public class CareHomeActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             PatientModel patient = patients.get(position);
             TextView patientName = holder.patientName;
-            TextView patientAge = holder.patientAge;
-            TextView patientGender = holder.patientGender;
+            //TextView patientAge = holder.patientAge;
+            //TextView patientGender = holder.patientGender;
             final ProgressBar progressBar = holder.progressBar;
             final ImageView patientProfileImage = holder.patientImage;
-            patientName.setText(patient.getName());
-            patientAge.setText(patient.getAge());
-            patientGender.setText(patient.getGender());
+            patientName.setText(patient.getName() + ", " + patient.getAge());
+            //patientAge.setText(patient.getAge());
+            //patientGender.setText(patient.getGender());
             progressBar.setVisibility(View.VISIBLE);
             StorageReference patientImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patient.getId()).child("Profile Picture");
             patientImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
-                public void onSuccess(Uri uri) {
-                    Picasso.with(CareHomeActivity.this).load(uri).into(patientProfileImage);
+                public void onSuccess(final Uri uri) {
+                    Picasso.with(CareHomeActivity.this)
+                            .load(uri)
+                            .networkPolicy(NetworkPolicy.OFFLINE)
+                            .into(patientProfileImage, new Callback() {
+                                @Override
+                                public void onSuccess() {
+
+                                }
+
+                                @Override
+                                public void onError() {
+                                    //Try again online if cache failed
+                                    Picasso.with(CareHomeActivity.this)
+                                            .load(uri)
+                                            .error(R.drawable.person_white)
+                                            .into(patientProfileImage, new Callback() {
+                                                @Override
+                                                public void onSuccess() {
+
+                                                }
+
+                                                @Override
+                                                public void onError() {
+                                                    Log.v("Picasso", "Could not fetch image");
+                                                }
+                                            });
+                                }
+                            });
                     progressBar.setVisibility(View.GONE);
                 }
+
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -359,8 +390,8 @@ public class CareHomeActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             final ImageView patientImage;
             final TextView patientName;
-            final TextView patientAge;
-            final TextView patientGender;
+            //final TextView patientAge;
+            //final TextView patientGender;
             final ProgressBar progressBar;
             ArrayList<PatientModel> patientList = new ArrayList<>();
             final Context context;
@@ -372,9 +403,9 @@ public class CareHomeActivity extends AppCompatActivity {
                 itemView.setOnClickListener(this);
                 patientImage = itemView.findViewById(R.id.patientProfileImage);
                 patientName = itemView.findViewById(R.id.patientName);
-                patientAge = itemView.findViewById(R.id.patientAge);
+                //patientAge = itemView.findViewById(R.id.patientAge);
                 progressBar = itemView.findViewById(R.id.patientImageProgress);
-                patientGender = itemView.findViewById(R.id.patientGender);
+                //patientGender = itemView.findViewById(R.id.patientGender);
             }
 
             @Override

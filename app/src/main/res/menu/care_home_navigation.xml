@@ -6,10 +6,6 @@
         android:title="Carer Home Page"
         android:icon="@drawable/heart" />
 
-<!--    <item
-        android:title="Application Settings"
-        android:icon="@drawable/settings" />-->
-
     <item
         android:id="@+id/log_out"
         android:title="Log Out"
