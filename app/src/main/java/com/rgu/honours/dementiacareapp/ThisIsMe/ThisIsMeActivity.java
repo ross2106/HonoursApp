@@ -227,8 +227,8 @@ public class ThisIsMeActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.moreInfo) {
             AlertDialog.Builder builder = new AlertDialog.Builder(ThisIsMeActivity.this, R.style.AlertDialog);
-            builder.setMessage("This is me contains important information about an individual in your care. " +
-                    "\n\nThis is a document used by the Alzheimer's Society to assist with the care of individuals with memory impairments.")
+            builder.setMessage("'This is me' is a document used by the Alzheimer's Society to assist with the care of individuals with memory impairments." +
+                    " It contains important information about that individual such as likes/dislikes or their sleeping habits.")
                     .setTitle("This Is Me");
             // Add the buttons
             builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {

@@ -11,6 +11,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -217,8 +218,19 @@ public class AddEventActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                if (TextUtils.isEmpty(eventNameString)) {
+                    eventName.setError("Required!");
+                    return;
+                }
+                if (!(startTime instanceof Long) || !(finishTime instanceof Long) || !(date instanceof Long)) {
+                    Toast toast = Toast.makeText(AddEventActivity.this, "Ensure you select a date and times for the event!", Toast.LENGTH_LONG);
+                    toast.getView().setBackgroundResource(R.color.red);
+                    toast.show();
+                    return;
+                }
                 if(startTime >= finishTime){
                     Toast.makeText(AddEventActivity.this, "The start time must be before the finish time!", Toast.LENGTH_LONG).show();
+                    return;
                 } else if(startTime < finishTime){
                     String eventId = eventRef.push().getKey();
                     Map newEvent = new HashMap();

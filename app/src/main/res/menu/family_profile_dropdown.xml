@@ -10,7 +10,7 @@
         <menu>
             <item
                 android:id="@+id/deleteFamily"
-                android:title="Delete Family"
+                android:title="Delete Family Member"
                 android:icon="@drawable/delete_purple"
                 android:textColor="@color/colorPrimary" />
         </menu>

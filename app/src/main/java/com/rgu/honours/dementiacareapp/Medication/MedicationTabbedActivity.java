@@ -25,11 +25,8 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
@@ -128,49 +125,11 @@ public class MedicationTabbedActivity extends AppCompatActivity {
             }
         });
 
-        DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
-        medRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.hasChildren()){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MedicationTabbedActivity.this, R.style.AlertDialog);
-                    builder.setMessage("This page allows the carer to add any prescribed medication. " +
-                            "You haven't added any medication for this individual, would you like to add some now?")
-                            .setTitle("Add Medication");
-                    // Add the buttons
-                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(MedicationTabbedActivity.this, AddMedicationActivity.class);
-                            intent.putExtra("patientID", patientId);
-                            intent.putExtra("patientName", patientName);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // User cancelled the dialog
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog dialog = builder.show();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 
         orientationHelper();
-        //TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        //tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //tabLayout.setupWithViewPager(mViewPager);
 
         addMed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,8 +199,7 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.moreInfo) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MedicationTabbedActivity.this, R.style.AlertDialog);
-            builder.setMessage("This page allows the carer to add any prescribed medication. " +
-                    "\n\nThe page offers a convenient way to keep track of different medication throughout the day." +
+            builder.setMessage("This page allows you to add medication information for each individual to help you keep track throughout the day. " +
                     "\n\nOnce you have added medication, press on it to amend the details.")
                     .setTitle("Medication Page");
             // Add the buttons

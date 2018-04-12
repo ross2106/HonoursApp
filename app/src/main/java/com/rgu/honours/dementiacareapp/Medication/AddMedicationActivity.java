@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -133,6 +134,21 @@ public class AddMedicationActivity extends AppCompatActivity {
                 Boolean eveningChecked = eveningCheck.isChecked();
                 Boolean bedChecked = bedCheck.isChecked();
                 Boolean asRequiredChecked = asRequiredCheck.isChecked();
+                if (TextUtils.isEmpty(medicationNameString)) {
+                    medicationName.setError("Required!");
+                    return;
+                }
+                if (TextUtils.isEmpty(medicationDosageTypeString)) {
+                    dosageType.setError("Required!");
+                    return;
+                }
+                if (!morningChecked && !afternoonChecked && !eveningChecked && !bedChecked && !asRequiredChecked) {
+                    Toast toast = Toast.makeText(AddMedicationActivity.this, "Please select a medication frequency!", Toast.LENGTH_SHORT);
+                    toast.getView().setBackgroundResource(R.color.red);
+                    toast.show();
+                    //Toast.makeText(AddMedicationActivity.this, "Please select a medication frequency!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
                 String medicationId = medRef.push().getKey();
                 Map newMedication = new HashMap();

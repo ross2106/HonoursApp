@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -67,6 +68,14 @@ public class AddFamily extends AppCompatActivity {
                 String name = familyName.getText().toString();
                 String contactNo = familyContactNo.getText().toString();
                 String relation = familyRelation.getText().toString();
+                if (TextUtils.isEmpty(name)) {
+                    familyName.setError("Required!");
+                    return;
+                }
+                if (TextUtils.isEmpty(relation)) {
+                    familyRelation.setError("Required!");
+                    return;
+                }
                 final DatabaseReference patient_db = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Family");
                 String id = patient_db.push().getKey();
                 Map newFamily = new HashMap();

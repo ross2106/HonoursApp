@@ -1,10 +1,7 @@
 package com.rgu.honours.dementiacareapp.Medication;
 
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,18 +9,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,14 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rgu.honours.dementiacareapp.Carer.CareHomeActivity;
-import com.rgu.honours.dementiacareapp.Events.AddEventActivity;
 import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -174,6 +164,20 @@ public class EditMedication extends AppCompatActivity {
                 Boolean eveningChecked = eveningCheck.isChecked();
                 Boolean bedChecked = bedCheck.isChecked();
                 Boolean asRequiredChecked = asRequiredCheck.isChecked();
+                if (TextUtils.isEmpty(medicationNameString)) {
+                    editMedicationName.setError("Required!");
+                    return;
+                }
+                if (TextUtils.isEmpty(medicationDosageTypeString)) {
+                    editDosageType.setError("Required!");
+                    return;
+                }
+                if (!morningChecked && !afternoonChecked && !eveningChecked && !bedChecked && !asRequiredChecked) {
+                    Toast toast = Toast.makeText(EditMedication.this, "Please select a medication frequency!", Toast.LENGTH_SHORT);
+                    toast.getView().setBackgroundResource(R.color.red);
+                    toast.show();
+                    return;
+                }
                 DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
                 Map newMedication = new HashMap();
                 newMedication.put("id", medicationId);
