@@ -69,7 +69,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
     <!-- ************* Events ************* -->
-    <string name="eventName">Event Name</string>
+    <string name="eventName">Event Name:</string>
     <string name="eventHint">E.g. Hair Appointment</string>
     <string name="date">Event Date</string>
     <string name="dateHint">Select Date</string>

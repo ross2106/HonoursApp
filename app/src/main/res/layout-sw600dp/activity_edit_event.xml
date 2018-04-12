@@ -2,10 +2,10 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/addEventDrawerLayout"
+    android:id="@+id/editEventDrawerLayout"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context="com.rgu.honours.dementiacareapp.Events.AddEventActivity">
+    tools:context="com.rgu.honours.dementiacareapp.Events.EditEventActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,8 +29,8 @@
                 android:layout_weight="0.25"
                 android:ems="10"
                 android:text="@string/eventName"
-                android:textSize="24sp"
                 android:textAlignment="center"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <android.support.design.widget.TextInputLayout
@@ -40,14 +40,14 @@
                 android:layout_weight="0.75">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/addEventName"
+                    android:id="@+id/editEventName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/eventHint"
-                    android:textSize="24sp"
                     android:inputType="textPersonName"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="24sp" />
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
@@ -63,14 +63,14 @@
             app:layout_constraintTop_toBottomOf="@id/event_name_layout">
 
             <Button
-                android:id="@+id/addEventDate"
+                android:id="@+id/editEventDate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:ems="10"
                 android:padding="8dp"
                 android:text="@string/date"
-                android:textSize="24sp"
-                android:ems="10"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
 
         </LinearLayout>
 
@@ -79,44 +79,44 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/addEventSubmit"
+            app:layout_constraintBottom_toTopOf="@id/editEventSubmit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_date_layout">
 
 
             <Button
-                android:id="@+id/addStartTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/editStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_weight="0.5"
+                android:ems="10"
                 android:padding="8dp"
                 android:text="@string/startHint"
-                android:textSize="24sp"
-                android:ems="10"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
 
             <Button
-                android:id="@+id/addFinishTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/editFinishTime"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_weight="0.5"
+                android:ems="10"
                 android:padding="8dp"
                 android:text="@string/finishHint"
-                android:textSize="24sp"
-                android:ems="10"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/addEventSubmit"
+            android:id="@+id/editEventSubmit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@color/greenButton"
             android:padding="8dp"
-            android:textSize="24sp"
             android:text="@string/submit"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +124,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/addEvent_navigation_view"
+        android:id="@+id/editEvent_navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
