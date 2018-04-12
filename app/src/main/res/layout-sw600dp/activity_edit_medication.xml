@@ -2,10 +2,10 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/addMedicationDrawerLayout"
+    android:id="@+id/editMedicationDrawerLayout"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context="com.rgu.honours.dementiacareapp.Medication.AddMedicationActivity">
+    tools:context="com.rgu.honours.dementiacareapp.Medication.EditMedication">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,27 +26,29 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.25"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="0.3"
                 android:ems="10"
-                android:layout_marginEnd="2dp"
-                android:textStyle="bold"
                 android:gravity="right"
-                android:text="Name:" />
+                android:text="Name:"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_medicationName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.75">
+                android:layout_weight="0.7">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/medicationName"
+                    android:id="@+id/editMedicationName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/medicationName"
                     android:inputType="textPersonName|textMultiLine"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="24sp" />
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
@@ -60,31 +62,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/medication_name_layout">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.25"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="0.3"
                 android:ems="10"
-                android:layout_marginEnd="2dp"
-                android:textStyle="bold"
                 android:gravity="right"
-                android:text="Dosage Type:" />
+                android:text="Dosage Type:"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_dosageType"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.75">
+                android:layout_weight="0.7">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/dosageType"
+                    android:id="@+id/editDosageType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="E.g. No. of Pills, Eye Drops"
                     android:inputType="textPersonName|textMultiLine"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="24sp" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
@@ -93,84 +98,95 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/medicationSubmit"
+            app:layout_constraintBottom_toTopOf="@id/editMedicationSubmit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dosageLayout">
+
             <TextView
                 android:id="@+id/medication_frequency_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="0.3"
                 android:gravity="right"
                 android:text="Medication Frequency:"
-                android:textStyle="bold"
-                android:layout_weight="0.25"/>
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:id="@+id/frequency_checkbox_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="0.75">
+                android:layout_weight="0.7"
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
 
                     <CheckBox
                         android:id="@+id/morningCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Morning"
                         android:textColor="#FF757575"
-                        android:text="Morning" />
+                        android:textSize="24sp" />
 
                     <CheckBox
                         android:id="@+id/afternoonCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Afternoon"
                         android:textColor="#FF757575"
-                        android:text="Afternoon" />
+                        android:textSize="24sp" />
 
                     <CheckBox
                         android:id="@+id/eveningCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Evening"
                         android:textColor="#FF757575"
-                        android:text="Evening" />
+                        android:textSize="24sp" />
 
                     <CheckBox
                         android:id="@+id/bedtimeCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Bedtime"
                         android:textColor="#FF757575"
-                        android:text="Bedtime" />
+                        android:textSize="24sp" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
                     <CheckBox
                         android:id="@+id/asRequiredCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="As Required"
                         android:textColor="#FF757575"
-                        android:text="As Required" />
+                        android:textSize="24sp" />
                 </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
 
         <Button
-            android:id="@+id/medicationSubmit"
+            android:id="@+id/editMedicationSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/greenButton"
             android:padding="8dp"
             android:text="@string/submit"
-            android:textSize="16sp"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -178,7 +194,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/addMedication_navigation_view"
+        android:id="@+id/editMedication_navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

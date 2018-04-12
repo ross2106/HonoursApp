@@ -4,13 +4,19 @@
     android:theme="@style/optionsTheme"
     app:popupTheme="@style/optionsTheme">
     <item
-        android:icon="@drawable/settings_white"
-        android:title="Edit"
-        app:showAsAction="always|withText">
+        android:icon="@drawable/more"
+        android:title="More Info"
+        app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/editContentItem"
                 android:title="Edit Content"
+                android:icon="@drawable/settings"
+                android:textColor="@color/colorPrimary" />
+            <item
+                android:id="@+id/moreInfo"
+                android:icon="@drawable/info_purple"
+                android:title="Page Information"
                 android:textColor="@color/colorPrimary" />
         </menu>
     </item>

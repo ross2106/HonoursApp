@@ -18,6 +18,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -132,7 +134,8 @@ public class MedicationTabbedActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.hasChildren()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(MedicationTabbedActivity.this, R.style.AlertDialog);
-                    builder.setMessage("This individual has no medication added. Would you like to add some now?")
+                    builder.setMessage("This page allows the carer to add any prescribed medication. " +
+                            "You haven't added any medication for this individual, would you like to add some now?")
                             .setTitle("Add Medication");
                     // Add the buttons
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -216,6 +219,13 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         mAuth.signOut();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mMenuInflater = getMenuInflater();
+        mMenuInflater.inflate(R.menu.medication_dropdown, menu);
+        return true;
+    }
+
 
     /**
      * Code for the Navigation drawer "hamburger". Opens the drawer.
@@ -227,6 +237,22 @@ public class MedicationTabbedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+        if (item.getItemId() == R.id.moreInfo) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MedicationTabbedActivity.this, R.style.AlertDialog);
+            builder.setMessage("This page allows the carer to add any prescribed medication. " +
+                    "\n\nThe page offers a convenient way to keep track of different medication throughout the day." +
+                    "\n\nOnce you have added medication, press on it to amend the details.")
+                    .setTitle("Medication Page");
+            // Add the buttons
+            builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.cancel();
+
+                }
+            });
+            AlertDialog dialog = builder.show();
         }
         return super.onOptionsItemSelected(item);
     }

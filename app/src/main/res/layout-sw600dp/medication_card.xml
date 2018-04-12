@@ -25,16 +25,17 @@
                     android:id="@+id/medicationNameTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
                     android:text="Medication:"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.45"
+                    android:gravity="right"
                     android:textSize="22sp"
                     android:textStyle="bold" />
-
                 <TextView
                     android:id="@+id/medicationName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.55"
                     android:textSize="22sp" />
 
             </LinearLayout>
@@ -48,16 +49,17 @@
                     android:id="@+id/medicationDosageTypeTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
                     android:text="Dosage Type:"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.45"
+                    android:gravity="right"
                     android:textSize="22sp"
                     android:textStyle="bold" />
-
                 <TextView
                     android:id="@+id/medicationDosageType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.55"
                     android:textSize="22sp" />
             </LinearLayout>
 
@@ -65,10 +67,11 @@
 
         <CheckBox
             android:id="@+id/medicationTaken"
+            android:layout_weight="0.3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
             android:text="Taken?"
+            android:textColor="#FF757575"
             android:textSize="22sp"
             android:textStyle="bold" />
     </LinearLayout>

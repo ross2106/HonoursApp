@@ -86,7 +86,7 @@ public class PatientProfile extends AppCompatActivity {
         setContentView(R.layout.activity_patient_profile);
 
         //Patient Name
-        patientName = findViewById(R.id.patientProfileName);
+        //patientName = findViewById(R.id.patientProfileName);
         //patientName.setText(getIntent().getStringExtra("patientName"));
         //Patient Profile Picture
         patientImage = findViewById(R.id.patientMainProfileImage);
@@ -149,7 +149,9 @@ public class PatientProfile extends AppCompatActivity {
         patientNameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                getSupportActionBar().setTitle(dataSnapshot.child("name").getValue().toString()); //Set the title of the page
+                if (dataSnapshot.hasChildren()) {
+                    getSupportActionBar().setTitle(dataSnapshot.child("name").getValue().toString()); //Set the title of the page
+                }
             }
 
             @Override
@@ -313,6 +315,22 @@ public class PatientProfile extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int id) {
                     // User cancelled the dialog
                     dialog.cancel();
+                }
+            });
+            AlertDialog dialog = builder.show();
+
+        }
+        if (item.getItemId() == R.id.moreInfo) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(PatientProfile.this, R.style.AlertDialog);
+            builder.setMessage("This page allows you to amend details about somebody in your care." +
+                    "\n\nSet a profile photo by pressing the camera icon, or press any of the buttons to explore the different pages.")
+                    .setTitle("Individual Profile Page");
+            // Add the buttons
+            builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.cancel();
+
                 }
             });
             AlertDialog dialog = builder.show();

@@ -1,5 +1,6 @@
 package com.rgu.honours.dementiacareapp.Events;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +14,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -161,6 +165,14 @@ public class EventsActivity extends AppCompatActivity {
         mAuth.signOut();
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mMenuInflater = getMenuInflater();
+        mMenuInflater.inflate(R.menu.event_dropdown, menu);
+        return true;
+    }
+
     /**
      * Code for the Navigation drawer "hamburger". Opens the drawer.
      *
@@ -169,7 +181,26 @@ public class EventsActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        if (item.getItemId() == R.id.moreInfo) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(EventsActivity.this, R.style.AlertDialog);
+            builder.setMessage("This page allows you to add entries into an events diary to keep track of the person you are caring for. " +
+                    "\n\nYou can add entries like dentist appointments, visits by relatives or even just a trip to the shop." +
+                    "\n\nOnce you have created an event, press on it to edit the details.")
+                    .setTitle("Events Diary");
+            // Add the buttons
+            builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.cancel();
+
+                }
+            });
+            AlertDialog dialog = builder.show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

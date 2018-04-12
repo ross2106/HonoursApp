@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Mobile Care</string>
+    <string name="submit">Submit</string>
 
     <!-- ************* Welcome Page ************* -->
-    <string name="welcomeTitle">Welcome!</string>
+    <string name="welcomeTitle">Welcome to Mobile Care!</string>
     <string name="logIn">Log In</string>
     <string name="signUp">Sign Up</string>
 
@@ -73,9 +74,9 @@
     <string name="date">Event Date</string>
     <string name="dateHint">Select Date</string>
     <string name="startTime">Start Time</string>
-    <string name="startHint">Select start time</string>
+    <string name="startHint">Event start time</string>
     <string name="finishTime">Finish Time</string>
-    <string name="finishHint">Select finish time</string>
+    <string name="finishHint">Event finish time</string>
     <string name="addEvent">Add Event</string>
     <string name="editEvent">Save Event</string>
 

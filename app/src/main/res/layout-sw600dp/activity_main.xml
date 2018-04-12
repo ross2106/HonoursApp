@@ -16,7 +16,7 @@
         android:text="@string/welcomeTitle"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="50sp"
+        android:textSize="60sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/buttonLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
             android:padding="8dp"
             android:text="@string/logIn"
             android:textColor="@color/primaryTextColor"
-            android:textSize="20sp" />
+            android:textSize="28sp" />
 
         <Button
             android:id="@+id/signUp"
@@ -57,7 +57,7 @@
             android:padding="8dp"
             android:text="@string/signUp"
             android:textColor="@color/primaryTextColor"
-            android:textSize="20sp" />
+            android:textSize="28sp" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

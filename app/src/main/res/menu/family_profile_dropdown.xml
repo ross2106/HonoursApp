@@ -4,13 +4,14 @@
     android:theme="@style/optionsTheme"
     app:popupTheme="@style/optionsTheme">
     <item
-        android:icon="@drawable/delete"
+        android:icon="@drawable/more"
         app:showAsAction="ifRoom"
-        android:title="Delete">
+        android:title="More Info">
         <menu>
             <item
                 android:id="@+id/deleteFamily"
                 android:title="Delete Family"
+                android:icon="@drawable/delete_purple"
                 android:textColor="@color/colorPrimary" />
         </menu>
     </item>

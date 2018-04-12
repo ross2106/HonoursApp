@@ -225,6 +225,21 @@ public class ThisIsMeActivity extends AppCompatActivity {
             intent.putExtra("patientName", patientName);
             startActivity(intent);
         }
+        if (item.getItemId() == R.id.moreInfo) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ThisIsMeActivity.this, R.style.AlertDialog);
+            builder.setMessage("This is me contains important information about an individual in your care. " +
+                    "\n\nThis is a document used by the Alzheimer's Society to assist with the care of individuals with memory impairments.")
+                    .setTitle("This Is Me");
+            // Add the buttons
+            builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.cancel();
+
+                }
+            });
+            AlertDialog dialog = builder.show();
+        }
         return super.onOptionsItemSelected(item);
     }
 

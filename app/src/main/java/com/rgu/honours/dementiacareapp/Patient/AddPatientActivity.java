@@ -82,7 +82,7 @@ public class AddPatientActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
         mToggle.syncState(); //Synchronize with drawer layout state
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Show button
-        getSupportActionBar().setTitle("This Is Me"); //Set the title of the page
+        getSupportActionBar().setTitle("Add Individual to Care"); //Set the title of the page
 
         NavigationView navigationView = findViewById(R.id.add_patient_navigation_view); //Navigation view from layout file
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() { //Setting on click listeners for menu items

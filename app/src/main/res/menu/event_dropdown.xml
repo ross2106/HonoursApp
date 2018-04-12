@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/optionsTheme"
     app:popupTheme="@style/optionsTheme">
     <item
         android:icon="@drawable/more"
-        app:showAsAction="ifRoom"
-        android:title="More Info">
+        android:title="More"
+        app:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/moreInfo"
                 android:icon="@drawable/info_purple"
                 android:iconTint="@color/colorPrimary"
-                android:title="Page Information"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:title="Page Information" />
         </menu>
     </item>
 </menu>

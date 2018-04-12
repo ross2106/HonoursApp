@@ -60,24 +60,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_name_layout">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.25"
-                android:ems="10"
-                android:text="@string/date"
-                android:textStyle="bold"
-                android:textAlignment="center" />
-
             <Button
                 android:id="@+id/addEventDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.75"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="8dp"
                 android:textColor="@color/colorPrimary"
                 android:ems="10"
-                android:text="@string/dateHint"/>
+                android:text="@string/date" />
 
         </LinearLayout>
 
@@ -86,57 +76,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/event_finish_layout"
+            app:layout_constraintBottom_toTopOf="@id/addEventSubmit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_date_layout">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.25"
-                android:ems="10"
-                android:text="@string/startTime"
-                android:textStyle="bold"
-                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/addStartTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.75"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="0.5"
+                android:padding="8dp"
                 android:textColor="@color/colorPrimary"
                 android:ems="10"
                 android:text="@string/startHint"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/event_finish_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/addEventSubmit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_start_layout">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.25"
-                android:ems="10"
-                android:text="@string/finishTime"
-                android:textStyle="bold"
-                android:textAlignment="center" />
-
             <Button
                 android:id="@+id/addFinishTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.75"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="0.5"
+                android:padding="8dp"
                 android:textColor="@color/colorPrimary"
                 android:ems="10"
                 android:text="@string/finishHint"/>
@@ -145,14 +106,15 @@
 
         <Button
             android:id="@+id/addEventSubmit"
-            android:layout_width="410dp"
-            android:layout_height="65dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:background="@color/greenButton"
-            android:text="@string/addEvent"
+            android:padding="8dp"
+            android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_finish_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/event_start_layout" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView

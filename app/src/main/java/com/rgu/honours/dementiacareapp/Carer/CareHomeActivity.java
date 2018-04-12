@@ -274,6 +274,20 @@ public class CareHomeActivity extends AppCompatActivity {
             });
             AlertDialog dialog = builder.show();
         }
+        if (item.getItemId() == R.id.moreInfo) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(CareHomeActivity.this, R.style.AlertDialog);
+            builder.setMessage("This page allows you to view all of the individuals in your care. " +
+                    "\n\nPress the icon in the bottom right of the screen in order to add somebody to your care. Once you have added an individual, click on their icon to go to their profile page.")
+                    .setTitle("Carer Home Page");
+            // Add the buttons
+            builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = builder.show();
+        }
         return super.onOptionsItemSelected(item);
     }
 

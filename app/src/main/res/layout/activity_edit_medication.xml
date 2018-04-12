@@ -19,7 +19,6 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/dosageLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -27,11 +26,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="0.25"
                 android:ems="10"
-                android:text="Name"
-                android:textStyle="bold"
-                android:textAlignment="center" />
+                android:gravity="right"
+                android:text="Name:"
+                android:textStyle="bold" />
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_medicationName"
@@ -45,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/medicationName"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textMultiLine"
                     android:textColor="@color/colorPrimary" />
             </android.support.design.widget.TextInputLayout>
 
@@ -60,15 +61,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/medication_name_layout">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="0.25"
                 android:ems="10"
-                android:text="Dosage Type"
-                android:textStyle="bold"
-                android:textAlignment="center" />
+                android:gravity="right"
+                android:text="Dosage Type:"
+                android:textStyle="bold" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_dosageType"
@@ -82,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="E.g. No. of Pills, Eye Drops"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textMultiLine"
                     android:textColor="@color/colorPrimary" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -96,61 +99,72 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dosageLayout">
+
             <TextView
                 android:id="@+id/medication_frequency_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Medication Frequency"
-                android:textStyle="bold"
-                android:layout_weight="0.25"/>
+                android:layout_marginEnd="2dp"
+                android:layout_weight="0.25"
+                android:gravity="right"
+                android:text="Medication Frequency:"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:id="@+id/frequency_checkbox_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="0.75">
+                android:layout_weight="0.75"
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
 
                     <CheckBox
                         android:id="@+id/morningCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Morning" />
+                        android:text="Morning"
+                        android:textColor="#FF757575" />
 
                     <CheckBox
                         android:id="@+id/afternoonCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Afternoon" />
+                        android:text="Afternoon"
+                        android:textColor="#FF757575" />
 
                     <CheckBox
                         android:id="@+id/eveningCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Evening" />
+                        android:text="Evening"
+                        android:textColor="#FF757575" />
 
                     <CheckBox
                         android:id="@+id/bedtimeCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bedtime" />
+                        android:text="Bedtime"
+                        android:textColor="#FF757575" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
 
                     <CheckBox
                         android:id="@+id/asRequiredCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="As Required" />
+                        android:text="As Required"
+                        android:textColor="#FF757575" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -161,7 +175,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/greenButton"
-            android:text="@string/save"
+            android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

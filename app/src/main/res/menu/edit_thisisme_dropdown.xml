@@ -4,13 +4,21 @@
     android:theme="@style/optionsTheme"
     app:popupTheme="@style/optionsTheme">
     <item
-        android:icon="@drawable/save_icon"
-        app:showAsAction="always|withText"
-        android:title="Delete">
+        android:icon="@drawable/more"
+        android:title="More Info"
+        app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/saveThisIsMeEdit"
                 android:title="Save Content"
+                android:icon="@drawable/save_purple"
+                android:iconTint="@color/colorPrimary"
+                android:textColor="@color/colorPrimary" />
+            <item
+                android:id="@+id/moreInfo"
+                android:icon="@drawable/info_purple"
+                android:iconTint="@color/colorPrimary"
+                android:title="Page Information"
                 android:textColor="@color/colorPrimary" />
         </menu>
     </item>

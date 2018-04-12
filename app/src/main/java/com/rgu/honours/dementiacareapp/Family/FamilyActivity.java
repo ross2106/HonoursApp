@@ -17,6 +17,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,7 +171,7 @@ public class FamilyActivity extends AppCompatActivity {
                 }
                 if(!dataSnapshot.hasChildren()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(FamilyActivity.this, R.style.AlertDialog);
-                    builder.setMessage("This individual has no family members added. Would you like to add some now?")
+                    builder.setMessage("This page allows you to view an individuals family members. You haven't yet added any family members for this individual, would you like to do this now?")
                             .setTitle("Add Family Member");
                     // Add the buttons
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -223,6 +225,13 @@ public class FamilyActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mMenuInflater = getMenuInflater();
+        mMenuInflater.inflate(R.menu.family_activity_dropdown, menu);
+        return true;
+    }
+
     /**
      * Code for the Navigation drawer "hamburger". Opens the drawer.
      *
@@ -231,7 +240,24 @@ public class FamilyActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return mToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        if (item.getItemId() == R.id.moreInfo) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(FamilyActivity.this, R.style.AlertDialog);
+            builder.setMessage("This page allows you to view an individuals family members. \n\nYou can add family members by pressing the plus icon in the bottom right.")
+                    .setTitle("Family Members");
+            // Add the buttons
+            builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                    dialog.cancel();
+
+                }
+            });
+            AlertDialog dialog = builder.show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
