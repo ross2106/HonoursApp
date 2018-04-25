@@ -63,27 +63,33 @@ public class SignUpActivity extends AppCompatActivity {
                 final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
+                progressDialog.setMessage("Registering....");
                 final String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
                 final String nameText = name.getText().toString();
                 if (TextUtils.isEmpty(email)) {
                     emailText.setError("Required!");
+                    progressDialog.dismiss();
                     return;
                 }
                 if(!isValidEmail(email)){
                     emailText.setError("Not a valid email format!");
+                    progressDialog.dismiss();
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
                     passwordText.setError("Required!");
+                    progressDialog.dismiss();
                     return;
                 }
                 if (TextUtils.isEmpty(nameText)) {
                     name.setError("Required!");
+                    progressDialog.dismiss();
                     return;
                 }
                 if (password.length() < 6) {
                     passwordText.setError("Password too short, enter minimum 6 characters!");
+                    progressDialog.dismiss();
                     return;
                 }
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -91,6 +97,7 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    progressDialog.dismiss();
                                     //Sign in success
                                     Log.d(TAG, "createUserWithEmail: success");
                                     Toast.makeText(SignUpActivity.this, "Sign up successful! You have now logged in.",
@@ -103,7 +110,8 @@ public class SignUpActivity extends AppCompatActivity {
                                     current_user_db.setValue(newUser);
                                     Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                                     startActivity(intent);
-                                } else {
+                                } else if (!task.isSuccessful()) {
+                                    progressDialog.dismiss();
                                     //if sign in fails, display a message to user
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                     Toast.makeText(SignUpActivity.this, "Authentication failed.",

@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/medicationName"
-                    android:inputType="textPersonName|textMultiLine"
+                    android:inputType="textPersonName"
                     android:textColor="@color/colorPrimary" />
             </android.support.design.widget.TextInputLayout>
 
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Tablets? Eyedrops?"
-                    android:inputType="textPersonName|textMultiLine"
+                    android:inputType="textPersonName"
                     android:textColor="@color/colorPrimary" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>

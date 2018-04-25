@@ -1,5 +1,6 @@
 package com.rgu.honours.dementiacareapp.UserAccess;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -67,19 +68,26 @@ public class LogInActivity extends AppCompatActivity {
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final ProgressDialog progressDialog = new ProgressDialog(LogInActivity.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                progressDialog.setMessage("Logging In...");
                 String email = username.getText().toString();
                 final String pass = password.getText().toString();
                 if (TextUtils.isEmpty(email) && TextUtils.isEmpty(pass)) {
                     username.setError("Required!");
                     password.setError("Required!");
+                    progressDialog.dismiss();
                     return;
                 }
                 if (TextUtils.isEmpty(email)) {
                     username.setError("Required!");
+                    progressDialog.dismiss();
                     return;
                 }
                 if (TextUtils.isEmpty(pass)) {
                     password.setError("Required!");
+                    progressDialog.dismiss();
                     return;
                 }
                 mAuth.signInWithEmailAndPassword(email, pass)
@@ -87,8 +95,10 @@ public class LogInActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (!task.isSuccessful()) {
+                                    progressDialog.dismiss();
                                     Toast.makeText(LogInActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                 } else {
+                                    progressDialog.dismiss();
                                     Toast.makeText(LogInActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LogInActivity.this, CareHomeActivity.class);
                                     startActivity(intent);
@@ -115,6 +125,8 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        username.setText("");
+        password.setText("");
         if (mAuth.getCurrentUser() != null) {
                 finish();
                 startActivity(new Intent(this, CareHomeActivity.class));
