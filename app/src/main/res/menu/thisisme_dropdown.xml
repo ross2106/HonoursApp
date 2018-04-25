@@ -4,7 +4,7 @@
     android:theme="@style/optionsTheme"
     app:popupTheme="@style/optionsTheme">
     <item
-        android:icon="@drawable/more"
+        android:icon="@drawable/info"
         android:title="More Info"
         app:showAsAction="always">
         <menu>

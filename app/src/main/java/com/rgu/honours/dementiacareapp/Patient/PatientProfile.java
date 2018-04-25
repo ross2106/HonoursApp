@@ -151,6 +151,7 @@ public class PatientProfile extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
                     getSupportActionBar().setTitle(dataSnapshot.child("name").getValue().toString()); //Set the title of the page
+                    thisIsMe.setText("This is " + dataSnapshot.child("name").getValue().toString());
                 }
             }
 
@@ -172,7 +173,6 @@ public class PatientProfile extends AppCompatActivity {
                             public void onSuccess() {
 
                             }
-
                             @Override
                             public void onError() {
                                 //Try again online if cache failed

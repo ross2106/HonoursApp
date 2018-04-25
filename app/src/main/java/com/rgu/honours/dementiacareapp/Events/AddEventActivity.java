@@ -291,6 +291,10 @@ public class AddEventActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        eventName.setText("");
+        eventDate.setText("EVENT DATE");
+        eventStart.setText("EVENT START TIME");
+        eventFinish.setText("EVENT FINISH TIME");
         mAuth.addAuthStateListener(authListener);
     }
 

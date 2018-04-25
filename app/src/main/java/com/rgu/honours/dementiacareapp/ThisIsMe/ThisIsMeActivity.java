@@ -88,6 +88,7 @@ public class ThisIsMeActivity extends AppCompatActivity {
         patientName = getIntent().getStringExtra("patientName");
 
 
+
         /*
           CODE FOR NAVIGATION DRAWER
          */
@@ -149,8 +150,10 @@ public class ThisIsMeActivity extends AppCompatActivity {
                 }
                 if(!dataSnapshot.hasChildren()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(ThisIsMeActivity.this, R.style.AlertDialog);
-                    builder.setMessage("There is no 'This is Me' information for this individual yet. Would you like to add this now?")
-                            .setTitle("This is Me");
+                    builder.setMessage("'This is me' is a document used by the Alzheimer's Society to assist with the care of individuals with memory impairments." +
+                            " It contains important information about that individual such as likes/dislikes or their sleeping habits."
+                            + "\n\nThere is no 'This is me' data for this individual. Would you like to add this now?");
+                    builder.setTitle("This is me");
                     // Add the buttons
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

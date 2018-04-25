@@ -164,6 +164,9 @@ public class AddFamily extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        familyName.setText("");
+        familyContactNo.setText("");
+        familyRelation.setText("");
         mAuth.addAuthStateListener(authListener);
     }
 

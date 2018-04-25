@@ -29,7 +29,7 @@ public class AddPatientActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListener;
     private String userId;
-    private EditText patientName, patientAge, patientGender;
+    private EditText patientName, patientSurname, patientAge, patientGender;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -41,6 +41,7 @@ public class AddPatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_patient);
 
         patientName = findViewById(R.id.addPatientName);
+        patientSurname = findViewById(R.id.addPatientSurname);
         patientAge = findViewById(R.id.addPatientAge);
         patientGender = findViewById(R.id.addPatientGender);
         Button addPatient = findViewById(R.id.addPatientButton);
@@ -60,10 +61,15 @@ public class AddPatientActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String name = patientName.getText().toString();
+                String surname = patientSurname.getText().toString();
                 String age = patientAge.getText().toString();
                 String gender = patientGender.getText().toString();
                 if (TextUtils.isEmpty(name)) {
                     patientName.setError("Required!");
+                    return;
+                }
+                if (TextUtils.isEmpty(name)) {
+                    patientSurname.setError("Required!");
                     return;
                 }
                 if (TextUtils.isEmpty(age)) {
@@ -81,6 +87,7 @@ public class AddPatientActivity extends AppCompatActivity {
                 newPatient.put("age", age);
                 newPatient.put("gender", gender);
                 newPatient.put("name", name);
+                newPatient.put("surname", surname);
                 patient_db.child("Patients").child(patientId).setValue(newPatient);
                 Intent intent = new Intent(getApplicationContext(), CareHomeActivity.class);
                 startActivity(intent);
@@ -152,6 +159,10 @@ public class AddPatientActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        patientName.setText("");
+        patientSurname.setText("");
+        patientAge.setText("");
+        patientGender.setText("");
         mAuth.addAuthStateListener(authListener);
     }
 

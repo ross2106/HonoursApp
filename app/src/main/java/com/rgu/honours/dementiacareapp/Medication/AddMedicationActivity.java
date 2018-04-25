@@ -220,6 +220,15 @@ public class AddMedicationActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        //Clear text fields
+        medicationName.setText("");
+        dosageType.setText("");
+        //Clear Checkboxes
+        morningCheck.setChecked(false);
+        afternoonCheck.setChecked(false);
+        eveningCheck.setChecked(false);
+        bedCheck.setChecked(false);
+        asRequiredCheck.setChecked(false);
         mAuth.addAuthStateListener(authListener);
     }
 
