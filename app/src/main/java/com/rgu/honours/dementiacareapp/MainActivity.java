@@ -19,9 +19,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         setContentView(R.layout.activity_main);
 
+        //Set page title
         getSupportActionBar().setTitle("Mobile Care");
 
         //defining buttons
@@ -36,15 +36,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAuth = FirebaseAuth.getInstance();
     }
 
+    //Button click listeners
     @Override
     public void onClick(View view) {
         Intent i;
         switch (view.getId()) {
-            case R.id.logIn:
+            case R.id.logIn: //Go to the login page
                 i = new Intent(this, LogInActivity.class);
                 startActivity(i);
                 break;
-            case R.id.signUp:
+            case R.id.signUp: //Go to the sign up page
                 i = new Intent(this, SignUpActivity.class);
                 startActivity(i);
                 break;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onStart() {
         super.onStart();
-        //mAuth.signOut();
+        //Check if a user is logged in on start
         if (mAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(this, CareHomeActivity.class));

@@ -152,7 +152,6 @@ public class CareHomeActivity extends AppCompatActivity {
                     patient.setAge(ds.getValue(PatientModel.class).getAge());
                     patient.setGender(ds.getValue(PatientModel.class).getGender());
                     patientArrayList.add(patient);
-                    //adjustGrid();
                     mLayoutManager = new GridLayoutManager(getApplicationContext(), adjustGrid());
                     patientListView.setLayoutManager(mLayoutManager);
                     MyAdapter adapter = new MyAdapter(CareHomeActivity.this, patientArrayList);
@@ -179,6 +178,7 @@ public class CareHomeActivity extends AppCompatActivity {
 
     }
 
+    //Adjust the list view based off of the screen orientation and size
     private int adjustGrid() {
         String sizeName = "";
         int noOfColumns = 0;
@@ -190,13 +190,13 @@ public class CareHomeActivity extends AppCompatActivity {
         screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
         switch (screenLayout) {
             case Configuration.SCREENLAYOUT_SIZE_SMALL:
-                sizeName = "small";
+                sizeName = "small"; //Small screen size
                 break;
             case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                sizeName = "normal";
+                sizeName = "normal"; //Normal screen size
                 break;
             case Configuration.SCREENLAYOUT_SIZE_LARGE:
-                sizeName = "large";
+                sizeName = "large"; //Large screen size
                 break;
             case 4: // Configuration.SCREENLAYOUT_SIZE_XLARGE is API >= 9
                 sizeName = "xlarge";
@@ -205,6 +205,7 @@ public class CareHomeActivity extends AppCompatActivity {
                 sizeName = "undefined";
                 break;
         }
+        //Change the number of columns based off of the screensize and the orientation
         if (sizeName.equals("normal")) {
             normalScreen = true;
         }
@@ -235,6 +236,7 @@ public class CareHomeActivity extends AppCompatActivity {
         return noOfColumns;
     }
 
+    //Dropdown menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mMenuInflater = getMenuInflater();
@@ -253,6 +255,7 @@ public class CareHomeActivity extends AppCompatActivity {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        //Delete profile selected
         if (item.getItemId() == R.id.deleteProfile) {
             AlertDialog.Builder builder = new AlertDialog.Builder(CareHomeActivity.this, R.style.AlertDialog);
             builder.setMessage("Warning: This will delete your login and all associated data!")
@@ -327,7 +330,7 @@ public class CareHomeActivity extends AppCompatActivity {
 
     /**
      * Code for the Patient List Adapter.
-     * This code populates the list of patients.
+     * This code populates the list of patients with their image and description
      */
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
@@ -350,13 +353,9 @@ public class CareHomeActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             PatientModel patient = patients.get(position);
             TextView patientName = holder.patientName;
-            //TextView patientAge = holder.patientAge;
-            //TextView patientGender = holder.patientGender;
             final ProgressBar progressBar = holder.progressBar;
             final ImageView patientProfileImage = holder.patientImage;
             patientName.setText(patient.getName() + ", " + patient.getAge());
-            //patientAge.setText(patient.getAge());
-            //patientGender.setText(patient.getGender());
             progressBar.setVisibility(View.VISIBLE);
             StorageReference patientImageRef = FirebaseStorage.getInstance().getReference().child(userId).child(patient.getId()).child("Profile Picture");
             patientImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -368,9 +367,7 @@ public class CareHomeActivity extends AppCompatActivity {
                             .into(patientProfileImage, new Callback() {
                                 @Override
                                 public void onSuccess() {
-
                                 }
-
                                 @Override
                                 public void onError() {
                                     //Try again online if cache failed
@@ -382,7 +379,6 @@ public class CareHomeActivity extends AppCompatActivity {
                                                 public void onSuccess() {
 
                                                 }
-
                                                 @Override
                                                 public void onError() {
                                                     Log.v("Picasso", "Could not fetch image");
@@ -411,10 +407,8 @@ public class CareHomeActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             final ImageView patientImage;
             final TextView patientName;
-            //final TextView patientAge;
-            //final TextView patientGender;
             final ProgressBar progressBar;
-            ArrayList<PatientModel> patientList = new ArrayList<>();
+            ArrayList<PatientModel> patientList;
             final Context context;
 
             public ViewHolder(View itemView, Context context, ArrayList<PatientModel> patientList) {
@@ -424,11 +418,10 @@ public class CareHomeActivity extends AppCompatActivity {
                 itemView.setOnClickListener(this);
                 patientImage = itemView.findViewById(R.id.patientProfileImage);
                 patientName = itemView.findViewById(R.id.patientName);
-                //patientAge = itemView.findViewById(R.id.patientAge);
                 progressBar = itemView.findViewById(R.id.patientImageProgress);
-                //patientGender = itemView.findViewById(R.id.patientGender);
             }
 
+            //Called when you click on an individuals card
             @Override
             public void onClick(View view) {
                 int position = getAdapterPosition();

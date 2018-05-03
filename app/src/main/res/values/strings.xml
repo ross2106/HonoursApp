@@ -25,7 +25,7 @@
     <string name="signUpTitle">Sign up for Mobile Care!</string>
 
     <!-- ************* Carer Home Page ************* -->
-    <string name="addPatient">Add someone to your care</string>
+    <string name="careHomeTitle">People in my care</string>
 
     <!-- ************* Add Patient Page ************* -->
     <string name="addPatientTitle">Add someone to your care</string>

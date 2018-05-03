@@ -15,6 +15,7 @@ public class MobileCare extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //Setting offline persistence for text and images
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         Picasso.Builder builder = new Picasso.Builder(this);
         builder.downloader(new OkHttp3Downloader(this, Integer.MAX_VALUE));

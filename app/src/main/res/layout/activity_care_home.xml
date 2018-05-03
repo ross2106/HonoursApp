@@ -17,7 +17,7 @@
             android:id="@+id/care_home_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="People in my care"
+            android:text="@string/careHomeTitle"
             android:textStyle="bold"
             android:textSize="34sp"
             android:textAlignment="center"
