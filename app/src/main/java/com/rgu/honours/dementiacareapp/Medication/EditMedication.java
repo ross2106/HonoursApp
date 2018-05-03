@@ -31,8 +31,6 @@ import com.rgu.honours.dementiacareapp.MainActivity;
 import com.rgu.honours.dementiacareapp.Patient.PatientProfile;
 import com.rgu.honours.dementiacareapp.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +58,6 @@ public class EditMedication extends AppCompatActivity {
     private String patientId;
     private String medicationId;
     private String patientName;
-    private String category;
 
     //Navigation Drawer
     private DrawerLayout mDrawerLayout;
@@ -219,10 +216,6 @@ public class EditMedication extends AppCompatActivity {
                 }
             }
         };
-    }
-
-    private String timeParse(Long time) {
-        return new SimpleDateFormat("HH:mm").format(new Date(time));
     }
 
     /**

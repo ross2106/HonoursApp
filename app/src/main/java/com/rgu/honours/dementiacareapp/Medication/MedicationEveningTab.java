@@ -45,7 +45,6 @@ public class MedicationEveningTab extends Fragment {
 
     //Initialising list of patients
     private final ArrayList<MedicationModel> medicationArrayList = new ArrayList<>();
-    //private RecyclerView medicationList;
     private RecyclerView.LayoutManager mLayoutManager;
 
     //Firebase User Authentication
@@ -90,7 +89,6 @@ public class MedicationEveningTab extends Fragment {
                         medication.setId(ds.getValue(MedicationModel.class).getId());
                         medication.setEveningTaken(ds.getValue(MedicationModel.class).getEveningTaken());
                         medicationArrayList.add(medication);
-
                 }
                     mLayoutManager = new LinearLayoutManager(getActivity());
                     medicationList.setLayoutManager(mLayoutManager);
@@ -189,7 +187,6 @@ public class MedicationEveningTab extends Fragment {
                         Calendar cal2 = Calendar.getInstance();
                         cal1.setTime(takenDate);
                         cal2.setTime(todayDate);
-                        //boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
                         if (cal1.get(Calendar.DATE) < cal2.get(Calendar.DATE)) {
                             medRef.child(medication.getId()).child("eveningTaken").setValue(0);
                             medRef.child(medication.getId()).child("eveningTakenTime").setValue(0);
@@ -229,7 +226,7 @@ public class MedicationEveningTab extends Fragment {
             final TextView medicationName;
             final TextView medicationDosageType;
             final CheckBox checkbox;
-            ArrayList<MedicationModel> medicationList = new ArrayList<>();
+            ArrayList<MedicationModel> medicationList;
 
             public ViewHolder(final View itemView, Context context, final ArrayList<MedicationModel> medicationList) {
                 super(itemView);

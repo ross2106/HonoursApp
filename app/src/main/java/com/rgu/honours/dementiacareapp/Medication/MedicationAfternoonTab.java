@@ -218,11 +218,9 @@ public class MedicationAfternoonTab extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             final TextView medicationName;
-            //final TextView medicationDosage;
-            //final TextView medicationTime;
             final TextView medicationDosageType;
             final CheckBox checkbox;
-            ArrayList<MedicationModel> medicationList = new ArrayList<>();
+            ArrayList<MedicationModel> medicationList;
 
             public ViewHolder(final View itemView, Context context, final ArrayList<MedicationModel> medicationList) {
                 super(itemView);

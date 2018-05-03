@@ -216,19 +216,15 @@ public class MedicationBedTab extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             final TextView medicationName;
-            //final TextView medicationDosage;
-            //final TextView medicationTime;
             final TextView medicationDosageType;
             final CheckBox checkbox;
-            ArrayList<MedicationModel> medicationList = new ArrayList<>();
+            ArrayList<MedicationModel> medicationList;
 
             public ViewHolder(final View itemView, Context context, final ArrayList<MedicationModel> medicationList) {
                 super(itemView);
                 this.medicationList = medicationList;
                 itemView.setOnClickListener(this);
                 medicationName = itemView.findViewById(R.id.medicationName);
-                //medicationDosage = itemView.findViewById(R.id.medicationDosage);
-                //medicationTime = itemView.findViewById(R.id.medicationTime);
                 checkbox = itemView.findViewById(R.id.medicationTaken);
                 medicationDosageType = itemView.findViewById(R.id.medicationDosageType);
                 checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

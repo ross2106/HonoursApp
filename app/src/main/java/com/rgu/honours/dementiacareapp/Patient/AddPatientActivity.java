@@ -49,9 +49,6 @@ public class AddPatientActivity extends AppCompatActivity {
         //Get an instance of Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        //Create a database reference
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-
         //Get the current user
         final FirebaseUser user = mAuth.getCurrentUser();
         //Assign that users ID

@@ -17,7 +17,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,11 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MedicationTabbedActivity extends AppCompatActivity {
-
-    //Initialising list of patients
-    private final ArrayList<MedicationModel> medicationArrayList = new ArrayList<>();
-    //private RecyclerView medicationList;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     //Firebase User Authentication
     private FirebaseAuth mAuth;
@@ -88,8 +82,6 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         /*
           CODE FOR NAVIGATION DRAWER
          */
-        //toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.medicationTabbedDrawerLayout); //Drawer from layout file
         mToggle = new ActionBarDrawerToggle(MedicationTabbedActivity.this, mDrawerLayout, R.string.open, R.string.close); //Setting action toggle
         mDrawerLayout.addDrawerListener(mToggle); //Settings drawer listener
@@ -166,7 +158,6 @@ public class MedicationTabbedActivity extends AppCompatActivity {
         }
         if (landscape) {
             TabLayout tabLayout = findViewById(R.id.tabs);
-            //tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             tabLayout.setupWithViewPager(mViewPager);
         }
     }

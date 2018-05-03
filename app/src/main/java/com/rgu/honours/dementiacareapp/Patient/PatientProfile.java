@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,7 +50,6 @@ import java.io.File;
 public class PatientProfile extends AppCompatActivity {
 
     //Layout views
-    private TextView patientName;
     private ImageView patientImage;
     private Button thisIsMe, medicationButton, familyButton, eventsButton;
     private ProgressBar progressBar;
@@ -85,9 +83,6 @@ public class PatientProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile);
 
-        //Patient Name
-        //patientName = findViewById(R.id.patientProfileName);
-        //patientName.setText(getIntent().getStringExtra("patientName"));
         //Patient Profile Picture
         patientImage = findViewById(R.id.patientMainProfileImage);
         //Photo upload button
@@ -215,7 +210,6 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ThisIsMeActivity.class);
                 intent.putExtra("patientID", patientId);
-                //intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
@@ -226,7 +220,6 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MedicationTabbedActivity.class);
                 intent.putExtra("patientID", patientId);
-                //intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
@@ -237,7 +230,6 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), FamilyActivity.class);
                 intent.putExtra("patientID", patientId);
-                //intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
@@ -248,7 +240,6 @@ public class PatientProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), EventsActivity.class);
                 intent.putExtra("patientID", patientId);
-                //intent.putExtra("patientName", patientName.getText().toString());
                 startActivity(intent);
             }
         });
