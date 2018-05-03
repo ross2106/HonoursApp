@@ -146,7 +146,6 @@ public class AddMedicationActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(AddMedicationActivity.this, "Please select a medication frequency!", Toast.LENGTH_SHORT);
                     toast.getView().setBackgroundResource(R.color.red);
                     toast.show();
-                    //Toast.makeText(AddMedicationActivity.this, "Please select a medication frequency!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 DatabaseReference medRef = dbRef.child("Users").child(userId).child("Patients").child(patientId).child("Medication");
