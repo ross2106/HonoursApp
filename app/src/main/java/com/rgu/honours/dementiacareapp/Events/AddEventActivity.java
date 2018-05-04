@@ -222,6 +222,7 @@ public class AddEventActivity extends AppCompatActivity {
                     eventName.setError("Required!");
                     return;
                 }
+                //Check the times are longs, if not show an error
                 if (!(startTime instanceof Long) || !(finishTime instanceof Long) || !(date instanceof Long)) {
                     Toast toast = Toast.makeText(AddEventActivity.this, "Ensure you select a date and times for the event!", Toast.LENGTH_LONG);
                     toast.getView().setBackgroundResource(R.color.red);
