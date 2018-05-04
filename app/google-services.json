@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "542267196645",
+    "firebase_url": "https://honours-project-16bec.firebaseio.com",
+    "project_id": "honours-project-16bec",
+    "storage_bucket": "honours-project-16bec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542267196645:android:431024e04916df7d",
+        "android_client_info": {
+          "package_name": "com.rgu.honours.dementiacareapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542267196645-kdth2umrqegp1dbrdpt1ou4055j3j1p3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rgu.honours.dementiacareapp",
+            "certificate_hash": "c29e3bce61aa53a69ec221cc5e379e28634c57f9"
+          }
+        },
+        {
+          "client_id": "542267196645-rosdpneh6ffnmbij1njo795un4ermi8s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtpwSH2rjV1kjqOQCr1c6zadJtV7KY1H0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542267196645-rosdpneh6ffnmbij1njo795un4ermi8s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
